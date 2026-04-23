@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://saleenm.github.io/easypdf/sitemap.xml
