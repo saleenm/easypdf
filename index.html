@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="EasyPDF — أدوات PDF مجانية تعمل مباشرة في متصفحك. دمج، تقسيم، ضغط، تحويل ملفات PDF بسهولة وأمان.">
+<meta name="keywords" content="PDF, دمج PDF, ضغط PDF, تحويل PDF, أدوات PDF مجانية">
+<meta property="og:title" content="EasyPDF — أدوات PDF مجانية">
+<meta property="og:description" content="دمج، تقسيم، ضغط وتحويل ملفات PDF مجاناً بدون رفع الملفات">
+<meta property="og:type" content="website">
+<title>EasyPDF — أدوات PDF المجانية</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e63946'/><text y='.9em' font-size='75' x='12'>E</text></svg>">
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+<style>
+  :root {
+    --primary: #e63946;
+    --primary2: #c1121f;
+    --dark: #0d0d1a;
+    --card: #13132a;
+    --card2: #1a1a35;
+    --text: #f0f0f0;
+    --muted: #7a8499;
+    --border: #232340;
+    --success: #06d6a0;
+    --radius: 16px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: rgba(13,13,26,0.95);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky; top:0; z-index:100;
+    backdrop-filter: blur(12px);
+  }
+  .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .logo-icon {
+    width:38px; height:38px;
+    background: linear-gradient(135deg, var(--primary), var(--primary2));
+    border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; font-weight:900; color:#fff;
+    box-shadow: 0 4px 15px rgba(230,57,70,0.4);
+  }
+  .logo-text { font-size:22px; font-weight:800; color:var(--text); }
+  .logo-text span { color: var(--primary); }
+  .header-right { display:flex; align-items:center; gap:12px; }
+  .badge-free {
+    background: rgba(6,214,160,0.15);
+    color: var(--success);
+    border: 1px solid rgba(6,214,160,0.3);
+    font-size:12px; padding: 4px 12px;
+    border-radius:20px; font-weight:600;
+  }
+  .badge-secure {
+    background: rgba(255,255,255,0.06);
+    color: var(--muted);
+    font-size:12px; padding: 4px 12px;
+    border-radius:20px;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    text-align:center;
+    padding: 72px 20px 52px;
+    position:relative; overflow:hidden;
+  }
+  .hero::before {
+    content:'';
+    position:absolute; top:-100px; left:50%; transform:translateX(-50%);
+    width:600px; height:600px;
+    background: radial-gradient(circle, rgba(230,57,70,0.12) 0%, transparent 65%);
+    pointer-events:none;
+  }
+  .hero-tag {
+    display:inline-block;
+    background: rgba(230,57,70,0.12);
+    color: var(--primary);
+    border: 1px solid rgba(230,57,70,0.25);
+    font-size:13px; font-weight:600;
+    padding: 5px 16px; border-radius:20px;
+    margin-bottom:20px;
+  }
+  .hero h1 {
+    font-size:52px; font-weight:900;
+    line-height:1.1; margin-bottom:16px;
+  }
+  .hero h1 span { color: var(--primary); }
+  .hero p {
+    font-size:18px; color: var(--muted);
+    max-width:500px; margin:0 auto 36px;
+    line-height:1.6;
+  }
+  .hero-stats {
+    display:flex; justify-content:center; gap:40px;
+    flex-wrap:wrap;
+  }
+  .stat { text-align:center; }
+  .stat-num { font-size:28px; font-weight:800; color:var(--primary); }
+  .stat-label { font-size:13px; color:var(--muted); margin-top:2px; }
+
+  /* ── Tools ── */
+  .tools-section { padding: 48px 40px 64px; max-width:1200px; margin:0 auto; }
+  .section-header {
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:20px;
+  }
+  .section-label {
+    font-size:13px; font-weight:700;
+    color:var(--muted); text-transform:uppercase; letter-spacing:2px;
+  }
+  .section-line { flex:1; height:1px; background:var(--border); }
+
+  .tools-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap:14px; margin-bottom:44px;
+  }
+  .tool-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 18px 20px;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(.4,0,.2,1);
+    text-align:center;
+    position:relative; overflow:hidden;
+  }
+  .tool-card::after {
+    content:'';
+    position:absolute; inset:0;
+    background: linear-gradient(135deg, var(--accent, var(--primary))18, transparent);
+    opacity:0; transition:opacity 0.22s;
+    border-radius: var(--radius);
+  }
+  .tool-card:hover {
+    transform:translateY(-5px);
+    border-color: var(--accent, var(--primary));
+    box-shadow: 0 12px 35px rgba(0,0,0,0.35), 0 0 0 1px var(--accent, var(--primary));
+  }
+  .tool-card:hover::after { opacity:1; }
+  .tool-card-inner { position:relative; z-index:1; }
+  .tool-icon { font-size:38px; margin-bottom:12px; display:block; }
+  .tool-name { font-size:14px; font-weight:700; margin-bottom:5px; }
+  .tool-desc { font-size:12px; color: var(--muted); line-height:1.4; }
+  .tool-tag {
+    display:inline-block; margin-top:8px;
+    font-size:10px; font-weight:600;
+    padding:2px 8px; border-radius:10px;
+    background: rgba(255,255,255,0.07);
+    color:var(--muted);
+  }
+
+  /* ── Modal ── */
+  .overlay {
+    display:none; position:fixed; inset:0;
+    background:rgba(0,0,0,0.8); z-index:200;
+    align-items:center; justify-content:center;
+    padding:20px;
+    backdrop-filter:blur(4px);
+  }
+  .overlay.active { display:flex; animation:fadeIn 0.2s; }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius:22px;
+    width:100%; max-width:540px;
+    padding:36px 32px;
+    position:relative;
+    max-height:92vh; overflow-y:auto;
+    animation: slideUp 0.25s cubic-bezier(.4,0,.2,1);
+  }
+  @keyframes slideUp { from{transform:translateY(30px);opacity:0} to{transform:none;opacity:1} }
+
+  .modal-close {
+    position:absolute; top:18px; left:18px;
+    background:var(--card2); border:1px solid var(--border);
+    color:var(--muted); width:34px; height:34px;
+    border-radius:50%; cursor:pointer; font-size:15px;
+    display:flex; align-items:center; justify-content:center;
+    transition:all 0.2s;
+  }
+  .modal-close:hover { background:var(--primary); color:#fff; border-color:var(--primary); }
+
+  .modal-icon { font-size:52px; text-align:center; margin-bottom:14px; }
+  .modal h2 { font-size:24px; font-weight:800; text-align:center; margin-bottom:6px; }
+  .modal-sub { color:var(--muted); font-size:14px; text-align:center; margin-bottom:28px; line-height:1.5; }
+
+  /* ── Drop Zone ── */
+  .drop-zone {
+    border: 2px dashed var(--border);
+    border-radius:14px;
+    padding:38px 20px;
+    text-align:center; cursor:pointer;
+    transition: all 0.2s;
+    margin-bottom:18px;
+    background: rgba(255,255,255,0.02);
+  }
+  .drop-zone:hover, .drop-zone.drag-over {
+    border-color: var(--primary);
+    background: rgba(230,57,70,0.06);
+  }
+  .drop-zone .dz-icon { font-size:42px; margin-bottom:10px; }
+  .drop-zone p { color:var(--muted); font-size:14px; line-height:1.6; }
+  .drop-zone strong { color:var(--primary); }
+  .file-input { display:none; }
+
+  /* ── Controls ── */
+  .control-group { margin-bottom:16px; }
+  .control-group label {
+    display:block; font-size:12px; font-weight:600;
+    color:var(--muted); margin-bottom:7px;
+    text-transform:uppercase; letter-spacing:0.5px;
+  }
+  .control-group input,
+  .control-group select {
+    width:100%;
+    background:var(--dark);
+    border:1px solid var(--border);
+    color:var(--text); padding:11px 14px;
+    border-radius:10px; font-size:14px;
+    outline:none; transition:border-color 0.2s;
+    font-family:inherit;
+  }
+  .control-group input:focus,
+  .control-group select:focus { border-color:var(--primary); }
+  .row-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+  /* ── File List ── */
+  .file-list { margin-bottom:16px; }
+  .file-item {
+    display:flex; align-items:center;
+    background:var(--dark);
+    border:1px solid var(--border);
+    border-radius:10px; padding:10px 14px;
+    margin-bottom:8px; font-size:13px;
+    gap:8px;
+  }
+  .file-item .fname { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .file-item .fsize { color:var(--muted); font-size:11px; white-space:nowrap; }
+  .file-item .fdel {
+    background:none; border:none;
+    color:var(--muted); cursor:pointer; font-size:15px;
+    padding:2px 4px; transition:color 0.2s; flex-shrink:0;
+  }
+  .file-item .fdel:hover { color:var(--primary); }
+
+  /* ── Button ── */
+  .btn {
+    width:100%; padding:15px;
+    background: linear-gradient(135deg, var(--primary), var(--primary2));
+    color:#fff; border:none;
+    border-radius:12px; font-size:16px;
+    font-weight:700; cursor:pointer;
+    transition: all 0.2s;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    font-family:inherit;
+    box-shadow: 0 4px 20px rgba(230,57,70,0.35);
+  }
+  .btn:hover { transform:translateY(-2px); box-shadow:0 6px 25px rgba(230,57,70,0.45); }
+  .btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
+
+  /* ── Progress ── */
+  .progress-wrap { display:none; margin-bottom:18px; }
+  .progress-bar {
+    background:var(--border); border-radius:20px;
+    height:6px; overflow:hidden; margin-bottom:8px;
+  }
+  .progress-fill {
+    height:100%;
+    background: linear-gradient(90deg, var(--primary), #ff6b6b);
+    border-radius:20px; transition:width 0.3s;
+    width:0%;
+  }
+  .progress-text { font-size:12px; color:var(--muted); text-align:center; }
+
+  /* ── Result ── */
+  .result-box {
+    display:none;
+    background:rgba(6,214,160,0.08);
+    border:1px solid rgba(6,214,160,0.3);
+    border-radius:12px; padding:18px;
+    text-align:center; margin-bottom:16px;
+  }
+  .result-box .ri { font-size:34px; margin-bottom:8px; }
+  .result-box p { font-size:14px; color:var(--success); font-weight:600; }
+
+  /* ── Features Bar ── */
+  .features-bar {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px;
+    display:flex; justify-content:center;
+    gap:48px; flex-wrap:wrap;
+  }
+  .feature { display:flex; align-items:center; gap:10px; }
+  .feature-icon { font-size:20px; }
+  .feature-text { font-size:13px; color:var(--muted); }
+  .feature-text strong { color:var(--text); display:block; font-size:14px; }
+
+  /* ── Footer ── */
+  footer {
+    text-align:center; padding:32px 20px;
+    color:var(--muted); font-size:13px;
+    border-top:1px solid var(--border);
+  }
+  footer a { color:var(--muted); text-decoration:none; }
+  footer a:hover { color:var(--primary); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width:5px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+  @media(max-width:768px) {
+    header { padding:0 16px; }
+    .badge-secure { display:none; }
+    .hero { padding:48px 16px 36px; }
+    .hero h1 { font-size:34px; }
+    .hero p { font-size:15px; }
+    .hero-stats { gap:24px; }
+    .tools-section { padding:28px 16px 48px; }
+    .tools-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+    .features-bar { gap:24px; padding:16px; }
+    .modal { padding:28px 20px; }
+    .row-2 { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <a class="logo" href="#">
+    <div class="logo-icon">E</div>
+    <div class="logo-text">Easy<span>PDF</span></div>
+  </a>
+  <div class="header-right">
+    <span class="badge-free">✓ مجاني 100%</span>
+    <span class="badge-secure">🔒 آمن وخاص</span>
+  </div>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-tag">⚡ يعمل مباشرة في المتصفح</div>
+  <h1>كل أدوات <span>PDF</span><br>في مكان واحد</h1>
+  <p>دمج، تقسيم، ضغط وتحويل ملفات PDF مجاناً.<br>ملفاتك لا تُرسل لأي سيرفر — كل شيء على جهازك.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">10</div><div class="stat-label">أداة مجانية</div></div>
+    <div class="stat"><div class="stat-num">0</div><div class="stat-label">رفع للسيرفر</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">خصوصية تامة</div></div>
+  </div>
+</div>
+
+<!-- Features Bar -->
+<div class="features-bar">
+  <div class="feature">
+    <span class="feature-icon">🔒</span>
+    <div class="feature-text"><strong>خصوصية تامة</strong>ملفاتك لا تغادر جهازك</div>
+  </div>
+  <div class="feature">
+    <span class="feature-icon">⚡</span>
+    <div class="feature-text"><strong>سريع جداً</strong>بدون انتظار أو تحميل</div>
+  </div>
+  <div class="feature">
+    <span class="feature-icon">🆓</span>
+    <div class="feature-text"><strong>مجاني للأبد</strong>بدون تسجيل أو اشتراك</div>
+  </div>
+  <div class="feature">
+    <span class="feature-icon">📱</span>
+    <div class="feature-text"><strong>يعمل على الجوال</strong>متوافق مع كل الأجهزة</div>
+  </div>
+</div>
+
+<!-- Tools -->
+<div class="tools-section">
+
+  <div class="section-header">
+    <span class="section-label">✂️ تحرير وتعديل</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="tools-grid">
+    <div class="tool-card" style="--accent:#e63946" onclick="openTool('merge')">
+      <div class="tool-card-inner">
+        <span class="tool-icon">🔗</span>
+        <div class="tool-name">دمج PDF</div>
+        <div class="tool-desc">ادمج عدة ملفات في ملف واحد</div>
+        <span class="tool-tag">MERGE</span>
+      </div>
+    </div>
+    <div class="tool-card" style="--accent:#fb8500" onclick="openTool('split')">
+      <div class="tool-card-inner">
+        <span class="tool-icon">✂️</span>
+        <div class="tool-name">تقسيم PDF</div>
+        <div class="tool-desc">استخرج صفحات محددة</div>
+        <span class="tool-tag">SPLIT</span>
+      </div>
+    </div>
+    <div class="tool-card" style="--accent:#8338ec" onclick="openTool('rotate')">
+      <div class="tool-card-inner">
+        <span class="tool-icon">🔄</span>
+        <div class="tool-name">تدوير الصفحات</div>
+        <div class="tool-desc">دوّر صفحات الملف</div>
+        <span class="tool-tag">ROTATE</span>
+      </div>
+    </div>
+    <div class="tool-card" style="--accent:#06d6a0" onclick="openTool('compress')">
+      <div class="tool-card-inner">
+        <span class="tool-icon">🗜️</span>
+        <div class="tool-name">ضغط PDF</div>
+        <div class="tool-desc">قلّل حجم الملف</div>
+        <span class="tool-tag">COMPRESS</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <span class="section-label">🔒 حماية وتخصيص</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="tools-grid">
+    <div class="tool-card" style="--accent:#e63946" onclick="openTool('watermark')">
+      <div class="tool-card-inner">
+        <span class="tool-icon">💧</span>
+        <div class="tool-name">علامة مائية</div>
+        <div class="tool-desc">أضف نصاً مائياً على الصفحات</div>
+        <span class="tool-tag">WATERMARK</span>
+      </div>
+    </div>
+    <div class="tool-card" style="--accent:#3a86ff" onclick="openTool('pagenumber')">
+      <div class="tool-card-inner">
+        <span class="tool-icon">🔢</span>
+        <div class="tool-name">ترقيم الصفحات</div>
+        <div class="tool-desc">أضف أرقام في أسفل كل صفحة</div>
+        <span class="tool-tag">NUMBERS</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <span class="section-label">🔄 تحويل الملفات</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="tools-grid">
+    <div class="tool-card" style="--accent:#ffb703" onclick="openTool('pdf2img')">
+      <div class="tool-card-inner">
+        <span class="tool-icon">🖼️</span>
+        <div class="tool-name">PDF ← صور</div>
+        <div class="tool-desc">حوّل كل صفحة إلى PNG</div>
+        <span class="tool-tag">PDF → IMG</span>
+      </div>
+    </div>
+    <div class="tool-card" style="--accent:#e63946" onclick="openTool('pdf2txt')">
+      <div class="tool-card-inner">
+        <span class="tool-icon">📄</span>
+        <div class="tool-name">PDF ← نص</div>
+        <div class="tool-desc">استخرج النصوص من الملف</div>
+        <span class="tool-tag">PDF → TXT</span>
+      </div>
+    </div>
+    <div class="tool-card" style="--accent:#3a86ff" onclick="openTool('img2pdf')">
+      <div class="tool-card-inner">
+        <span class="tool-icon">📸</span>
+        <div class="tool-name">صور ← PDF</div>
+        <div class="tool-desc">حوّل JPG/PNG إلى PDF</div>
+        <span class="tool-tag">IMG → PDF</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div class="overlay" id="overlay" onclick="closeIfOutside(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div style="font-size:22px;margin-bottom:8px">Easy<span style="color:var(--primary)">PDF</span></div>
+  <div>جميع العمليات تتم محلياً على جهازك · ملفاتك آمنة تماماً 🔒</div>
+  <div style="margin-top:8px;font-size:12px">مجاني · بدون تسجيل · بدون حدود</div>
+</footer>
+
+<script>
+const { PDFDocument, degrees, rgb, StandardFonts } = PDFLib;
+
+const TOOLS = {
+  merge: {
+    icon:'🔗', title:'دمج ملفات PDF', sub:'اختر ملفين أو أكثر لدمجهم في ملف واحد',
+    render(id) {
+      return `
+        <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')">
+          <div class="dz-icon">📂</div>
+          <p>اسحب الملفات هنا أو <strong>اضغط للاختيار</strong><br>
+          <span style="font-size:11px">يمكن اختيار عدة ملفات PDF</span></p>
+        </div>
+        <input type="file" id="fi-${id}" class="file-input" multiple accept=".pdf">
+        <div class="file-list" id="fl-${id}"></div>
+        <div class="progress-wrap" id="pw-${id}">
+          <div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div>
+          <div class="progress-text" id="pt-${id}">جاري الدمج...</div>
+        </div>
+        <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p>تم الدمج وتحميل الملف!</p></div>
+        <button class="btn" id="btn-${id}" onclick="doMerge('${id}')">🔗 دمج الملفات</button>`;
+    }
+  },
+  split: {
+    icon:'✂️', title:'تقسيم PDF', sub:'حدد الصفحات التي تريد استخراجها',
+    render(id) {
+      return `
+        <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')">
+          <div class="dz-icon">📄</div>
+          <p>اسحب الملف هنا أو <strong>اضغط للاختيار</strong></p>
+        </div>
+        <input type="file" id="fi-${id}" class="file-input" accept=".pdf">
+        <div class="file-list" id="fl-${id}"></div>
+        <div class="control-group">
+          <label>الصفحات المطلوبة</label>
+          <input type="text" id="pages-${id}" placeholder="مثال: 1-3,5,7-9" value="1">
+        </div>
+        <div class="progress-wrap" id="pw-${id}">
+          <div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div>
+          <div class="progress-text" id="pt-${id}">جاري التقسيم...</div>
+        </div>
+        <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p>تم استخراج الصفحات!</p></div>
+        <button class="btn" id="btn-${id}" onclick="doSplit('${id}')">✂️ تقسيم الملف</button>`;
+    }
+  },
+  rotate: {
+    icon:'🔄', title:'تدوير صفحات PDF', sub:'دوّر جميع صفحات الملف',
+    render(id) {
+      return `
+        <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')">
+          <div class="dz-icon">📄</div>
+          <p>اسحب الملف هنا أو <strong>اضغط للاختيار</strong></p>
+        </div>
+        <input type="file" id="fi-${id}" class="file-input" accept=".pdf">
+        <div class="file-list" id="fl-${id}"></div>
+        <div class="control-group">
+          <label>اتجاه التدوير</label>
+          <select id="rot-${id}">
+            <option value="90">↩️ 90 درجة لليسار</option>
+            <option value="-90">↪️ 90 درجة لليمين</option>
+            <option value="180">🔃 180 درجة</option>
+          </select>
+        </div>
+        <div class="progress-wrap" id="pw-${id}">
+          <div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div>
+          <div class="progress-text" id="pt-${id}">جاري التدوير...</div>
+        </div>
+        <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p>تم تدوير الصفحات!</p></div>
+        <button class="btn" id="btn-${id}" onclick="doRotate('${id}')">🔄 تدوير الملف</button>`;
+    }
+  },
+  compress: {
+    icon:'🗜️', title:'ضغط PDF', sub:'قلّل حجم ملف PDF مع الحفاظ على الجودة',
+    render(id) {
+      return `
+        <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')">
+          <div class="dz-icon">📄</div>
+          <p>اسحب الملف هنا أو <strong>اضغط للاختيار</strong></p>
+        </div>
+        <input type="file" id="fi-${id}" class="file-input" accept=".pdf">
+        <div class="file-list" id="fl-${id}"></div>
+        <div class="progress-wrap" id="pw-${id}">
+          <div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div>
+          <div class="progress-text" id="pt-${id}">جاري الضغط...</div>
+        </div>
+        <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p id="compress-result-${id}">تم الضغط!</p></div>
+        <button class="btn" id="btn-${id}" onclick="doCompress('${id}')">🗜️ ضغط الملف</button>`;
+    }
+  },
+  watermark: {
+    icon:'💧', title:'علامة مائية', sub:'أضف نصاً مائياً على جميع الصفحات',
+    render(id) {
+      return `
+        <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')">
+          <div class="dz-icon">📄</div>
+          <p>اسحب الملف هنا أو <strong>اضغط للاختيار</strong></p>
+        </div>
+        <input type="file" id="fi-${id}" class="file-input" accept=".pdf">
+        <div class="file-list" id="fl-${id}"></div>
+        <div class="control-group">
+          <label>نص العلامة المائية</label>
+          <input type="text" id="wm-text-${id}" placeholder="CONFIDENTIAL" value="DRAFT">
+        </div>
+        <div class="row-2">
+          <div class="control-group">
+            <label>حجم الخط</label>
+            <input type="number" id="wm-size-${id}" value="60" min="20" max="200">
+          </div>
+          <div class="control-group">
+            <label>الشفافية (0.05-1)</label>
+            <input type="number" id="wm-opacity-${id}" value="0.15" min="0.05" max="1" step="0.05">
+          </div>
+        </div>
+        <div class="progress-wrap" id="pw-${id}">
+          <div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div>
+          <div class="progress-text" id="pt-${id}">جاري الإضافة...</div>
+        </div>
+        <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p>تمت إضافة العلامة المائية!</p></div>
+        <button class="btn" id="btn-${id}" onclick="doWatermark('${id}')">💧 إضافة علامة مائية</button>`;
+    }
+  },
+  pagenumber: {
+    icon:'🔢', title:'ترقيم الصفحات', sub:'أضف أرقام الصفحات في أسفل كل صفحة',
+    render(id) {
+      return `
+        <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')">
+          <div class="dz-icon">📄</div>
+          <p>اسحب الملف هنا أو <strong>اضغط للاختيار</strong></p>
+        </div>
+        <input type="file" id="fi-${id}" class="file-input" accept=".pdf">
+        <div class="file-list" id="fl-${id}"></div>
+        <div class="row-2">
+          <div class="control-group">
+            <label>رقم البداية</label>
+            <input type="number" id="pn-start-${id}" value="1" min="1">
+          </div>
+          <div class="control-group">
+            <label>الموضع</label>
+            <select id="pn-pos-${id}">
+              <option value="bottom-center">أسفل وسط</option>
+              <option value="bottom-right">أسفل يمين</option>
+              <option value="bottom-left">أسفل يسار</option>
+            </select>
+          </div>
+        </div>
+        <div class="progress-wrap" id="pw-${id}">
+          <div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div>
+          <div class="progress-text" id="pt-${id}">جاري الترقيم...</div>
+        </div>
+        <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p>تم إضافة الترقيم!</p></div>
+        <button class="btn" id="btn-${id}" onclick="doPageNumbers('${id}')">🔢 إضافة الترقيم</button>`;
+    }
+  },
+  pdf2img: {
+    icon:'🖼️', title:'PDF إلى صور PNG', sub:'حوّل كل صفحة إلى صورة PNG',
+    render(id) {
+      return `
+        <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')">
+          <div class="dz-icon">📄</div>
+          <p>اسحب الملف هنا أو <strong>اضغط للاختيار</strong></p>
+        </div>
+        <input type="file" id="fi-${id}" class="file-input" accept=".pdf">
+        <div class="file-list" id="fl-${id}"></div>
+        <div class="control-group">
+          <label>جودة الصورة</label>
+          <select id="dpi-${id}">
+            <option value="1">عادية (72 DPI)</option>
+            <option value="2" selected>عالية (144 DPI)</option>
+            <option value="3">ممتازة (216 DPI)</option>
+          </select>
+        </div>
+        <div class="progress-wrap" id="pw-${id}">
+          <div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div>
+          <div class="progress-text" id="pt-${id}">جاري التحويل...</div>
+        </div>
+        <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p id="img-result-${id}">تم التحويل!</p></div>
+        <button class="btn" id="btn-${id}" onclick="doPdf2Img('${id}')">🖼️ تحويل إلى صور</button>`;
+    }
+  },
+  pdf2txt: {
+    icon:'📄', title:'PDF إلى نص', sub:'استخرج النصوص من ملف PDF',
+    render(id) {
+      return `
+        <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')">
+          <div class="dz-icon">📄</div>
+          <p>اسحب الملف هنا أو <strong>اضغط للاختيار</strong></p>
+        </div>
+        <input type="file" id="fi-${id}" class="file-input" accept=".pdf">
+        <div class="file-list" id="fl-${id}"></div>
+        <div class="progress-wrap" id="pw-${id}">
+          <div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div>
+          <div class="progress-text" id="pt-${id}">جاري الاستخراج...</div>
+        </div>
+        <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p>تم استخراج النص!</p></div>
+        <button class="btn" id="btn-${id}" onclick="doPdf2Txt('${id}')">📄 استخراج النص</button>`;
+    }
+  },
+  img2pdf: {
+    icon:'📸', title:'صور إلى PDF', sub:'حوّل صور JPG/PNG إلى ملف PDF واحد',
+    render(id) {
+      return `
+        <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')">
+          <div class="dz-icon">🖼️</div>
+          <p>اسحب الصور هنا أو <strong>اضغط للاختيار</strong><br>
+          <span style="font-size:11px">JPG, PNG, WebP — يمكن اختيار عدة صور</span></p>
+        </div>
+        <input type="file" id="fi-${id}" class="file-input" multiple accept=".jpg,.jpeg,.png,.webp">
+        <div class="file-list" id="fl-${id}"></div>
+        <div class="progress-wrap" id="pw-${id}">
+          <div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div>
+          <div class="progress-text" id="pt-${id}">جاري التحويل...</div>
+        </div>
+        <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p>تم إنشاء ملف PDF!</p></div>
+        <button class="btn" id="btn-${id}" onclick="doImg2Pdf('${id}')">📸 تحويل إلى PDF</button>`;
+    }
+  },
+};
+
+// ── State ──────────────────────────────────────────────
+let activeFiles = {};
+
+function triggerFile(id) { document.getElementById('fi-' + id)?.click(); }
+
+function openTool(name) {
+  const t = TOOLS[name];
+  if (!t) return;
+  const id = name + '_' + Date.now();
+  activeFiles[id] = [];
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-icon">${t.icon}</div>
+    <h2>${t.title}</h2>
+    <p class="modal-sub">${t.sub}</p>
+    ${t.render(id)}`;
+  document.getElementById('overlay').classList.add('active');
+  setupDrop(id, name);
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('active');
+  activeFiles = {};
+}
+function closeIfOutside(e) {
+  if (e.target.id === 'overlay') closeModal();
+}
+
+function setupDrop(id, name) {
+  const multi = ['merge','img2pdf'].includes(name);
+  const dz = document.getElementById('dz-' + id);
+  const fi = document.getElementById('fi-' + id);
+  if (!dz || !fi) return;
+  fi.addEventListener('change', e => addFiles(id, Array.from(e.target.files), multi));
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('drag-over');
+    addFiles(id, Array.from(e.dataTransfer.files), multi);
+  });
+}
+
+function addFiles(id, files, multi) {
+  if (!multi) activeFiles[id] = [];
+  files.forEach(f => { if (!activeFiles[id].find(x => x.name===f.name)) activeFiles[id].push(f); });
+  renderFL(id);
+}
+function removeFile(id, i) { activeFiles[id].splice(i,1); renderFL(id); }
+function renderFL(id) {
+  const el = document.getElementById('fl-'+id);
+  if (!el) return;
+  el.innerHTML = (activeFiles[id]||[]).map((f,i) => `
+    <div class="file-item">
+      <span>📄</span>
+      <span class="fname">${f.name}</span>
+      <span class="fsize">${(f.size/1024).toFixed(0)} KB</span>
+      <button class="fdel" onclick="removeFile('${id}',${i})">🗑</button>
+    </div>`).join('');
+}
+
+const getFiles = id => activeFiles[id] || [];
+const readFile = f => new Promise((res,rej) => {
+  const r = new FileReader();
+  r.onload = e => res(new Uint8Array(e.target.result));
+  r.onerror = rej; r.readAsArrayBuffer(f);
+});
+function showProg(id, pct, msg) {
+  document.getElementById('pw-'+id).style.display='block';
+  document.getElementById('pf-'+id).style.width=pct+'%';
+  document.getElementById('pt-'+id).textContent=msg;
+}
+function showDone(id) {
+  document.getElementById('rb-'+id).style.display='block';
+  document.getElementById('pw-'+id).style.display='none';
+  document.getElementById('btn-'+id).disabled=false;
+}
+function setBtn(id, d) { const b=document.getElementById('btn-'+id); if(b) b.disabled=d; }
+
+// ── Actions ──────────────────────────────────────────────
+async function doMerge(id) {
+  const files=getFiles(id); if(files.length<2) return alert('اختر ملفين على الأقل');
+  setBtn(id,true);
+  try {
+    const out=await PDFDocument.create();
+    for(let i=0;i<files.length;i++){
+      showProg(id,(i/files.length)*88,`دمج: ${files[i].name}`);
+      const doc=await PDFDocument.load(await readFile(files[i]),{ignoreEncryption:true});
+      const pp=await out.copyPages(doc,doc.getPageIndices());
+      pp.forEach(p=>out.addPage(p));
+    }
+    showProg(id,95,'حفظ...');
+    download(await out.save(),'merged.pdf','application/pdf');
+    showDone(id);
+  } catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
+
+async function doSplit(id) {
+  const files=getFiles(id); if(!files.length) return alert('اختر ملفاً');
+  setBtn(id,true);
+  try {
+    showProg(id,20,'قراءة الملف...');
+    const src=await PDFDocument.load(await readFile(files[0]),{ignoreEncryption:true});
+    const total=src.getPageCount();
+    const pages=parsePages(document.getElementById('pages-'+id).value,total);
+    if(!pages.length) return alert('تحقق من أرقام الصفحات');
+    showProg(id,60,'استخراج الصفحات...');
+    const out=await PDFDocument.create();
+    const pp=await out.copyPages(src,pages.map(p=>p-1));
+    pp.forEach(p=>out.addPage(p));
+    download(await out.save(),'split.pdf','application/pdf');
+    showDone(id);
+  } catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
+
+async function doRotate(id) {
+  const files=getFiles(id); if(!files.length) return alert('اختر ملفاً');
+  setBtn(id,true);
+  try {
+    showProg(id,30,'تدوير الصفحات...');
+    const angle=parseInt(document.getElementById('rot-'+id).value);
+    const doc=await PDFDocument.load(await readFile(files[0]),{ignoreEncryption:true});
+    doc.getPages().forEach(p=>p.setRotation(degrees((p.getRotation().angle+angle+360)%360)));
+    download(await doc.save(),'rotated.pdf','application/pdf');
+    showDone(id);
+  } catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
+
+async function doCompress(id) {
+  const files=getFiles(id); if(!files.length) return alert('اختر ملفاً');
+  setBtn(id,true);
+  try {
+    showProg(id,40,'ضغط الملف...');
+    const bytes=await readFile(files[0]);
+    const doc=await PDFDocument.load(bytes,{ignoreEncryption:true});
+    const out=await doc.save({useObjectStreams:true});
+    const saved=Math.round((1-out.length/bytes.length)*100);
+    document.getElementById('compress-result-'+id).textContent=
+      `تم! ${(bytes.length/1024).toFixed(0)}KB → ${(out.length/1024).toFixed(0)}KB (وفّرنا ${Math.max(0,saved)}%)`;
+    download(out,'compressed.pdf','application/pdf');
+    showDone(id);
+  } catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
+
+async function doWatermark(id) {
+  const files=getFiles(id); if(!files.length) return alert('اختر ملفاً');
+  const text=document.getElementById('wm-text-'+id).value||'DRAFT';
+  const size=parseFloat(document.getElementById('wm-size-'+id).value)||60;
+  const opacity=parseFloat(document.getElementById('wm-opacity-'+id).value)||0.15;
+  setBtn(id,true);
+  try {
+    const doc=await PDFDocument.load(await readFile(files[0]),{ignoreEncryption:true});
+    const font=await doc.embedFont(StandardFonts.HelveticaBold);
+    const pages=doc.getPages();
+    for(let i=0;i<pages.length;i++){
+      showProg(id,10+(i/pages.length)*80,`صفحة ${i+1}/${pages.length}...`);
+      const p=pages[i]; const {width,height}=p.getSize();
+      const tw=font.widthOfTextAtSize(text,size);
+      p.drawText(text,{x:(width-tw)/2,y:(height-size)/2,size,font,opacity,color:rgb(0.7,0.1,0.1),rotate:degrees(45)});
+    }
+    download(await doc.save(),'watermarked.pdf','application/pdf');
+    showDone(id);
+  } catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
+
+async function doPageNumbers(id) {
+  const files=getFiles(id); if(!files.length) return alert('اختر ملفاً');
+  const start=parseInt(document.getElementById('pn-start-'+id).value)||1;
+  const pos=document.getElementById('pn-pos-'+id).value;
+  setBtn(id,true);
+  try {
+    const doc=await PDFDocument.load(await readFile(files[0]),{ignoreEncryption:true});
+    const font=await doc.embedFont(StandardFonts.Helvetica);
+    const pages=doc.getPages();
+    for(let i=0;i<pages.length;i++){
+      showProg(id,10+(i/pages.length)*80,`ترقيم صفحة ${i+1}...`);
+      const p=pages[i]; const {width}=p.getSize();
+      const num=String(start+i); const fs=12;
+      const tw=font.widthOfTextAtSize(num,fs);
+      let x=(width-tw)/2;
+      if(pos==='bottom-right') x=width-tw-30;
+      if(pos==='bottom-left') x=30;
+      p.drawText(num,{x,y:20,size:fs,font,color:rgb(0.3,0.3,0.3)});
+    }
+    download(await doc.save(),'numbered.pdf','application/pdf');
+    showDone(id);
+  } catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
+
+async function doPdf2Img(id) {
+  const files=getFiles(id); if(!files.length) return alert('اختر ملفاً');
+  const scale=parseFloat(document.getElementById('dpi-'+id).value)||2;
+  setBtn(id,true);
+  try {
+    showProg(id,10,'تحميل المكتبة...');
+    if(!window.pdfjsLib) {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+      pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+    const pdf=await pdfjsLib.getDocument(await files[0].arrayBuffer()).promise;
+    document.getElementById('img-result-'+id).textContent=`تم تحويل ${pdf.numPages} صفحة إلى صور PNG!`;
+    for(let i=1;i<=pdf.numPages;i++){
+      showProg(id,15+(i/pdf.numPages)*80,`تحويل صفحة ${i}/${pdf.numPages}...`);
+      const page=await pdf.getPage(i);
+      const vp=page.getViewport({scale});
+      const canvas=document.createElement('canvas');
+      canvas.width=vp.width; canvas.height=vp.height;
+      await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;
+      await new Promise(r=>canvas.toBlob(b=>{download(b,`page_${i}.png`,'image/png');setTimeout(r,200)},'image/png'));
+    }
+    showDone(id);
+  } catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
+
+async function doPdf2Txt(id) {
+  const files=getFiles(id); if(!files.length) return alert('اختر ملفاً');
+  setBtn(id,true);
+  try {
+    showProg(id,10,'تحميل المكتبة...');
+    if(!window.pdfjsLib) {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+      pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+    const pdf=await pdfjsLib.getDocument(await files[0].arrayBuffer()).promise;
+    let txt='';
+    for(let i=1;i<=pdf.numPages;i++){
+      showProg(id,15+(i/pdf.numPages)*80,`صفحة ${i}/${pdf.numPages}...`);
+      const page=await pdf.getPage(i);
+      const tc=await page.getTextContent();
+      txt+=`\n\n--- صفحة ${i} ---\n`+tc.items.map(x=>x.str).join(' ');
+    }
+    download(new Blob([txt],{type:'text/plain;charset=utf-8'}),'text.txt','text/plain');
+    showDone(id);
+  } catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
+
+async function doImg2Pdf(id) {
+  const files=getFiles(id); if(!files.length) return alert('اختر صورة واحدة على الأقل');
+  setBtn(id,true);
+  try {
+    const doc=await PDFDocument.create();
+    for(let i=0;i<files.length;i++){
+      showProg(id,(i/files.length)*90,`إضافة صورة ${i+1}/${files.length}...`);
+      const bytes=await readFile(files[i]);
+      const ext=files[i].name.split('.').pop().toLowerCase();
+      const img=ext==='png'?await doc.embedPng(bytes):await doc.embedJpg(bytes);
+      const page=doc.addPage([img.width,img.height]);
+      page.drawImage(img,{x:0,y:0,width:img.width,height:img.height});
+    }
+    download(await doc.save(),'images.pdf','application/pdf');
+    showDone(id);
+  } catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
+
+function parsePages(str,total){
+  const s=new Set();
+  str.split(',').forEach(p=>{
+    const m=p.trim().match(/^(\d+)(?:-(\d+))?$/);
+    if(!m) return;
+    const a=+m[1],b=m[2]?+m[2]:a;
+    for(let i=a;i<=Math.min(b,total);i++) s.add(i);
+  });
+  return [...s].sort((a,b)=>a-b);
+}
+
+function loadScript(src){
+  return new Promise((res,rej)=>{
+    if(document.querySelector(`script[src="${src}"]`)) return res();
+    const s=document.createElement('script');
+    s.src=src; s.onload=res; s.onerror=rej;
+    document.head.appendChild(s);
+  });
+}
+
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+</script>
+</body>
+</html>
