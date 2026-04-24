@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0d0d1a"/>
+  <rect x="0" y="0" width="1200" height="630" fill="url(#bg)"/>
+  <defs>
+    <radialGradient id="bg" cx="30%" cy="40%">
+      <stop offset="0%" stop-color="#1a1a35"/>
+      <stop offset="100%" stop-color="#0d0d1a"/>
+    </radialGradient>
+  </defs>
+  <!-- Logo -->
+  <rect x="80" y="220" width="90" height="90" rx="20" fill="#e63946"/>
+  <text x="125" y="285" font-family="Arial" font-size="52" font-weight="bold" fill="white" text-anchor="middle">E</text>
+  <!-- Title -->
+  <text x="200" y="275" font-family="Arial" font-size="72" font-weight="bold" fill="white">Easy<tspan fill="#e63946">PDF</tspan></text>
+  <!-- Subtitle -->
+  <text x="80" y="340" font-family="Arial" font-size="30" fill="#7a8499">أدوات PDF مجانية · دمج · تقسيم · ضغط · تحويل</text>
+  <!-- Features -->
+  <text x="80" y="420" font-family="Arial" font-size="24" fill="#06d6a0">✓ مجاني 100%</text>
+  <text x="280" y="420" font-family="Arial" font-size="24" fill="#06d6a0">✓ بدون رفع ملفات</text>
+  <text x="540" y="420" font-family="Arial" font-size="24" fill="#06d6a0">✓ يعمل في المتصفح</text>
+  <!-- URL -->
+  <text x="80" y="560" font-family="Arial" font-size="22" fill="#7a8499">saleenm.github.io/easypdf</text>
+</svg>
