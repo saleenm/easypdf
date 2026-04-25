@@ -415,6 +415,21 @@
   .footer-links a { color:var(--muted); text-decoration:none; transition:color 0.2s; }
   .footer-links a:hover { color:var(--primary); }
 
+  /* ── Pro Key Section ── */
+  .pro-key-section { margin-top:16px; padding-top:16px; border-top:1px solid var(--border); text-align:center; }
+  .pro-key-section p { font-size:12px; color:var(--muted); margin-bottom:8px; }
+  .pro-key-row { display:flex; gap:8px; }
+  .pro-key-row input { flex:1; padding:8px 12px; border:1px solid var(--border); border-radius:8px; background:var(--card); color:var(--text); font-family:inherit; font-size:13px; text-align:center; letter-spacing:2px; }
+  .pro-key-row button { padding:8px 16px; background:linear-gradient(135deg,#ffd60a,#fb8500); color:#000; border:none; border-radius:8px; font-weight:700; cursor:pointer; font-size:13px; white-space:nowrap; }
+  .pro-unlocked-badge { background:rgba(6,214,160,0.12); border:1px solid rgba(6,214,160,0.3); border-radius:10px; padding:10px 16px; text-align:center; color:var(--success); font-weight:700; font-size:14px; margin-top:12px; display:none; }
+
+  /* ── Reorder Grid ── */
+  .reorder-grid { display:none; grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); gap:10px; margin:12px 0; max-height:320px; overflow-y:auto; padding:4px; }
+  .reorder-thumb { background:var(--card); border:2px solid var(--border); border-radius:8px; padding:6px; cursor:grab; text-align:center; transition:border-color 0.2s; user-select:none; }
+  .reorder-thumb canvas { width:100%; height:auto; border-radius:4px; display:block; pointer-events:none; }
+  .reorder-thumb .rp-num { font-size:11px; color:var(--muted); font-weight:700; display:block; margin-bottom:4px; }
+  .reorder-thumb:active { cursor:grabbing; }
+
   ::-webkit-scrollbar { width:5px; }
   ::-webkit-scrollbar-track { background:transparent; }
   ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
@@ -552,7 +567,7 @@
       <span class="tool-icon">📸</span><div class="tool-name">صور إلى PDF</div>
       <div class="tool-desc">حوّل JPG/PNG إلى PDF</div><span class="tool-tag">IMG→PDF</span>
     </div>
-    <div class="tool-card" style="--accent:#ffd60a" onclick="openPro()">
+    <div class="tool-card" style="--accent:#ffd60a" onclick="openProTool('pdf2word')">
       <div class="pro-tag">PRO</div>
       <span class="tool-icon">📝</span><div class="tool-name">PDF إلى Word</div>
       <div class="tool-desc">تحويل كامل مع حفظ التنسيق</div><span class="tool-tag">PDF→WORD</span>
@@ -574,17 +589,17 @@
     <div class="section-line"></div>
   </div>
   <div class="tools-grid">
-    <div class="tool-card" style="--accent:#ffd60a" onclick="openPro()">
+    <div class="tool-card" style="--accent:#ffd60a" onclick="openProTool('ocr')">
       <div class="pro-tag">PRO</div>
       <span class="tool-icon">🔍</span><div class="tool-name">OCR — استخراج نص</div>
       <div class="tool-desc">استخرج النص من PDF ممسوح ضوئياً</div><span class="tool-tag">OCR</span>
     </div>
-    <div class="tool-card" style="--accent:#ffd60a" onclick="openPro()">
+    <div class="tool-card" style="--accent:#ffd60a" onclick="openProTool('sign')">
       <div class="pro-tag">PRO</div>
       <span class="tool-icon">✍️</span><div class="tool-name">توقيع PDF</div>
       <div class="tool-desc">أضف توقيعك الرقمي للملف</div><span class="tool-tag">SIGN</span>
     </div>
-    <div class="tool-card" style="--accent:#ffd60a" onclick="openPro()">
+    <div class="tool-card" style="--accent:#ffd60a" onclick="openProTool('unlock')">
       <div class="pro-tag">PRO</div>
       <span class="tool-icon">🔓</span><div class="tool-name">فك تشفير PDF</div>
       <div class="tool-desc">أزل كلمة المرور من الملف</div><span class="tool-tag">UNLOCK</span>
@@ -594,12 +609,12 @@
       <span class="tool-icon">✂️</span><div class="tool-name">قص الصفحات</div>
       <div class="tool-desc">قص وتعديل حواف الصفحات</div><span class="tool-tag">CROP</span>
     </div>
-    <div class="tool-card" style="--accent:#ffd60a" onclick="openPro()">
+    <div class="tool-card" style="--accent:#ffd60a" onclick="openProTool('extractimg')">
       <div class="pro-tag">PRO</div>
       <span class="tool-icon">🖼️</span><div class="tool-name">استخراج الصور</div>
       <div class="tool-desc">استخرج جميع الصور من الملف</div><span class="tool-tag">EXTRACT IMG</span>
     </div>
-    <div class="tool-card" style="--accent:#ffd60a" onclick="openPro()">
+    <div class="tool-card" style="--accent:#ffd60a" onclick="openProTool('reorder')">
       <div class="pro-tag">PRO</div>
       <span class="tool-icon">🔁</span><div class="tool-name">إعادة ترتيب الصفحات</div>
       <div class="tool-desc">رتّب الصفحات بالسحب والإفلات</div><span class="tool-tag">REORDER</span>
@@ -662,6 +677,14 @@
     </div>
     <button class="btn-buy" onclick="window.open('https://hmoode02.gumroad.com/l/nyzhyh','_blank')">🚀 ابدأ الآن — 9$ / شهر</button>
     <div class="pro-note">✓ ضمان استرداد 7 أيام · ✓ إلغاء في أي وقت</div>
+    <div class="pro-key-section">
+      <p>اشتركت مسبقاً؟ أدخل مفتاح الترخيص:</p>
+      <div class="pro-key-row">
+        <input type="text" id="pro-key-input" placeholder="EASYPDF-XXXX-XXXX">
+        <button onclick="activateProKey()">تفعيل</button>
+      </div>
+    </div>
+    <div class="pro-unlocked-badge" id="pro-unlocked-badge">✅ Pro مفعّل — استمتع بجميع الأدوات!</div>
   </div>
 </div>
 
@@ -834,6 +857,68 @@ const TOOLS = {
     <div class="progress-wrap" id="pw-${id}"><div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div><div class="progress-text" id="pt-${id}">جاري التحويل...</div></div>
     <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p>تم إنشاء ملف PDF!</p></div>
     <button class="btn" id="btn-${id}" onclick="doImg2Pdf('${id}')">📸 تحويل إلى PDF</button>`;}},
+
+  // ── Pro Tools ─────────────────────────────────────────
+  unlock:{icon:'🔓',title:'فك تشفير PDF',sub:'أزل كلمة المرور من ملف PDF',render(id){return`
+    <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')"><div class="dz-icon">🔒</div><p>اسحب الملف هنا أو <strong>اضغط للاختيار</strong></p></div>
+    <input type="file" id="fi-${id}" class="file-input" accept=".pdf">
+    <div class="file-list" id="fl-${id}"></div>
+    <div class="control-group"><label>كلمة المرور</label><input type="password" id="upwd-${id}" placeholder="أدخل كلمة المرور (اتركه فارغاً إن لم توجد)"></div>
+    <div class="progress-wrap" id="pw-${id}"><div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div><div class="progress-text" id="pt-${id}">جاري الفك...</div></div>
+    <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p>تمت إزالة كلمة المرور!</p></div>
+    <button class="btn" id="btn-${id}" onclick="doUnlock('${id}')">🔓 فك التشفير</button>`;}},
+
+  sign:{icon:'✍️',title:'توقيع PDF',sub:'ارسم توقيعك وأضفه للملف',render(id){return`
+    <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')"><div class="dz-icon">📄</div><p>اسحب الملف هنا أو <strong>اضغط للاختيار</strong></p></div>
+    <input type="file" id="fi-${id}" class="file-input" accept=".pdf">
+    <div class="file-list" id="fl-${id}"></div>
+    <div class="control-group"><label>ارسم توقيعك أدناه</label>
+      <canvas id="sig-canvas-${id}" width="500" height="120" style="border:2px dashed #555;border-radius:8px;background:#111;cursor:crosshair;width:100%;display:block;touch-action:none"></canvas>
+      <button onclick="clearSig('${id}')" style="margin-top:6px;padding:4px 12px;background:#333;color:#aaa;border:none;border-radius:6px;cursor:pointer;font-size:12px">مسح</button>
+    </div>
+    <div class="row-2">
+      <div class="control-group"><label>الصفحة</label><input type="number" id="sig-page-${id}" value="1" min="1"></div>
+      <div class="control-group"><label>حجم التوقيع (px)</label><input type="number" id="sig-size-${id}" value="80" min="20" max="300"></div>
+    </div>
+    <div class="progress-wrap" id="pw-${id}"><div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div><div class="progress-text" id="pt-${id}">جاري الإضافة...</div></div>
+    <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p>تمت إضافة التوقيع!</p></div>
+    <button class="btn" id="btn-${id}" onclick="doSign('${id}')">✍️ إضافة التوقيع</button>`;}},
+
+  ocr:{icon:'🔍',title:'OCR — استخراج نص',sub:'استخرج النص من PDF ممسوح ضوئياً (Tesseract)',render(id){return`
+    <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')"><div class="dz-icon">🔍</div><p>اسحب الملف هنا أو <strong>اضغط للاختيار</strong></p></div>
+    <input type="file" id="fi-${id}" class="file-input" accept=".pdf">
+    <div class="file-list" id="fl-${id}"></div>
+    <div class="control-group"><label>اللغة</label><select id="ocr-lang-${id}"><option value="ara">عربي</option><option value="eng">إنجليزي</option><option value="ara+eng">عربي + إنجليزي</option></select></div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">⚡ يستغرق التحليل بضع دقائق حسب عدد الصفحات</div>
+    <div class="progress-wrap" id="pw-${id}"><div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div><div class="progress-text" id="pt-${id}">جاري التحليل...</div></div>
+    <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p>تم استخراج النص!</p></div>
+    <button class="btn" id="btn-${id}" onclick="doOCR('${id}')">🔍 استخراج بـ OCR</button>`;}},
+
+  extractimg:{icon:'🖼️',title:'استخراج الصور',sub:'استخرج كل صفحة كصورة PNG عالية الجودة',render(id){return`
+    <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')"><div class="dz-icon">🖼️</div><p>اسحب الملف هنا أو <strong>اضغط للاختيار</strong></p></div>
+    <input type="file" id="fi-${id}" class="file-input" accept=".pdf">
+    <div class="file-list" id="fl-${id}"></div>
+    <div class="control-group"><label>الجودة</label><select id="ext-dpi-${id}"><option value="2" selected>عالية (144 DPI)</option><option value="3">ممتازة (216 DPI)</option><option value="4">فائقة (288 DPI)</option></select></div>
+    <div class="progress-wrap" id="pw-${id}"><div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div><div class="progress-text" id="pt-${id}">جاري الاستخراج...</div></div>
+    <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p id="ext-result-${id}">تم الاستخراج!</p></div>
+    <button class="btn" id="btn-${id}" onclick="doExtractImg('${id}')">🖼️ استخراج الصور</button>`;}},
+
+  reorder:{icon:'🔁',title:'إعادة ترتيب الصفحات',sub:'رتّب الصفحات بالسحب والإفلات',render(id){return`
+    <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')"><div class="dz-icon">📄</div><p>اسحب الملف هنا أو <strong>اضغط للاختيار</strong></p></div>
+    <input type="file" id="fi-${id}" class="file-input" accept=".pdf">
+    <div class="file-list" id="fl-${id}"></div>
+    <div id="reorder-thumbs-${id}" class="reorder-grid"></div>
+    <div class="progress-wrap" id="pw-${id}"><div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div><div class="progress-text" id="pt-${id}">جاري المعالجة...</div></div>
+    <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p>تم الحفظ بالترتيب الجديد!</p></div>
+    <button class="btn" id="btn-${id}" onclick="loadReorderThumbs('${id}')">🔁 تحميل الصفحات للترتيب</button>`;}},
+
+  pdf2word:{icon:'📝',title:'PDF إلى Word',sub:'حوّل النصوص من PDF إلى ملف Word قابل للتعديل',render(id){return`
+    <div class="drop-zone" id="dz-${id}" onclick="triggerFile('${id}')"><div class="dz-icon">📝</div><p>اسحب الملف هنا أو <strong>اضغط للاختيار</strong></p></div>
+    <input type="file" id="fi-${id}" class="file-input" accept=".pdf">
+    <div class="file-list" id="fl-${id}"></div>
+    <div class="progress-wrap" id="pw-${id}"><div class="progress-bar"><div class="progress-fill" id="pf-${id}"></div></div><div class="progress-text" id="pt-${id}">جاري التحويل...</div></div>
+    <div class="result-box" id="rb-${id}"><div class="ri">✅</div><p>تم التحويل! افتح الملف في Word</p></div>
+    <button class="btn" id="btn-${id}" onclick="doPdf2Word('${id}')">📝 تحويل إلى Word</button>`;}},
 };
 
 let activeFiles={};
@@ -844,6 +929,7 @@ function openTool(name){
   document.getElementById('modal-content').innerHTML=`<div class="modal-icon">${t.icon}</div><h2>${t.title}</h2><p class="modal-sub">${t.sub}</p>${t.render(id)}`;
   document.getElementById('overlay').classList.add('active');
   setupDrop(id,name);
+  if(name==='sign') setTimeout(()=>setupSignatureCanvas(id),80);
 }
 function closeModal(){document.getElementById('overlay').classList.remove('active');activeFiles={};}
 function closeIfOutside(e){if(e.target.id==='overlay')closeModal();}
@@ -911,6 +997,210 @@ async function doImg2Pdf(id){
 function parsePages(str,total){const s=new Set();str.split(',').forEach(p=>{const m=p.trim().match(/^(\d+)(?:-(\d+))?$/);if(!m)return;const a=+m[1],b=m[2]?+m[2]:a;for(let i=a;i<=Math.min(b,total);i++)s.add(i);});return[...s].sort((a,b)=>a-b);}
 function loadScript(src){return new Promise((res,rej)=>{if(document.querySelector(`script[src="${src}"]`))return res();const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s);});}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closePro();}});
+
+// ── Pro Unlock System ────────────────────────────────────
+function isProUnlocked(){return localStorage.getItem('epro')==='yes';}
+function openProTool(name){if(isProUnlocked())openTool(name);else openPro();}
+function openPro(){
+  document.getElementById('pro-overlay').classList.add('active');
+  const badge=document.getElementById('pro-unlocked-badge');
+  if(badge) badge.style.display=isProUnlocked()?'block':'none';
+}
+function activateProKey(){
+  const raw=document.getElementById('pro-key-input').value;
+  const k=raw.toUpperCase().replace(/[-\s]/g,'');
+  const valid=['EASYPDF2025PRO','EASYPDFPRO2025','EPRO2025'].includes(k);
+  if(valid){
+    localStorage.setItem('epro','yes');
+    const badge=document.getElementById('pro-unlocked-badge');
+    if(badge) badge.style.display='block';
+    setTimeout(()=>{closePro();alert('✅ تم تفعيل Pro! يمكنك الآن استخدام جميع الأدوات.');},300);
+  } else {
+    alert('❌ المفتاح غير صحيح. تحقق من الكود المرسل إليك عبر Gumroad.');
+  }
+}
+
+// ── Pro Tool: Unlock PDF ─────────────────────────────────
+async function doUnlock(id){
+  const files=getFiles(id);if(!files.length)return alert('اختر ملفاً');
+  const pwd=document.getElementById('upwd-'+id).value;
+  setBtn(id,true);
+  try{
+    showProg(id,40,'فك التشفير...');
+    const doc=await PDFDocument.load(await readFile(files[0]),{password:pwd,ignoreEncryption:false});
+    showProg(id,80,'حفظ...');
+    download(await doc.save(),'unlocked.pdf','application/pdf');
+    showDone(id);
+  }catch(e){alert('خطأ: '+e.message+'\nتأكد من كلمة المرور');setBtn(id,false);}
+}
+
+// ── Pro Tool: Signature ──────────────────────────────────
+function setupSignatureCanvas(id){
+  const c=document.getElementById('sig-canvas-'+id);if(!c)return;
+  const ctx=c.getContext('2d');
+  ctx.strokeStyle='#e63946';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  let drawing=false;
+  const pos=e=>{const r=c.getBoundingClientRect();const cx=e.touches?e.touches[0].clientX:e.clientX;const cy=e.touches?e.touches[0].clientY:e.clientY;return{x:(cx-r.left)*(c.width/r.width),y:(cy-r.top)*(c.height/r.height)};};
+  c.onmousedown=e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);};
+  c.onmousemove=e=>{if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();};
+  c.onmouseup=c.onmouseleave=()=>drawing=false;
+  c.ontouchstart=e=>{e.preventDefault();drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);};
+  c.ontouchmove=e=>{e.preventDefault();if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();};
+  c.ontouchend=()=>drawing=false;
+}
+function clearSig(id){const c=document.getElementById('sig-canvas-'+id);if(c)c.getContext('2d').clearRect(0,0,c.width,c.height);}
+async function doSign(id){
+  const files=getFiles(id);if(!files.length)return alert('اختر ملفاً');
+  const canvas=document.getElementById('sig-canvas-'+id);
+  const pageNum=parseInt(document.getElementById('sig-page-'+id).value)||1;
+  const sigSize=parseInt(document.getElementById('sig-size-'+id).value)||80;
+  setBtn(id,true);
+  try{
+    showProg(id,30,'قراءة الملف...');
+    const doc=await PDFDocument.load(await readFile(files[0]),{ignoreEncryption:true});
+    const pages=doc.getPages();
+    if(pageNum>pages.length)return alert('رقم الصفحة أكبر من عدد الصفحات ('+pages.length+')');
+    showProg(id,60,'تضمين التوقيع...');
+    const dataUrl=canvas.toDataURL('image/png');
+    const pngBytes=Uint8Array.from(atob(dataUrl.split(',')[1]),c=>c.charCodeAt(0));
+    const img=await doc.embedPng(pngBytes);
+    const page=pages[pageNum-1];
+    const{width}=page.getSize();
+    const ratio=canvas.width/canvas.height;
+    const w=sigSize*ratio,h=sigSize;
+    page.drawImage(img,{x:width/2-w/2,y:30,width:w,height:h});
+    showProg(id,90,'حفظ...');
+    download(await doc.save(),'signed.pdf','application/pdf');
+    showDone(id);
+  }catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
+
+// ── Pro Tool: OCR ────────────────────────────────────────
+async function doOCR(id){
+  const files=getFiles(id);if(!files.length)return alert('اختر ملفاً');
+  const lang=document.getElementById('ocr-lang-'+id).value;
+  setBtn(id,true);
+  try{
+    showProg(id,5,'تحميل pdf.js...');
+    if(!window.pdfjsLib){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}
+    showProg(id,10,'تحميل Tesseract...');
+    if(!window.Tesseract){await loadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js');}
+    const pdf=await pdfjsLib.getDocument(await files[0].arrayBuffer()).promise;
+    let result='';
+    for(let i=1;i<=pdf.numPages;i++){
+      showProg(id,12+(i/pdf.numPages)*83,`OCR صفحة ${i}/${pdf.numPages}...`);
+      const page=await pdf.getPage(i);
+      const vp=page.getViewport({scale:2});
+      const canvas=document.createElement('canvas');
+      canvas.width=vp.width;canvas.height=vp.height;
+      await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;
+      const{data:{text}}=await Tesseract.recognize(canvas,lang,{logger:m=>{if(m.status==='recognizing text')showProg(id,12+(i/pdf.numPages)*83,`OCR صفحة ${i}/${pdf.numPages}: ${Math.round(m.progress*100)}%`);}});
+      result+=`\n--- صفحة ${i} ---\n${text}\n`;
+    }
+    download(new Blob([result],{type:'text/plain;charset=utf-8'}),'ocr_result.txt','text/plain');
+    showDone(id);
+  }catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
+
+// ── Pro Tool: Extract Images ─────────────────────────────
+async function doExtractImg(id){
+  const files=getFiles(id);if(!files.length)return alert('اختر ملفاً');
+  const scale=parseFloat(document.getElementById('ext-dpi-'+id).value)||2;
+  setBtn(id,true);
+  try{
+    showProg(id,5,'تحميل...');
+    if(!window.pdfjsLib){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}
+    const pdf=await pdfjsLib.getDocument(await files[0].arrayBuffer()).promise;
+    document.getElementById('ext-result-'+id).textContent=`تم استخراج ${pdf.numPages} صورة!`;
+    for(let i=1;i<=pdf.numPages;i++){
+      showProg(id,10+(i/pdf.numPages)*85,`صفحة ${i}/${pdf.numPages}...`);
+      const page=await pdf.getPage(i);
+      const vp=page.getViewport({scale});
+      const canvas=document.createElement('canvas');
+      canvas.width=vp.width;canvas.height=vp.height;
+      await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;
+      await new Promise(r=>canvas.toBlob(b=>{download(b,`page_${i}.png`,'image/png');setTimeout(r,300)},'image/png'));
+    }
+    showDone(id);
+  }catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
+
+// ── Pro Tool: Reorder Pages ──────────────────────────────
+async function loadReorderThumbs(id){
+  const files=getFiles(id);if(!files.length)return alert('اختر ملفاً');
+  setBtn(id,true);
+  try{
+    showProg(id,5,'تحميل...');
+    if(!window.pdfjsLib){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}
+    const pdf=await pdfjsLib.getDocument(await files[0].arrayBuffer()).promise;
+    window['_rfile_'+id]=files[0];
+    const grid=document.getElementById('reorder-thumbs-'+id);
+    grid.style.display='grid';grid.innerHTML='';
+    for(let i=1;i<=pdf.numPages;i++){
+      showProg(id,10+(i/pdf.numPages)*85,`تحميل صفحة ${i}...`);
+      const page=await pdf.getPage(i);
+      const vp=page.getViewport({scale:0.3});
+      const canvas=document.createElement('canvas');
+      canvas.width=vp.width;canvas.height=vp.height;
+      await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;
+      const div=document.createElement('div');
+      div.className='reorder-thumb';div.draggable=true;div.dataset.page=i;
+      const lbl=document.createElement('span');lbl.className='rp-num';lbl.textContent=`صفحة ${i}`;
+      div.appendChild(lbl);div.appendChild(canvas);
+      div.ondragstart=e=>{e.dataTransfer.setData('text/plain',div.dataset.page);div.style.opacity='0.4';};
+      div.ondragend=()=>{div.style.opacity='1';};
+      div.ondragover=e=>{e.preventDefault();div.style.outline='2px solid var(--primary)';};
+      div.ondragleave=()=>{div.style.outline='';};
+      div.ondrop=e=>{
+        e.preventDefault();div.style.outline='';
+        const from=grid.querySelector(`[data-page="${e.dataTransfer.getData('text/plain')}"]`);
+        if(from&&from!==div){const next=div.nextSibling;grid.insertBefore(from,next?div:null);if(next)grid.insertBefore(div,from.nextSibling);}
+      };
+      grid.appendChild(div);
+    }
+    document.getElementById('pw-'+id).style.display='none';
+    const btn=document.getElementById('btn-'+id);
+    btn.textContent='💾 حفظ بالترتيب الجديد';btn.disabled=false;btn.onclick=()=>doReorder(id);
+  }catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
+async function doReorder(id){
+  const file=window['_rfile_'+id];if(!file)return;setBtn(id,true);
+  try{
+    const grid=document.getElementById('reorder-thumbs-'+id);
+    const order=[...grid.querySelectorAll('[data-page]')].map(d=>parseInt(d.dataset.page)-1);
+    showProg(id,40,'إعادة الترتيب...');
+    const src=await PDFDocument.load(await readFile(file),{ignoreEncryption:true});
+    const out=await PDFDocument.create();
+    const pp=await out.copyPages(src,order);
+    pp.forEach(p=>out.addPage(p));
+    showProg(id,90,'حفظ...');
+    download(await out.save(),'reordered.pdf','application/pdf');
+    showDone(id);
+  }catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
+
+// ── Pro Tool: PDF to Word ────────────────────────────────
+async function doPdf2Word(id){
+  const files=getFiles(id);if(!files.length)return alert('اختر ملفاً');setBtn(id,true);
+  try{
+    showProg(id,10,'تحميل...');
+    if(!window.pdfjsLib){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}
+    const pdf=await pdfjsLib.getDocument(await files[0].arrayBuffer()).promise;
+    let html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>body{font-family:Arial,sans-serif;direction:rtl;font-size:12pt}h2{color:#333;border-bottom:1px solid #ccc;padding-bottom:4px}</style></head><body>';
+    for(let i=1;i<=pdf.numPages;i++){
+      showProg(id,15+(i/pdf.numPages)*80,`صفحة ${i}/${pdf.numPages}...`);
+      const page=await pdf.getPage(i);
+      const tc=await page.getTextContent();
+      const lines=[];let line='';
+      tc.items.forEach(item=>{line+=item.str+(item.hasEOL?'\n':' ');if(item.hasEOL){lines.push(line.trim());line='';}});
+      if(line.trim())lines.push(line.trim());
+      html+=`<h2>صفحة ${i}</h2><p>${lines.join('<br>')}</p>`;
+    }
+    html+='</body></html>';
+    download(new Blob([html],{type:'application/msword;charset=utf-8'}),files[0].name.replace('.pdf','.doc'),'application/msword');
+    showDone(id);
+  }catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+}
 </script>
 </body>
 </html>
