@@ -505,11 +505,11 @@
     <div style="display:flex;align-items:center;gap:14px;">
       <span style="font-size:32px;">⭐</span>
       <div>
-        <div style="font-size:15px;font-weight:700;color:var(--gold);">EasyPDF Pro — أدوات غير محدودة</div>
-        <div style="font-size:13px;color:var(--muted);margin-top:2px;">تحويل Word، دمج غير محدود، ضغط احترافي وأكثر</div>
+        <div id="promo-title" style="font-size:15px;font-weight:700;color:var(--gold);">EasyPDF Pro — أدوات غير محدودة</div>
+        <div id="promo-sub" style="font-size:13px;color:var(--muted);margin-top:2px;">تحويل Word، دمج غير محدود، ضغط احترافي وأكثر</div>
       </div>
     </div>
-    <button class="btn-pro" onclick="openPro()">اكتشف Pro ←</button>
+    <button id="promo-btn" class="btn-pro" onclick="openPro()">اكتشف Pro ←</button>
   </div>
 </div>
 
@@ -1243,6 +1243,9 @@ const I18N = {
     footer_note:'© 2025 EasyPDF · مجاني · بدون تسجيل · بدون حدود',
     footer_links:['الرئيسية','Pro','تواصل معنا'],
     faq_h2:'الأسئلة <span>الشائعة</span>',
+    promo_title:'EasyPDF Pro — أدوات غير محدودة',
+    promo_sub:'تحويل Word، دمج غير محدود، ضغط احترافي وأكثر',
+    promo_btn:'اكتشف Pro ←',
   },
   en: {
     dir:'ltr', lang:'en',
@@ -1264,6 +1267,9 @@ const I18N = {
     footer_note:'© 2025 EasyPDF · Free · No Registration · Unlimited',
     footer_links:['Home','Pro','Contact Us'],
     faq_h2:'Frequently Asked <span>Questions</span>',
+    promo_title:'EasyPDF Pro — Unlimited Tools',
+    promo_sub:'Word conversion, unlimited merge, pro compression & more',
+    promo_btn:'Discover Pro →',
   },
   fr: {
     dir:'ltr', lang:'fr',
@@ -1285,6 +1291,9 @@ const I18N = {
     footer_note:'© 2025 EasyPDF · Gratuit · Sans inscription · Illimité',
     footer_links:['Accueil','Pro','Nous contacter'],
     faq_h2:'Questions <span>Fréquentes</span>',
+    promo_title:'EasyPDF Pro — Outils illimités',
+    promo_sub:'Conversion Word, fusion illimitée, compression pro & plus',
+    promo_btn:'Découvrir Pro →',
   }
 };
 
@@ -1349,6 +1358,14 @@ function setLang(code) {
   document.querySelectorAll('.faq-a p').forEach((el, i) => {
     if (t.faq_a[i]) el.textContent = t.faq_a[i];
   });
+
+  // pro banner
+  const promoTitle = document.getElementById('promo-title');
+  if (promoTitle) promoTitle.textContent = t.promo_title;
+  const promoSub = document.getElementById('promo-sub');
+  if (promoSub) promoSub.textContent = t.promo_sub;
+  const promoBtn = document.getElementById('promo-btn');
+  if (promoBtn) promoBtn.textContent = t.promo_btn;
 
   // header badge
   const badge = document.querySelector('.badge-free');
