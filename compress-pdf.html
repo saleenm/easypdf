@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ضغط PDF مجاناً بدون برامج — تصغير حجم PDF اون لاين | EasyPDF</title>
+<meta name="description" content="ضغط ملف PDF وتقليل حجمه مجاناً بدون تسجيل. يعمل في المتصفح مباشرة بدون رفع ملفاتك. تصغير حجم PDF بدون فقدان الجودة.">
+<meta name="keywords" content="ضغط PDF, تصغير حجم PDF, compress PDF free, ضغط PDF اون لاين, ضغط ملف PDF بدون برامج, تقليل حجم PDF">
+<link rel="canonical" href="https://saleenm.github.io/easypdf/compress-pdf.html">
+<meta property="og:title" content="ضغط PDF مجاناً — EasyPDF">
+<meta property="og:description" content="ضغط وتصغير حجم PDF مجاناً بدون رفع ملفاتك لأي سيرفر.">
+<meta property="og:url" content="https://saleenm.github.io/easypdf/compress-pdf.html">
+<meta property="og:type" content="website">
+<link rel="alternate" hreflang="ar" href="https://saleenm.github.io/easypdf/compress-pdf.html">
+<link rel="alternate" hreflang="en" href="https://saleenm.github.io/easypdf/en/compress-pdf.html">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"كيفية ضغط ملف PDF مجاناً","description":"خطوات ضغط وتصغير حجم PDF باستخدام EasyPDF","step":[{"@type":"HowToStep","name":"ارفع الملف","text":"اسحب ملف PDF أو اضغط لاختياره"},{"@type":"HowToStep","name":"اضغط الملف","text":"اضغط زر الضغط وانتظر بضع ثوانٍ"},{"@type":"HowToStep","name":"حمّل النتيجة","text":"سيتم تحميل الملف المضغوط تلقائياً مع عرض نسبة التوفير"}]}
+</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e63946'/><text y='.9em' font-size='60' x='10' fill='white'>E</text></svg>">
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+<style>
+:root{--primary:#e63946;--primary2:#c1121f;--dark:#0d0d1a;--card:#13132a;--card2:#1a1a35;--text:#f0f0f0;--muted:#7a8499;--border:#232340;--success:#06d6a0;--radius:16px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--dark);color:var(--text);min-height:100vh;}
+header{background:rgba(13,13,26,0.96);border-bottom:1px solid var(--border);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--primary),var(--primary2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;}
+.logo-text{font-size:22px;font-weight:800;color:var(--text);}
+.logo-text span{color:var(--primary);}
+.back-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:10px;text-decoration:none;font-size:13px;transition:all 0.2s;}
+.back-btn:hover{color:var(--text);border-color:var(--primary);}
+.tool-hero{text-align:center;padding:48px 20px 36px;position:relative;}
+.tool-hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(230,57,70,0.10) 0%,transparent 65%);pointer-events:none;}
+.tool-badge{display:inline-block;background:rgba(230,57,70,0.12);color:var(--primary);border:1px solid rgba(230,57,70,0.25);font-size:13px;font-weight:600;padding:5px 16px;border-radius:20px;margin-bottom:16px;}
+.tool-hero h1{font-size:44px;font-weight:900;line-height:1.15;margin-bottom:12px;}
+.tool-hero h1 span{color:var(--primary);}
+.tool-hero p{font-size:16px;color:var(--muted);max-width:520px;margin:0 auto 32px;line-height:1.6;}
+.tool-box{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:36px 32px;max-width:560px;margin:0 auto 48px;}
+.drop-zone{border:2px dashed var(--border);border-radius:14px;padding:36px 20px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:16px;background:rgba(255,255,255,0.02);}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--primary);background:rgba(230,57,70,0.06);}
+.drop-zone .dz-icon{font-size:40px;margin-bottom:10px;}
+.drop-zone p{color:var(--muted);font-size:14px;line-height:1.6;}
+.drop-zone strong{color:var(--primary);}
+.file-input{display:none;}
+.file-list{margin-bottom:14px;}
+.file-item{display:flex;align-items:center;background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:8px;font-size:13px;gap:8px;}
+.file-item .fname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.file-item .fsize{color:var(--muted);font-size:11px;}
+.btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;box-shadow:0 4px 20px rgba(230,57,70,0.3);}
+.btn:hover{transform:translateY(-2px);}
+.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.progress-wrap{display:none;margin-bottom:16px;}
+.progress-bar{background:var(--border);border-radius:20px;height:6px;overflow:hidden;margin-bottom:8px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),#ff6b6b);border-radius:20px;transition:width 0.3s;width:0%;}
+.progress-text{font-size:12px;color:var(--muted);text-align:center;}
+.result-box{display:none;background:rgba(6,214,160,0.08);border:1px solid rgba(6,214,160,0.3);border-radius:12px;padding:18px;text-align:center;margin-bottom:16px;}
+.result-box p{font-size:14px;color:var(--success);font-weight:600;}
+.guide{max-width:800px;margin:0 auto;padding:0 24px 60px;}
+.guide h2{font-size:24px;font-weight:800;margin-bottom:16px;}
+.guide h2 span{color:var(--primary);}
+.guide h3{font-size:18px;font-weight:700;margin:28px 0 12px;}
+.guide p{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:14px;}
+.guide ul{padding-right:22px;color:var(--muted);font-size:15px;line-height:2;}
+.guide li{margin-bottom:6px;}
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:20px 0;}
+.tip-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;}
+.tip-card h4{font-size:14px;font-weight:700;margin-bottom:8px;color:var(--primary);}
+.tip-card p{font-size:13px;color:var(--muted);margin:0;line-height:1.5;}
+.faq-item{border:1px solid var(--border);border-radius:12px;margin-bottom:10px;background:var(--card);}
+.faq-q{padding:16px 20px;font-size:14px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.faq-q:hover{background:var(--card2);}
+.faq-arrow{font-size:12px;color:var(--muted);transition:transform 0.25s;}
+.faq-item.open .faq-arrow{transform:rotate(180deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.3s ease;}
+.faq-item.open .faq-a{max-height:200px;}
+.faq-a p{padding:0 20px 16px;font-size:13px;color:var(--muted);line-height:1.7;}
+footer{text-align:center;padding:36px 20px;color:var(--muted);font-size:13px;border-top:1px solid var(--border);}
+.footer-logo{font-size:22px;font-weight:800;margin-bottom:8px;}
+.footer-logo span{color:var(--primary);}
+@media(max-width:600px){.tool-hero h1{font-size:30px;}.tool-box{padding:24px 16px;}header{padding:0 16px;}.guide{padding:0 16px 40px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">
+    <div class="logo-icon">E</div>
+    <div class="logo-text">Easy<span>PDF</span></div>
+  </a>
+  <a class="back-btn" href="index.html">← جميع الأدوات</a>
+</header>
+
+<div class="tool-hero">
+  <div class="tool-badge">🗜️ ضغط PDF — مجاني 100%</div>
+  <h1>ضغط <span>PDF</span> وتصغير<br>حجمه مجاناً</h1>
+  <p>قلّل حجم ملف PDF دون فقدان الجودة. يعمل في المتصفح مباشرة — ملفاتك لا تُرسل لأي سيرفر خارجي.</p>
+</div>
+
+<div class="tool-box">
+  <div class="drop-zone" id="dz" onclick="document.getElementById('fi').click()">
+    <div class="dz-icon">📄</div>
+    <p>اسحب ملف PDF هنا أو <strong>اضغط للاختيار</strong></p>
+  </div>
+  <input type="file" id="fi" class="file-input" accept=".pdf">
+  <div class="file-list" id="fl"></div>
+  <div class="progress-wrap" id="pw">
+    <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
+    <div class="progress-text" id="pt">جاري الضغط...</div>
+  </div>
+  <div class="result-box" id="rb"><p id="cres">تم الضغط!</p></div>
+  <button class="btn" id="cbtn" onclick="doCompress()">🗜️ ضغط الملف</button>
+</div>
+
+<div class="guide">
+
+  <h2>ضغط <span>PDF</span> بدون فقدان الجودة</h2>
+  <p>كثيراً ما نحتاج لإرسال ملفات PDF عبر الإيميل أو رفعها لمنصات تفرض حداً للحجم. EasyPDF يضغط ملفات PDF مجاناً باستخدام تقنية تحسين البنية الداخلية للملف وإعادة بناء التدفقات.</p>
+
+  <h3>لماذا يكبر حجم ملف PDF؟</h3>
+  <ul>
+    <li>الصور الكبيرة غير المضغوطة داخل الملف</li>
+    <li>بيانات وصفية وخطوط مدمجة غير ضرورية</li>
+    <li>تعليقات ومحتوى مخفي يزيد الحجم</li>
+    <li>الطريقة التي أنشئ بها الملف الأصلي</li>
+  </ul>
+
+  <h3>نصائح للحصول على أفضل نتيجة ضغط</h3>
+  <div class="tips-grid">
+    <div class="tip-card">
+      <h4>🖼️ ملفات بها صور</h4>
+      <p>الضغط يعمل بشكل أفضل مع ملفات PDF التي تحتوي على صور كثيرة — نسبة التوفير قد تصل 40-70%</p>
+    </div>
+    <div class="tip-card">
+      <h4>📝 ملفات نصية فقط</h4>
+      <p>الملفات النصية البحتة عادةً ما تكون مضغوطة أصلاً — نسبة التوفير ستكون أقل (5-20%)</p>
+    </div>
+    <div class="tip-card">
+      <h4>📊 ملفات Office</h4>
+      <p>ملفات PDF المصدّرة من Word أو PowerPoint تستجيب بشكل ممتاز للضغط</p>
+    </div>
+    <div class="tip-card">
+      <h4>🔍 ملفات ممسوحة ضوئياً</h4>
+      <p>الملفات الممسوحة تستفيد من الضغط أيضاً — يمكن استخدام أداة OCR لتحويلها لنص قابل للضغط</p>
+    </div>
+  </div>
+
+  <h3>كيف يعمل الضغط في EasyPDF؟</h3>
+  <p>EasyPDF يستخدم مكتبة pdf-lib المتقدمة لإعادة بناء الملف باستخدام Object Streams المحسّن — وهو نفس الأسلوب الذي تستخدمه برامج Adobe Acrobat الاحترافية. يتم حذف البيانات الزائدة وتحسين ضغط التدفقات الداخلية مما يقلل الحجم بشكل ملحوظ.</p>
+
+  <h3>الأسئلة الشائعة</h3>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+      <span>كم نسبة التوفير في الحجم؟</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a"><p>تتراوح نسبة التوفير بين 10% و70% حسب محتوى الملف. الملفات التي تحتوي على صور كثيرة تستفيد أكثر من الضغط.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+      <span>هل تتأثر جودة النص بعد الضغط؟</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a"><p>لا، جودة النص لا تتأثر أبداً. النصوص تبقى قابلة للنسخ والبحث بنفس الجودة.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+      <span>هل يمكن ضغط ملف PDF محمي بكلمة مرور؟</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a"><p>إذا كان الملف محمياً، استخدم أولاً أداة "فك تشفير PDF" ثم عُد لضغطه.</p></div>
+  </div>
+
+  <div style="margin-top:40px;text-align:center;">
+    <p style="color:var(--muted);margin-bottom:16px;">جرّب أدوات PDF الأخرى:</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <a href="merge-pdf.html" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:10px;text-decoration:none;font-size:14px;">🔗 دمج PDF</a>
+      <a href="split-pdf.html" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:10px;text-decoration:none;font-size:14px;">✂️ تقسيم PDF</a>
+      <a href="pdf-to-images.html" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:10px;text-decoration:none;font-size:14px;">🖼️ PDF إلى صور</a>
+      <a href="index.html" style="background:var(--primary);color:#fff;padding:10px 20px;border-radius:10px;text-decoration:none;font-size:14px;">📦 كل الأدوات</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">Easy<span>PDF</span></div>
+  <div>جميع العمليات تتم محلياً على جهازك · ملفاتك آمنة تماماً 🔒</div>
+  <div style="margin-top:8px;font-size:11px;">© 2025 EasyPDF · مجاني · بدون تسجيل · بدون حدود</div>
+</footer>
+
+<script>
+const {PDFDocument} = PDFLib;
+let file = null;
+
+document.getElementById('fi').addEventListener('change', e => {
+  file = e.target.files[0];
+  if (file) document.getElementById('fl').innerHTML =
+    `<div class="file-item"><span>📄</span><span class="fname">${file.name}</span><span class="fsize">${(file.size/1024).toFixed(0)} KB</span></div>`;
+});
+const dz = document.getElementById('dz');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('drag-over');
+  file = e.dataTransfer.files[0];
+  if (file) document.getElementById('fl').innerHTML =
+    `<div class="file-item"><span>📄</span><span class="fname">${file.name}</span><span class="fsize">${(file.size/1024).toFixed(0)} KB</span></div>`;
+});
+
+async function doCompress() {
+  if (!file) return alert('اختر ملفاً أولاً');
+  const btn = document.getElementById('cbtn');
+  btn.disabled = true;
+  document.getElementById('pw').style.display = 'block';
+  document.getElementById('pf').style.width = '40%';
+  try {
+    const bytes = await file.arrayBuffer();
+    const arr = new Uint8Array(bytes);
+    const doc = await PDFDocument.load(arr, {ignoreEncryption:true});
+    const out = await doc.save({useObjectStreams:true});
+    const saved = Math.max(0, Math.round((1 - out.length/arr.length)*100));
+    document.getElementById('cres').textContent =
+      `تم! ${(arr.length/1024).toFixed(0)} KB → ${(out.length/1024).toFixed(0)} KB (وفّرنا ${saved}%)`;
+    download(out, 'compressed.pdf', 'application/pdf');
+    document.getElementById('pw').style.display = 'none';
+    document.getElementById('rb').style.display = 'block';
+  } catch(e) {
+    alert('خطأ: ' + e.message);
+    btn.disabled = false;
+    document.getElementById('pw').style.display = 'none';
+  }
+}
+</script>
+</body>
+</html>

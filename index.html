@@ -34,6 +34,12 @@
 <meta name="twitter:description" content="دمج، تقسيم، ضغط وتحويل ملفات PDF مجاناً. ملفاتك لا تغادر جهازك.">
 <meta name="twitter:image" content="https://saleenm.github.io/easypdf/og-image.png">
 
+<!-- hreflang -->
+<link rel="alternate" hreflang="ar" href="https://saleenm.github.io/easypdf/">
+<link rel="alternate" hreflang="en" href="https://saleenm.github.io/easypdf/en/">
+<link rel="alternate" hreflang="fr" href="https://saleenm.github.io/easypdf/fr/">
+<link rel="alternate" hreflang="x-default" href="https://saleenm.github.io/easypdf/">
+
 <!-- Preconnect for performance -->
 <link rel="preconnect" href="https://unpkg.com">
 <link rel="dns-prefetch" href="https://unpkg.com">
@@ -434,6 +440,12 @@
   ::-webkit-scrollbar-track { background:transparent; }
   ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
 
+  /* ── Language Switcher ── */
+  .lang-switcher { display:flex; gap:3px; background:var(--card2); border-radius:20px; padding:3px; border:1px solid var(--border); }
+  .lang-btn { background:none; border:none; color:var(--muted); padding:4px 10px; border-radius:16px; cursor:pointer; font-size:12px; font-weight:700; transition:all 0.2s; font-family:inherit; }
+  .lang-btn.active { background:var(--primary); color:#fff; }
+  .lang-btn:hover:not(.active) { color:var(--text); }
+
   @media(max-width:768px) {
     header { padding:0 16px; }
     .hero { padding:44px 16px 32px; }
@@ -457,6 +469,11 @@
     <div class="logo-text">Easy<span>PDF</span></div>
   </a>
   <div class="header-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="ar" onclick="setLang('ar')">ع</button>
+      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+    </div>
     <span class="badge-free">✓ مجاني</span>
     <button class="btn-pro-header" onclick="openPro()">⭐ Pro</button>
   </div>
@@ -1201,6 +1218,157 @@ async function doPdf2Word(id){
     showDone(id);
   }catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
 }
+
+// ══════════════════════════════════════════════════════════
+// ── i18n — Multi-Language Support ────────────────────────
+// ══════════════════════════════════════════════════════════
+const I18N = {
+  ar: {
+    dir:'rtl', lang:'ar',
+    title:'EasyPDF — دمج وتقسيم وضغط وتحويل PDF مجاناً | أدوات PDF عربية',
+    desc:'أدوات PDF مجانية 100%: دمج ملفات PDF، تقسيم PDF، ضغط PDF، تحويل PDF إلى صور. كل شيء في المتصفح بدون رفع ملفاتك.',
+    hero_tag:'⚡ يعمل مباشرة في المتصفح — بدون رفع ملفاتك',
+    hero_h1:'أدوات <span>PDF</span> مجانية<br>دمج · تقسيم · ضغط · تحويل',
+    hero_p:'دمج ملفات PDF، تقسيم PDF، ضغط PDF وتحويله إلى صور — كل شيء مجاناً.<br>ملفاتك لا تُرسل لأي سيرفر — خصوصيتك محمية 100%.',
+    stat_labels:['أداة مجانية','رفع للسيرفر','خصوصية تامة'],
+    feat_strong:['خصوصية تامة','سريع جداً','مجاني للأبد','يعمل على الجوال'],
+    feat_sub:['ملفاتك لا تغادر جهازك','بدون انتظار أو تحميل','بدون تسجيل أو اشتراك','متوافق مع كل الأجهزة'],
+    sections:['✂️ تحرير وتعديل','🔒 حماية وتخصيص','🔄 تحويل الملفات','⭐ أدوات Pro حصرية'],
+    tool_names:['دمج PDF','تقسيم PDF','تدوير الصفحات','ضغط PDF','علامة مائية','ترقيم الصفحات','PDF إلى صور','PDF إلى نص','صور إلى PDF','PDF إلى Word','PDF إلى Excel','PDF إلى PowerPoint','OCR — استخراج نص','توقيع PDF','فك تشفير PDF','قص الصفحات','استخراج الصور','إعادة ترتيب الصفحات','إصلاح PDF','تعبئة النماذج','معالجة مجمّعة'],
+    tool_descs:['ادمج عدة ملفات في ملف واحد','استخرج صفحات محددة','دوّر صفحات الملف','قلّل حجم الملف','أضف نصاً مائياً على الصفحات','أضف أرقام في أسفل كل صفحة','حوّل كل صفحة إلى PNG','استخرج النصوص من الملف','حوّل JPG/PNG إلى PDF','تحويل كامل مع حفظ التنسيق','استخرج الجداول والبيانات','حوّل الصفحات إلى شرائح','استخرج النص من PDF ممسوح ضوئياً','أضف توقيعك الرقمي للملف','أزل كلمة المرور من الملف','قص وتعديل حواف الصفحات','استخرج جميع الصور من الملف','رتّب الصفحات بالسحب والإفلات','أصلح الملفات التالفة أو المعطوبة','عبّئ نماذج PDF تلقائياً','عالج 50 ملف دفعة واحدة'],
+    faq_q:['كيف أدمج ملفات PDF مجاناً؟','هل ملفاتي آمنة عند استخدام EasyPDF؟','كيف أضغط ملف PDF وأقلل حجمه؟','كيف أقسم PDF واستخرج صفحات محددة؟','كيف أحوّل PDF إلى صور PNG؟','هل EasyPDF مجاني بالكامل؟','هل يعمل EasyPDF على الهاتف؟','هل يمكنني إضافة علامة مائية على PDF؟'],
+    faq_a:['اختر أداة "دمج PDF"، اسحب وأفلت الملفات التي تريد دمجها، رتّبها واضغط "دمج الملفات". سيتم تنزيل الملف فوراً على جهازك بدون أي رفع لسيرفر خارجي.','نعم، ملفاتك آمنة 100%. EasyPDF يعمل كلياً داخل متصفحك دون إرسال أي ملف لسيرفر خارجي. كل المعالجة تتم على جهازك مباشرة وملفاتك لا تغادره أبداً.','اختر أداة "ضغط PDF"، ارفع ملفك، ثم اضغط الزر. الأداة تعيد بناء الملف بحجم أصغر وتعمل بشكل أفضل مع ملفات PDF التي تحتوي على صور.','اختر أداة "تقسيم PDF"، ارفع الملف، واكتب أرقام الصفحات التي تريدها (مثل: 1-3,5,7-9) واضغط تقسيم. سيتم استخراج الصفحات في ملف PDF جديد.','اختر أداة "PDF إلى صور"، ارفع الملف واضغط تحويل. سيتم تحويل كل صفحة إلى صورة PNG وتنزيلها تلقائياً على جهازك.','نعم، EasyPDF يوفر أكثر من 10 أدوات مجانية بالكامل بدون تسجيل أو اشتراك. يتوفر أيضاً إصدار Pro بـ 9$ شهرياً يشمل تحويل PDF إلى Word وExcel وOCR.','نعم، EasyPDF يعمل على جميع الأجهزة: الهاتف، الجهاز اللوحي، والحاسوب. متوافق مع Chrome وSafari وFirefox.','نعم، اختر أداة "علامة مائية"، ارفع الملف، واكتب النص الذي تريد إضافته. يمكنك تخصيص الحجم والشفافية والزاوية.'],
+    badge:'✓ مجاني',
+    footer_tag:'جميع العمليات تتم محلياً على جهازك · ملفاتك آمنة تماماً 🔒',
+    footer_note:'© 2025 EasyPDF · مجاني · بدون تسجيل · بدون حدود',
+    footer_links:['الرئيسية','Pro','تواصل معنا'],
+    faq_h2:'الأسئلة <span>الشائعة</span>',
+  },
+  en: {
+    dir:'ltr', lang:'en',
+    title:'EasyPDF — Free PDF Tools: Merge, Split, Compress & Convert PDF Online',
+    desc:'100% Free PDF tools: merge PDF files, split PDF, compress PDF, convert PDF to images. Everything works in your browser with no file uploads.',
+    hero_tag:'⚡ Works directly in your browser — no file uploads needed',
+    hero_h1:'Free <span>PDF</span> Tools<br>Merge · Split · Compress · Convert',
+    hero_p:'Merge PDF files, split PDF, compress PDF and convert to images — all free.<br>Your files never leave your device — 100% private.',
+    stat_labels:['Free Tools','Server Upload','Full Privacy'],
+    feat_strong:['Full Privacy','Very Fast','Always Free','Mobile Ready'],
+    feat_sub:['Files never leave your device','No waiting or delays','No signup required','Works on all devices'],
+    sections:['✂️ Edit & Modify','🔒 Protect & Customize','🔄 Convert Files','⭐ Pro Exclusive Tools'],
+    tool_names:['Merge PDF','Split PDF','Rotate Pages','Compress PDF','Watermark','Page Numbers','PDF to Images','PDF to Text','Images to PDF','PDF to Word','PDF to Excel','PDF to PowerPoint','OCR — Extract Text','Sign PDF','Unlock PDF','Crop Pages','Extract Images','Reorder Pages','Repair PDF','Fill Forms','Batch Processing'],
+    tool_descs:['Merge multiple files into one','Extract specific pages','Rotate all pages','Reduce file size','Add text watermark to pages','Add page numbers at bottom','Convert each page to PNG','Extract text content from PDF','Convert JPG/PNG to PDF','Full conversion with formatting','Extract tables and data','Convert pages to slides','Extract text from scanned PDFs','Add your digital signature','Remove password from PDF','Crop and adjust page margins','Extract all images from PDF','Drag and drop to reorder','Fix corrupted or damaged files','Fill PDF forms automatically','Process 50 files at once'],
+    faq_q:['How do I merge PDF files for free?','Are my files safe with EasyPDF?','How do I compress a PDF and reduce file size?','How do I split a PDF and extract specific pages?','How do I convert PDF to PNG images?','Is EasyPDF completely free?','Does EasyPDF work on mobile?','Can I add a watermark to my PDF?'],
+    faq_a:['Select the "Merge PDF" tool, drag and drop the files you want to merge, arrange them as needed, and click "Merge Files". The merged file will download instantly to your device without any server upload.','Yes, your files are 100% safe. EasyPDF works entirely in your browser without sending any file to external servers. All processing happens on your device and your files never leave it.','Select the "Compress PDF" tool, upload your file, and click the button. The tool rebuilds the file at a smaller size and works best with PDF files containing many images.','Select the "Split PDF" tool, upload the file, enter the page numbers you want (e.g., 1-3,5,7-9) and click Split. The selected pages will be extracted into a new PDF file.','Select the "PDF to Images" tool, upload your file and click Convert. Each page will be converted to a PNG image and automatically downloaded to your device.','Yes, EasyPDF provides more than 10 tools completely free without registration or subscription. A Pro version is also available for $9/month including PDF to Word, Excel, OCR, and batch processing.','Yes, EasyPDF works on all devices: phone, tablet, and computer. Fully responsive and compatible with Chrome, Safari, and Firefox.','Yes, select the "Watermark" tool, upload your file, and type the text you want to add. You can customize the size, transparency, and angle.'],
+    badge:'✓ Free',
+    footer_tag:'All processing is done locally on your device · Your files are completely safe 🔒',
+    footer_note:'© 2025 EasyPDF · Free · No Registration · Unlimited',
+    footer_links:['Home','Pro','Contact Us'],
+    faq_h2:'Frequently Asked <span>Questions</span>',
+  },
+  fr: {
+    dir:'ltr', lang:'fr',
+    title:'EasyPDF — Fusionner, Diviser, Compresser PDF Gratuitement | Outils PDF Gratuits',
+    desc:'Outils PDF 100% gratuits: fusionner PDF, diviser, compresser, convertir en images. Tout fonctionne dans votre navigateur sans envoyer vos fichiers.',
+    hero_tag:'⚡ Fonctionne directement dans votre navigateur — sans téléchargement',
+    hero_h1:'Outils <span>PDF</span> Gratuits<br>Fusionner · Diviser · Compresser · Convertir',
+    hero_p:'Fusionnez des fichiers PDF, divisez, compressez et convertissez en images — tout gratuitement.<br>Vos fichiers ne quittent jamais votre appareil — 100% privé.',
+    stat_labels:['Outils gratuits','Envoi serveur','Confidentialité'],
+    feat_strong:['Confidentialité totale','Très rapide','Toujours gratuit','Compatible mobile'],
+    feat_sub:['Fichiers jamais envoyés','Sans attente','Sans inscription','Tous appareils'],
+    sections:['✂️ Éditer & Modifier','🔒 Protéger & Personnaliser','🔄 Convertir les fichiers','⭐ Outils Pro exclusifs'],
+    tool_names:['Fusionner PDF','Diviser PDF','Rotation pages','Compresser PDF','Filigrane','Numéros de pages','PDF vers Images','PDF vers Texte','Images vers PDF','PDF vers Word','PDF vers Excel','PDF vers PowerPoint','OCR — Extraire texte','Signer PDF','Déverrouiller PDF','Rogner pages','Extraire images','Réorganiser pages','Réparer PDF','Remplir formulaires','Traitement par lots'],
+    tool_descs:['Fusionner plusieurs fichiers en un','Extraire des pages spécifiques','Faire pivoter toutes les pages','Réduire la taille du fichier','Ajouter un filigrane texte','Ajouter des numéros de page','Convertir chaque page en PNG','Extraire le contenu textuel','Convertir JPG/PNG en PDF','Conversion complète avec mise en forme','Extraire tableaux et données','Convertir les pages en diapositives','Extraire texte des PDF numérisés','Ajouter votre signature numérique','Supprimer le mot de passe','Rogner et ajuster les marges','Extraire toutes les images','Glisser-déposer pour réorganiser','Réparer les fichiers corrompus','Remplir les formulaires PDF','Traiter 50 fichiers à la fois'],
+    faq_q:['Comment fusionner des fichiers PDF gratuitement?','Mes fichiers sont-ils sécurisés avec EasyPDF?','Comment compresser un PDF et réduire sa taille?','Comment diviser un PDF et extraire des pages?','Comment convertir un PDF en images PNG?','EasyPDF est-il complètement gratuit?','EasyPDF fonctionne-t-il sur mobile?','Puis-je ajouter un filigrane à mon PDF?'],
+    faq_a:["Sélectionnez l'outil « Fusionner PDF », glissez-déposez les fichiers, arrangez-les et cliquez « Fusionner ». Le fichier sera téléchargé instantanément.","Oui, vos fichiers sont 100% sécurisés. EasyPDF fonctionne entièrement dans votre navigateur sans envoyer de fichiers à des serveurs externes.",'Sélectionnez « Compresser PDF », téléchargez votre fichier et cliquez. L\'outil reconstruit le fichier en taille réduite, idéal pour les PDFs avec beaucoup d\'images.','Sélectionnez « Diviser PDF », téléchargez le fichier, entrez les numéros de pages (ex: 1-3,5,7-9) et cliquez Diviser.','Sélectionnez « PDF vers Images », téléchargez votre fichier et cliquez Convertir. Chaque page sera convertie en PNG et téléchargée.','Oui, EasyPDF propose plus de 10 outils entièrement gratuits sans inscription. Une version Pro est disponible à 9$/mois incluant PDF vers Word, Excel, OCR.','Oui, EasyPDF fonctionne sur tous les appareils: téléphone, tablette et ordinateur. Compatible avec Chrome, Safari et Firefox.','Oui, sélectionnez « Filigrane », téléchargez le fichier et tapez le texte. Personnalisez la taille, la transparence et l\'angle.'],
+    badge:'✓ Gratuit',
+    footer_tag:'Tout le traitement est fait localement · Vos fichiers sont entièrement sécurisés 🔒',
+    footer_note:'© 2025 EasyPDF · Gratuit · Sans inscription · Illimité',
+    footer_links:['Accueil','Pro','Nous contacter'],
+    faq_h2:'Questions <span>Fréquentes</span>',
+  }
+};
+
+function setLang(code) {
+  const t = I18N[code];
+  if (!t) return;
+  localStorage.setItem('lang', code);
+
+  // html attributes
+  document.documentElement.lang = t.lang;
+  document.documentElement.dir = t.dir;
+
+  // meta
+  document.title = t.title;
+  const md = document.querySelector('meta[name="description"]');
+  if (md) md.content = t.desc;
+
+  // lang buttons
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === code));
+
+  // hero
+  const heroTag = document.querySelector('.hero-tag');
+  if (heroTag) heroTag.textContent = t.hero_tag;
+  const heroH1 = document.querySelector('.hero h1');
+  if (heroH1) heroH1.innerHTML = t.hero_h1;
+  const heroP = document.querySelector('.hero > p');
+  if (heroP) heroP.innerHTML = t.hero_p;
+
+  // stats
+  document.querySelectorAll('.stat-label').forEach((el, i) => {
+    if (t.stat_labels[i]) el.textContent = t.stat_labels[i];
+  });
+
+  // features
+  document.querySelectorAll('.feature-text').forEach((el, i) => {
+    if (t.feat_strong[i] && t.feat_sub[i])
+      el.innerHTML = `<strong>${t.feat_strong[i]}</strong>${t.feat_sub[i]}`;
+  });
+
+  // section labels
+  document.querySelectorAll('.section-label').forEach((el, i) => {
+    if (t.sections[i]) el.textContent = t.sections[i];
+  });
+
+  // tool names & descriptions
+  document.querySelectorAll('.tool-name').forEach((el, i) => {
+    if (t.tool_names[i]) el.textContent = t.tool_names[i];
+  });
+  document.querySelectorAll('.tool-desc').forEach((el, i) => {
+    if (t.tool_descs[i]) el.textContent = t.tool_descs[i];
+  });
+
+  // FAQ heading
+  const faqH2 = document.querySelector('.faq-section h2');
+  if (faqH2) faqH2.innerHTML = t.faq_h2;
+
+  // FAQ questions & answers
+  document.querySelectorAll('.faq-q > span:first-child').forEach((el, i) => {
+    if (t.faq_q[i]) el.textContent = t.faq_q[i];
+  });
+  document.querySelectorAll('.faq-a p').forEach((el, i) => {
+    if (t.faq_a[i]) el.textContent = t.faq_a[i];
+  });
+
+  // header badge
+  const badge = document.querySelector('.badge-free');
+  if (badge) badge.textContent = t.badge;
+
+  // footer
+  const footerChildren = document.querySelectorAll('footer > *');
+  // index 1 = tagline div, index 2 = links, index 3 = copyright
+  if (footerChildren[1]) footerChildren[1].textContent = t.footer_tag;
+  if (footerChildren[3]) footerChildren[3].textContent = t.footer_note;
+  document.querySelectorAll('.footer-links a').forEach((el, i) => {
+    if (t.footer_links[i]) el.textContent = t.footer_links[i];
+  });
+}
+
+// apply saved language on load
+(function() {
+  const saved = localStorage.getItem('lang') || 'ar';
+  if (saved !== 'ar') setLang(saved);
+})();
 </script>
 </body>
 </html>
