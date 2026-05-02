@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دمج ملفين PDF في ملف واحد مجاناً اون لاين — بدون تسجيل</title>
+<meta name="description" content="ادمج ملفين أو أكثر من ملفات PDF في ملف واحد مجاناً بدون تسجيل. رتّب الملفات بالسحب والإفلات وحمّل النتيجة فوراً. بدون رفع ملفاتك لأي سيرفر.">
+<meta name="keywords" content="دمج ملفين PDF, دمج PDF اون لاين, merge PDF free, دمج PDF بدون تسجيل, دمج ملفات PDF مجاناً, كيف أدمج PDF, جمع PDF في ملف واحد">
+<link rel="canonical" href="https://saleenm.github.io/easypdf/merge-pdf-online.html">
+<meta property="og:title" content="دمج ملفات PDF اون لاين مجاناً — EasyPDF">
+<meta property="og:description" content="ادمج PDF مجاناً بدون تسجيل. رتّب الملفات بالسحب والإفلات. بدون رفع ملفاتك.">
+<meta property="og:url" content="https://saleenm.github.io/easypdf/merge-pdf-online.html">
+<meta property="og:type" content="article">
+<link rel="alternate" hreflang="ar" href="https://saleenm.github.io/easypdf/merge-pdf-online.html">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"دمج ملفين PDF في ملف واحد مجاناً اون لاين",
+  "description":"دليل لدمج ملفات PDF مجاناً بدون تسجيل أو برامج",
+  "author":{"@type":"Organization","name":"EasyPDF"},
+  "publisher":{"@type":"Organization","name":"EasyPDF","url":"https://saleenm.github.io/easypdf/"},
+  "datePublished":"2025-05-02"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"هل يمكن دمج أكثر من ملفين PDF؟","acceptedAnswer":{"@type":"Answer","text":"نعم، يمكن دمج عدد غير محدود من الملفات. فقط أضف الملفات واحداً تلو الآخر أو اخترها جميعاً دفعة واحدة."}},
+    {"@type":"Question","name":"هل يحتفظ الملف المدموج بالصور والخطوط؟","acceptedAnswer":{"@type":"Answer","text":"نعم، كل محتوى الملفات يُحفظ كاملاً: النصوص والصور والجداول والروابط. لا يفقد أي شيء أثناء الدمج."}},
+    {"@type":"Question","name":"هل يمكن ترتيب الصفحات بعد الدمج؟","acceptedAnswer":{"@type":"Answer","text":"يمكن ترتيب الملفات قبل الدمج بالسحب والإفلات. لترتيب الصفحات داخل كل ملف، استخدم أداة إعادة ترتيب الصفحات في EasyPDF Pro."}}
+  ]
+}
+</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e63946'/><text y='.9em' font-size='60' x='10' fill='white'>E</text></svg>">
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+<style>
+:root{--primary:#e63946;--primary2:#c1121f;--dark:#0d0d1a;--card:#13132a;--card2:#1a1a35;--text:#f0f0f0;--muted:#7a8499;--border:#232340;--success:#06d6a0;--radius:16px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--dark);color:var(--text);min-height:100vh;line-height:1.7;}
+header{background:rgba(13,13,26,0.96);border-bottom:1px solid var(--border);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--primary),var(--primary2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;}
+.logo-text{font-size:22px;font-weight:800;color:var(--text);}
+.logo-text span{color:var(--primary);}
+.back-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:10px;text-decoration:none;font-size:13px;transition:all 0.2s;}
+.back-btn:hover{color:var(--text);border-color:var(--primary);}
+.article-wrap{max-width:820px;margin:0 auto;padding:48px 24px 80px;}
+.article-meta{display:flex;align-items:center;gap:12px;margin-bottom:28px;flex-wrap:wrap;}
+.article-tag{background:rgba(230,57,70,0.12);color:var(--primary);border:1px solid rgba(230,57,70,0.25);font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;}
+.article-date,.article-read{font-size:12px;color:var(--muted);}
+h1.article-title{font-size:40px;font-weight:900;line-height:1.2;margin-bottom:20px;}
+h1.article-title span{color:var(--primary);}
+.article-intro{font-size:17px;color:var(--muted);line-height:1.8;margin-bottom:40px;border-right:3px solid var(--primary);padding-right:18px;}
+h2.section-title{font-size:26px;font-weight:800;margin:44px 0 16px;}
+h2.section-title span{color:var(--primary);}
+h3.sub-title{font-size:19px;font-weight:700;margin:28px 0 12px;}
+p.body-text{font-size:15px;color:var(--muted);line-height:1.9;margin-bottom:16px;}
+ul.body-list{padding-right:22px;margin-bottom:16px;}
+ul.body-list li{font-size:15px;color:var(--muted);line-height:1.9;margin-bottom:6px;}
+ul.body-list li strong{color:var(--text);}
+.tip-box{background:rgba(255,214,10,0.06);border:1px solid rgba(255,214,10,0.2);border-radius:12px;padding:18px 20px;margin:24px 0;}
+.tip-box .tip-head{font-size:13px;font-weight:700;color:#ffd60a;margin-bottom:8px;}
+.tip-box p{font-size:14px;color:var(--muted);margin:0;line-height:1.7;}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:20px 0;}
+.step-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;}
+.step-num{font-size:28px;font-weight:900;color:var(--primary);display:block;margin-bottom:8px;}
+.step-card h4{font-size:14px;font-weight:700;margin-bottom:6px;}
+.step-card p{font-size:12px;color:var(--muted);margin:0;}
+/* Embedded Tool */
+.tool-embed{background:var(--card);border:1px solid var(--primary);border-radius:22px;padding:32px;margin:40px 0;position:relative;}
+.tool-embed-label{position:absolute;top:-13px;right:24px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;}
+.drop-zone{border:2px dashed var(--border);border-radius:14px;padding:32px 20px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:14px;background:rgba(255,255,255,0.02);}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--primary);background:rgba(230,57,70,0.06);}
+.dz-icon{font-size:36px;margin-bottom:8px;}
+.drop-zone p{color:var(--muted);font-size:14px;}
+.drop-zone strong{color:var(--primary);}
+.file-input{display:none;}
+.file-list{margin-bottom:12px;}
+.file-item{display:flex;align-items:center;background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:8px;font-size:13px;gap:8px;cursor:default;transition:all .15s;user-select:none;}
+.file-item.dragging{opacity:.4;border-color:var(--primary);}
+.file-item.drag-over-item{border-color:var(--primary);border-style:dashed;background:rgba(230,57,70,0.06);}
+.drag-handle{color:var(--muted);cursor:grab;font-size:17px;padding:0 4px;flex-shrink:0;}
+.drag-handle:active{cursor:grabbing;}
+.file-num{background:var(--card2);color:var(--muted);font-size:11px;font-weight:700;min-width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.file-item .fname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.file-item .fsize{color:var(--muted);font-size:11px;}
+.file-item .fdel{background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;flex-shrink:0;padding:2px;}
+.file-item .fdel:hover{color:var(--primary);}
+.sort-hint{text-align:center;font-size:12px;color:var(--muted);margin-bottom:10px;display:none;}
+.sort-hint.show{display:block;}
+.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;box-shadow:0 4px 20px rgba(230,57,70,0.3);}
+.btn:hover{transform:translateY(-2px);}
+.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.progress-wrap{display:none;margin-bottom:14px;}
+.progress-bar{background:var(--border);border-radius:20px;height:6px;overflow:hidden;margin-bottom:6px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),#ff6b6b);border-radius:20px;transition:width 0.3s;width:0%;}
+.progress-text{font-size:12px;color:var(--muted);text-align:center;}
+.result-box{display:none;background:rgba(6,214,160,0.08);border:1px solid rgba(6,214,160,0.3);border-radius:12px;padding:16px;text-align:center;margin-bottom:14px;}
+.result-box p{font-size:14px;color:var(--success);font-weight:600;}
+.btn-again{width:100%;padding:10px;background:var(--card2);color:var(--muted);border:1px solid var(--border);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px;}
+.faq-item{border:1px solid var(--border);border-radius:12px;margin-bottom:10px;background:var(--card);}
+.faq-q{padding:16px 20px;font-size:14px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.faq-q:hover{background:var(--card2);}
+.faq-arrow{font-size:12px;color:var(--muted);transition:transform 0.25s;}
+.faq-item.open .faq-arrow{transform:rotate(180deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.3s;}
+.faq-item.open .faq-a{max-height:250px;}
+.faq-a p{padding:0 20px 16px;font-size:13px;color:var(--muted);line-height:1.7;}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:20px 0;}
+.related-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-decoration:none;transition:border-color .2s;}
+.related-card:hover{border-color:var(--primary);}
+.related-card .rc-icon{font-size:28px;margin-bottom:8px;}
+.related-card .rc-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.related-card .rc-sub{font-size:12px;color:var(--muted);}
+footer{text-align:center;padding:36px 20px;color:var(--muted);font-size:13px;border-top:1px solid var(--border);}
+.footer-logo{font-size:22px;font-weight:800;margin-bottom:8px;}
+.footer-logo span{color:var(--primary);}
+@media(max-width:600px){h1.article-title{font-size:28px;}.article-wrap{padding:32px 16px 60px;}header{padding:0 16px;}.tool-embed{padding:20px 16px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">
+    <div class="logo-icon">E</div>
+    <div class="logo-text">Easy<span>PDF</span></div>
+  </a>
+  <a class="back-btn" href="index.html">← جميع الأدوات</a>
+</header>
+
+<div class="article-wrap">
+
+  <div class="article-meta">
+    <span class="article-tag">📚 دليل</span>
+    <span class="article-date">📅 مايو 2025</span>
+    <span class="article-read">⏱️ قراءة 4 دقائق</span>
+  </div>
+
+  <h1 class="article-title">دمج ملفين <span>PDF</span> في ملف واحد<br>مجاناً اون لاين — بدون تسجيل</h1>
+
+  <p class="article-intro">
+    هل تريد دمج شهادتين في ملف واحد؟ أو جمع عدة فواتير في مستند مرتب؟ هذا الدليل يشرح كيف تدمج ملفات PDF مجاناً خلال ثوانٍ — مع إمكانية ترتيب الملفات بالسحب والإفلات قبل الدمج.
+  </p>
+
+  <!-- Tool First — High Intent Users -->
+  <h2 class="section-title">ادمج ملفاتك الآن — <span>مجاناً</span></h2>
+  <p class="body-text">أضف ملفين أو أكثر، رتّبهم بالسحب، ثم اضغط دمج. النتيجة فورية.</p>
+
+  <div class="tool-embed">
+    <div class="tool-embed-label">🔗 أداة الدمج المجانية</div>
+    <div class="drop-zone" id="dz" onclick="document.getElementById('fi').click()">
+      <div class="dz-icon">📂</div>
+      <p>اسحب الملفات هنا أو <strong>اضغط للاختيار</strong><br><span style="font-size:11px">يمكن اختيار عدة ملفات دفعة واحدة</span></p>
+    </div>
+    <input type="file" id="fi" class="file-input" multiple accept=".pdf">
+    <div class="sort-hint" id="sh">⠿ اسحب الملفات لإعادة الترتيب</div>
+    <div class="file-list" id="fl"></div>
+    <div class="progress-wrap" id="pw">
+      <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
+      <div class="progress-text" id="pt">جاري الدمج...</div>
+    </div>
+    <div class="result-box" id="rb">
+      <p>✅ تم الدمج وتحميل الملف!</p>
+      <button class="btn-again" onclick="resetMerge()">🔗 دمج ملفات أخرى</button>
+    </div>
+    <button class="btn" id="mbtn" onclick="doMerge()">🔗 دمج الملفات</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2 class="section-title">خطوات الدمج <span>بالتفصيل</span></h2>
+
+  <div class="steps-grid">
+    <div class="step-card"><span class="step-num">1</span><h4>اختر الملفات</h4><p>اضغط أو اسحب ملفات PDF متعددة دفعة واحدة</p></div>
+    <div class="step-card"><span class="step-num">2</span><h4>رتّب الترتيب</h4><p>اسحب الملفات لتغيير ترتيبها في الملف النهائي</p></div>
+    <div class="step-card"><span class="step-num">3</span><h4>ادمج وحمّل</h4><p>اضغط الزر وسيتحمل الملف المدموج فوراً</p></div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-head">💡 نصيحة الترتيب</div>
+    <p>اسحب أي ملف من علامة <strong>⠿</strong> الموجودة على يمين كل ملف لتغيير ترتيبه. الأرقام تتحدث تلقائياً لتعكس الترتيب الجديد.</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2 class="section-title">متى تحتاج <span>دمج PDF</span>؟</h2>
+
+  <ul class="body-list">
+    <li><strong>الشهادات والمستندات الرسمية:</strong> دمج شهادة التخرج وكشف الدرجات في ملف واحد عند التقديم للوظائف</li>
+    <li><strong>الفواتير الشهرية:</strong> جمع فواتير كهرباء وماء وإنترنت في مستند واحد للمحاسب</li>
+    <li><strong>التقارير المجزأة:</strong> دمج فصول كتاب أو أجزاء تقرير في ملف نهائي متكامل</li>
+    <li><strong>طلبات التأشيرة:</strong> دمج جواز السفر وكشف الحساب وخطاب الضمان في ملف واحد</li>
+    <li><strong>ملفات العقارات:</strong> دمج العقد والصور والوثائق القانونية معاً</li>
+    <li><strong>المشاريع الدراسية:</strong> جمع الأجزاء التي كتبها كل طالب في مستند واحد</li>
+  </ul>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2 class="section-title">هل الدمج آمن على <span>ملفاتي</span>؟</h2>
+
+  <p class="body-text">
+    نعم، الدمج آمن 100%. EasyPDF يعمل كلياً داخل متصفحك — لا يوجد سيرفر خارجي ولا شبكة. الملفات تُعالج داخل الذاكرة المؤقتة للمتصفح ثم تُحذف فور إغلاق الصفحة.
+  </p>
+
+  <p class="body-text">
+    الفرق الرئيسي عن المواقع الأخرى: مواقع كثيرة ترفع ملفاتك لسيرفراتها للمعالجة — وهذا يعني أن ملفاتك موجودة على سيرفر شخص آخر ولو لوقت قصير. EasyPDF يجري كل الحسابات على جهازك مباشرة.
+  </p>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2 class="section-title">الأسئلة الشائعة</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+      <span>هل يمكن دمج PDF محمي بكلمة مرور؟</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a"><p>إذا كان الملف مقروءاً (بدون كلمة مرور للفتح)، يمكن دمجه مباشرة. إذا كان محمياً بكلمة مرور للفتح، استخدم أولاً أداة "فك تشفير PDF" ثم ادمجه.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+      <span>هل يمكن دمج أكثر من 10 ملفات؟</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a"><p>نعم، لا يوجد حد لعدد الملفات. لكن لاحظ أن دمج ملفات كثيرة أو كبيرة قد يستغرق وقتاً أطول حسب قوة جهازك.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+      <span>هل يتغير حجم الملف بعد الدمج؟</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a"><p>حجم الملف المدموج يساوي تقريباً مجموع أحجام الملفات الأصلية. لتقليل الحجم بعد الدمج، استخدم أداة "ضغط PDF".</p></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2 class="section-title">أدوات <span>مشابهة</span></h2>
+
+  <div class="related-grid">
+    <a class="related-card" href="compress-pdf.html">
+      <div class="rc-icon">🗜️</div>
+      <div class="rc-title">ضغط PDF</div>
+      <div class="rc-sub">قلّل الحجم بعد الدمج</div>
+    </a>
+    <a class="related-card" href="split-pdf.html">
+      <div class="rc-icon">✂️</div>
+      <div class="rc-title">تقسيم PDF</div>
+      <div class="rc-sub">استخرج صفحات محددة</div>
+    </a>
+    <a class="related-card" href="delete-pages.html">
+      <div class="rc-icon">🗑️</div>
+      <div class="rc-title">حذف صفحات</div>
+      <div class="rc-sub">احذف الصفحات الزائدة</div>
+    </a>
+    <a class="related-card" href="how-to-compress-pdf.html">
+      <div class="rc-icon">📚</div>
+      <div class="rc-title">دليل ضغط PDF</div>
+      <div class="rc-sub">كيف تقلل حجم PDF</div>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">Easy<span>PDF</span></div>
+  <div>جميع العمليات تتم محلياً على جهازك · ملفاتك آمنة تماماً 🔒</div>
+  <div style="margin-top:8px;font-size:11px;">© 2025 EasyPDF · <a href="mailto:m.hmo_ode@hotmail.com" style="color:var(--muted);text-decoration:none;">تواصل معنا</a></div>
+</footer>
+
+<script>
+const {PDFDocument} = PDFLib;
+let files=[];
+let dragSrc=null;
+
+function formatSize(b){return b>=1048576?(b/1048576).toFixed(1)+' MB':Math.round(b/1024)+' KB';}
+
+document.getElementById('fi').addEventListener('change',e=>{
+  Array.from(e.target.files).forEach(f=>{if(!files.find(x=>x.name===f.name))files.push(f);});
+  renderFL();
+});
+const dz=document.getElementById('dz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');Array.from(e.dataTransfer.files).forEach(f=>{if(!files.find(x=>x.name===f.name))files.push(f);});renderFL();});
+
+function renderFL(){
+  const el=document.getElementById('fl');
+  const sh=document.getElementById('sh');
+  if(!files.length){el.innerHTML='';sh.classList.remove('show');return;}
+  sh.classList.toggle('show',files.length>1);
+  el.innerHTML=files.map((f,i)=>`
+    <div class="file-item" draggable="true" data-idx="${i}"
+      ondragstart="onDragStart(event,${i})" ondragover="onDragOver(event,${i})"
+      ondragleave="onDragLeave(event)" ondrop="onDrop(event,${i})" ondragend="onDragEnd()">
+      <span class="drag-handle">⠿</span>
+      <span class="file-num">${i+1}</span>
+      <span class="fname">📄 ${f.name}</span>
+      <span class="fsize">${formatSize(f.size)}</span>
+      <button class="fdel" onclick="files.splice(${i},1);renderFL()">✕</button>
+    </div>`).join('');
+}
+
+function onDragStart(e,i){dragSrc=i;e.currentTarget.classList.add('dragging');e.dataTransfer.effectAllowed='move';}
+function onDragOver(e,i){e.preventDefault();if(i!==dragSrc)e.currentTarget.classList.add('drag-over-item');}
+function onDragLeave(e){e.currentTarget.classList.remove('drag-over-item');}
+function onDrop(e,i){
+  e.preventDefault();e.currentTarget.classList.remove('drag-over-item');
+  if(i===dragSrc)return;
+  const moved=files.splice(dragSrc,1)[0];
+  files.splice(i,0,moved);
+  renderFL();
+}
+function onDragEnd(){document.querySelectorAll('.file-item').forEach(el=>{el.classList.remove('dragging','drag-over-item');});}
+
+function resetMerge(){
+  files=[];
+  document.getElementById('fl').innerHTML='';
+  document.getElementById('sh').classList.remove('show');
+  document.getElementById('rb').style.display='none';
+  document.getElementById('pw').style.display='none';
+  document.getElementById('mbtn').disabled=false;
+  document.getElementById('pf').style.width='0%';
+}
+
+async function doMerge(){
+  if(files.length<2)return alert('اختر ملفين على الأقل');
+  const btn=document.getElementById('mbtn'); btn.disabled=true;
+  document.getElementById('pw').style.display='block';
+  try{
+    const out=await PDFDocument.create();
+    for(let i=0;i<files.length;i++){
+      document.getElementById('pf').style.width=((i/files.length)*88)+'%';
+      document.getElementById('pt').textContent=`(${i+1}/${files.length}) دمج: ${files[i].name}`;
+      const doc=await PDFDocument.load(new Uint8Array(await files[i].arrayBuffer()),{ignoreEncryption:true});
+      const pp=await out.copyPages(doc,doc.getPageIndices());
+      pp.forEach(p=>out.addPage(p));
+    }
+    document.getElementById('pf').style.width='95%';
+    document.getElementById('pt').textContent='حفظ...';
+    download(await out.save(),'merged.pdf','application/pdf');
+    document.getElementById('pw').style.display='none';
+    document.getElementById('rb').style.display='block';
+    btn.disabled=false;
+  }catch(e){alert('خطأ: '+e.message);btn.disabled=false;document.getElementById('pw').style.display='none';}
+}
+</script>
+</body>
+</html>

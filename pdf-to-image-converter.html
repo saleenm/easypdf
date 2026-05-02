@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تحويل PDF إلى صورة PNG مجاناً — كل صفحة صورة مستقلة</title>
+<meta name="description" content="حوّل ملف PDF إلى صور PNG بجودة عالية مجاناً. كل صفحة تصبح صورة مستقلة جاهزة للمشاركة. يعمل في المتصفح بدون رفع ملفاتك. جودة 72 أو 144 أو 216 DPI.">
+<meta name="keywords" content="تحويل PDF إلى صورة, PDF to PNG, تحويل صفحة PDF صورة, pdf to image مجاني, تحويل PDF JPG PNG, convert PDF to image online">
+<link rel="canonical" href="https://saleenm.github.io/easypdf/pdf-to-image-converter.html">
+<meta property="og:title" content="تحويل PDF إلى صور PNG مجاناً — EasyPDF">
+<meta property="og:description" content="حوّل PDF إلى صور PNG بجودة عالية. كل صفحة صورة مستقلة. مجاني وبدون رفع ملفاتك.">
+<meta property="og:url" content="https://saleenm.github.io/easypdf/pdf-to-image-converter.html">
+<meta property="og:type" content="article">
+<link rel="alternate" hreflang="ar" href="https://saleenm.github.io/easypdf/pdf-to-image-converter.html">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"Article",
+  "headline":"تحويل PDF إلى صورة PNG مجاناً",
+  "description":"دليل تحويل ملفات PDF إلى صور PNG بجودة عالية بدون برامج",
+  "author":{"@type":"Organization","name":"EasyPDF"},
+  "publisher":{"@type":"Organization","name":"EasyPDF","url":"https://saleenm.github.io/easypdf/"},
+  "datePublished":"2025-05-02"
+}
+</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e63946'/><text y='.9em' font-size='60' x='10' fill='white'>E</text></svg>">
+<style>
+:root{--primary:#e63946;--primary2:#c1121f;--dark:#0d0d1a;--card:#13132a;--card2:#1a1a35;--text:#f0f0f0;--muted:#7a8499;--border:#232340;--success:#06d6a0;--radius:16px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--dark);color:var(--text);min-height:100vh;line-height:1.7;}
+header{background:rgba(13,13,26,0.96);border-bottom:1px solid var(--border);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--primary),var(--primary2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;}
+.logo-text{font-size:22px;font-weight:800;color:var(--text);}
+.logo-text span{color:var(--primary);}
+.back-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:10px;text-decoration:none;font-size:13px;transition:all 0.2s;}
+.back-btn:hover{color:var(--text);border-color:var(--primary);}
+.article-wrap{max-width:820px;margin:0 auto;padding:48px 24px 80px;}
+.article-meta{display:flex;align-items:center;gap:12px;margin-bottom:28px;flex-wrap:wrap;}
+.article-tag{background:rgba(230,57,70,0.12);color:var(--primary);border:1px solid rgba(230,57,70,0.25);font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;}
+.article-date,.article-read{font-size:12px;color:var(--muted);}
+h1.article-title{font-size:40px;font-weight:900;line-height:1.2;margin-bottom:20px;}
+h1.article-title span{color:var(--primary);}
+.article-intro{font-size:17px;color:var(--muted);line-height:1.8;margin-bottom:40px;border-right:3px solid var(--primary);padding-right:18px;}
+h2.section-title{font-size:26px;font-weight:800;margin:44px 0 16px;}
+h2.section-title span{color:var(--primary);}
+p.body-text{font-size:15px;color:var(--muted);line-height:1.9;margin-bottom:16px;}
+ul.body-list{padding-right:22px;margin-bottom:16px;}
+ul.body-list li{font-size:15px;color:var(--muted);line-height:1.9;margin-bottom:6px;}
+ul.body-list li strong{color:var(--text);}
+.tip-box{background:rgba(255,214,10,0.06);border:1px solid rgba(255,214,10,0.2);border-radius:12px;padding:18px 20px;margin:24px 0;}
+.tip-box .tip-head{font-size:13px;font-weight:700;color:#ffd60a;margin-bottom:8px;}
+.tip-box p{font-size:14px;color:var(--muted);margin:0;line-height:1.7;}
+.dpi-table{width:100%;border-collapse:collapse;margin:16px 0;}
+.dpi-table th{background:var(--card2);padding:11px 16px;font-size:13px;font-weight:700;text-align:right;border-bottom:2px solid var(--border);}
+.dpi-table td{padding:10px 16px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--border);}
+.dpi-table .good{color:var(--success);}
+/* Tool */
+.tool-embed{background:var(--card);border:1px solid var(--primary);border-radius:22px;padding:32px;margin:40px 0;position:relative;}
+.tool-embed-label{position:absolute;top:-13px;right:24px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;}
+.drop-zone{border:2px dashed var(--border);border-radius:14px;padding:32px 20px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:14px;background:rgba(255,255,255,0.02);}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--primary);background:rgba(230,57,70,0.06);}
+.dz-icon{font-size:36px;margin-bottom:8px;}
+.drop-zone p{color:var(--muted);font-size:14px;}
+.drop-zone strong{color:var(--primary);}
+.file-input{display:none;}
+.file-list{margin-bottom:12px;}
+.file-item{display:flex;align-items:center;background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;gap:8px;}
+.file-item .fname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.file-item .fsize{color:var(--muted);font-size:11px;}
+.control-group{margin-bottom:14px;}
+.control-group label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
+.control-group select{width:100%;background:var(--dark);border:1px solid var(--border);color:var(--text);padding:11px 14px;border-radius:10px;font-size:14px;outline:none;}
+.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;box-shadow:0 4px 20px rgba(230,57,70,0.3);}
+.btn:hover{transform:translateY(-2px);}
+.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.progress-wrap{display:none;margin-bottom:14px;}
+.progress-bar{background:var(--border);border-radius:20px;height:6px;overflow:hidden;margin-bottom:6px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),#ff6b6b);border-radius:20px;transition:width 0.3s;width:0%;}
+.progress-text{font-size:12px;color:var(--muted);text-align:center;}
+.result-box{display:none;background:rgba(6,214,160,0.08);border:1px solid rgba(6,214,160,0.3);border-radius:12px;padding:16px;text-align:center;margin-bottom:14px;}
+.result-box p{font-size:14px;color:var(--success);font-weight:600;}
+.btn-again{width:100%;padding:10px;background:var(--card2);color:var(--muted);border:1px solid var(--border);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px;}
+.faq-item{border:1px solid var(--border);border-radius:12px;margin-bottom:10px;background:var(--card);}
+.faq-q{padding:16px 20px;font-size:14px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.faq-q:hover{background:var(--card2);}
+.faq-arrow{font-size:12px;color:var(--muted);transition:transform 0.25s;}
+.faq-item.open .faq-arrow{transform:rotate(180deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.3s;}
+.faq-item.open .faq-a{max-height:200px;}
+.faq-a p{padding:0 20px 16px;font-size:13px;color:var(--muted);line-height:1.7;}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:20px 0;}
+.related-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-decoration:none;transition:border-color .2s;}
+.related-card:hover{border-color:var(--primary);}
+.related-card .rc-icon{font-size:28px;margin-bottom:8px;}
+.related-card .rc-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.related-card .rc-sub{font-size:12px;color:var(--muted);}
+footer{text-align:center;padding:36px 20px;color:var(--muted);font-size:13px;border-top:1px solid var(--border);}
+.footer-logo{font-size:22px;font-weight:800;margin-bottom:8px;}
+.footer-logo span{color:var(--primary);}
+@media(max-width:600px){h1.article-title{font-size:28px;}.article-wrap{padding:32px 16px 60px;}header{padding:0 16px;}.tool-embed{padding:20px 16px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">
+    <div class="logo-icon">E</div>
+    <div class="logo-text">Easy<span>PDF</span></div>
+  </a>
+  <a class="back-btn" href="index.html">← جميع الأدوات</a>
+</header>
+
+<div class="article-wrap">
+
+  <div class="article-meta">
+    <span class="article-tag">📚 دليل</span>
+    <span class="article-date">📅 مايو 2025</span>
+    <span class="article-read">⏱️ قراءة 4 دقائق</span>
+  </div>
+
+  <h1 class="article-title">تحويل <span>PDF</span> إلى صورة PNG<br>مجاناً — كل صفحة صورة مستقلة</h1>
+
+  <p class="article-intro">
+    تريد مشاركة صفحة من وثيقة PDF على الإنستغرام أو تويتر؟ أو تحتاج صورة من ملف PDF لإضافتها لعرض PowerPoint؟ هذا الدليل يشرح كيف تحوّل أي ملف PDF إلى صور PNG خلال ثوانٍ مجاناً.
+  </p>
+
+  <!-- Tool First -->
+  <h2 class="section-title">حوّل ملفك الآن — <span>مجاناً</span></h2>
+
+  <div class="tool-embed">
+    <div class="tool-embed-label">🖼️ أداة التحويل المجانية</div>
+    <div class="drop-zone" id="dz" onclick="document.getElementById('fi').click()">
+      <div class="dz-icon">📄</div>
+      <p>اسحب ملف PDF هنا أو <strong>اضغط للاختيار</strong></p>
+    </div>
+    <input type="file" id="fi" class="file-input" accept=".pdf">
+    <div class="file-list" id="fl"></div>
+    <div class="control-group">
+      <label>جودة الصورة</label>
+      <select id="dpi">
+        <option value="1">عادية (72 DPI) — للعرض على الشاشة</option>
+        <option value="2" selected>عالية (144 DPI) — موصى بها ⭐</option>
+        <option value="3">ممتازة (216 DPI) — للطباعة</option>
+      </select>
+    </div>
+    <div class="progress-wrap" id="pw">
+      <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
+      <div class="progress-text" id="pt">جاري التحويل...</div>
+    </div>
+    <div class="result-box" id="rb">
+      <p id="rres">تم التحويل!</p>
+      <button class="btn-again" onclick="resetTool()">🖼️ تحويل ملف آخر</button>
+    </div>
+    <button class="btn" id="cbtn" onclick="doConvert()">🖼️ تحويل إلى صور PNG</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2 class="section-title">أي جودة تختار؟ <span>مقارنة DPI</span></h2>
+
+  <table class="dpi-table">
+    <thead>
+      <tr><th>الجودة</th><th>الدقة</th><th>حجم الصورة</th><th>الاستخدام الأمثل</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>عادية</td><td>72 DPI</td><td class="good">صغير (~200KB)</td><td>واتساب، تيليغرام، تويتر</td></tr>
+      <tr><td>عالية ⭐</td><td>144 DPI</td><td class="good">متوسط (~600KB)</td><td>الاستخدام العام، إنستغرام، ويب</td></tr>
+      <tr><td>ممتازة</td><td>216 DPI</td><td style="color:#fb8500;">كبير (~1.5MB)</td><td>الطباعة، أرشفة المستندات</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box">
+    <div class="tip-head">💡 النصيحة الذهبية</div>
+    <p>لمعظم الاستخدامات اليومية، اختر <strong>"عالية (144 DPI)"</strong>. تبدو واضحة على الشاشة وتُشارك بسهولة. الـ 216 DPI فقط إذا كنت ستطبع الصورة.</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2 class="section-title">متى تحتاج تحويل <span>PDF إلى صورة</span>؟</h2>
+
+  <ul class="body-list">
+    <li><strong>مشاركة على السوشيال ميديا:</strong> إنستغرام وتويتر لا يقبلان PDF مباشرة — الصورة هي الحل</li>
+    <li><strong>إضافة لعروض PowerPoint:</strong> لا يمكن إدراج PDF مباشرة في PowerPoint، لكن الصور تُضاف بسهولة</li>
+    <li><strong>إرسال معاينة:</strong> أرسل صورة من الصفحة الأولى كمعاينة قبل إرسال الملف الكامل</li>
+    <li><strong>نشر على موقع ويب:</strong> المتصفح يعرض الصور بسرعة أكبر من PDF</li>
+    <li><strong>تحرير الصورة:</strong> بعد التحويل يمكنك إضافة نصوص أو أسهم أو تمييز أجزاء</li>
+    <li><strong>إنشاء thumbnails:</strong> مصغّرات للصفحات لعرضها في الفهارس والمكتبات الرقمية</li>
+  </ul>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2 class="section-title">الأسئلة الشائعة</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+      <span>هل يمكن تحويل صفحة واحدة فقط؟</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a"><p>حالياً الأداة تحوّل جميع الصفحات. لتحويل صفحة واحدة، استخدم أولاً أداة "تقسيم PDF" لاستخراج الصفحة المطلوبة، ثم حوّلها.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+      <span>ما الفرق بين PNG و JPG؟</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a"><p>PNG يدعم الشفافية وجودته أعلى لكن حجمه أكبر. JPG حجمه أصغر لكن بدون شفافية. للمستندات والوثائق، PNG هو الاختيار الأفضل.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+      <span>هل يدعم التحويل اللغة العربية؟</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a"><p>نعم، الأداة تستخدم محرك Mozilla PDF.js الذي يدعم جميع اللغات بما فيها العربية. النصوص العربية تظهر بدقة كاملة في الصورة.</p></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2 class="section-title">أدوات <span>مشابهة</span></h2>
+
+  <div class="related-grid">
+    <a class="related-card" href="split-pdf.html">
+      <div class="rc-icon">✂️</div>
+      <div class="rc-title">تقسيم PDF</div>
+      <div class="rc-sub">استخرج صفحة قبل التحويل</div>
+    </a>
+    <a class="related-card" href="compress-pdf.html">
+      <div class="rc-icon">🗜️</div>
+      <div class="rc-title">ضغط PDF</div>
+      <div class="rc-sub">قلّل حجم الملف الأصلي</div>
+    </a>
+    <a class="related-card" href="merge-pdf-online.html">
+      <div class="rc-icon">🔗</div>
+      <div class="rc-title">دمج PDF</div>
+      <div class="rc-sub">ادمج ملفات PDF متعددة</div>
+    </a>
+    <a class="related-card" href="how-to-compress-pdf.html">
+      <div class="rc-icon">📚</div>
+      <div class="rc-title">دليل الضغط</div>
+      <div class="rc-sub">كيف تقلل حجم PDF</div>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">Easy<span>PDF</span></div>
+  <div>جميع العمليات تتم محلياً على جهازك · ملفاتك آمنة تماماً 🔒</div>
+  <div style="margin-top:8px;font-size:11px;">© 2025 EasyPDF · <a href="mailto:m.hmo_ode@hotmail.com" style="color:var(--muted);text-decoration:none;">تواصل معنا</a></div>
+</footer>
+
+<script>
+let file=null;
+function loadScript(src){return new Promise((res,rej)=>{if(document.querySelector(`script[src="${src}"]`))return res();const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s);});}
+function formatSize(b){return b>=1048576?(b/1048576).toFixed(1)+' MB':Math.round(b/1024)+' KB';}
+document.getElementById('fi').addEventListener('change',e=>{
+  file=e.target.files[0];
+  if(file)document.getElementById('fl').innerHTML=`<div class="file-item"><span>📄</span><span class="fname">${file.name}</span><span class="fsize">${formatSize(file.size)}</span></div>`;
+});
+const dz=document.getElementById('dz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');file=e.dataTransfer.files[0];if(file)document.getElementById('fl').innerHTML=`<div class="file-item"><span>📄</span><span class="fname">${file.name}</span><span class="fsize">${formatSize(file.size)}</span></div>`;});
+function resetTool(){
+  file=null;document.getElementById('fl').innerHTML='';
+  document.getElementById('rb').style.display='none';
+  document.getElementById('pw').style.display='none';
+  document.getElementById('cbtn').disabled=false;
+  document.getElementById('pf').style.width='0%';
+}
+async function doConvert(){
+  if(!file)return alert('اختر ملفاً أولاً');
+  const btn=document.getElementById('cbtn'); btn.disabled=true;
+  const scale=parseFloat(document.getElementById('dpi').value)||2;
+  document.getElementById('pw').style.display='block';
+  document.getElementById('pf').style.width='10%';
+  document.getElementById('pt').textContent='تحميل المحرك...';
+  try{
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const pdf=await pdfjsLib.getDocument(await file.arrayBuffer()).promise;
+    document.getElementById('rres').textContent=`✅ تم تحويل ${pdf.numPages} صفحة إلى صور PNG!`;
+    for(let i=1;i<=pdf.numPages;i++){
+      document.getElementById('pf').style.width=(15+(i/pdf.numPages)*80)+'%';
+      document.getElementById('pt').textContent=`صفحة ${i}/${pdf.numPages}...`;
+      const page=await pdf.getPage(i);
+      const vp=page.getViewport({scale});
+      const canvas=document.createElement('canvas');
+      canvas.width=vp.width; canvas.height=vp.height;
+      await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;
+      await new Promise(r=>canvas.toBlob(b=>{
+        const a=document.createElement('a');
+        a.href=URL.createObjectURL(b);
+        a.download=`page_${i}.png`;
+        a.click();
+        setTimeout(r,300);
+      },'image/png'));
+    }
+    document.getElementById('pw').style.display='none';
+    document.getElementById('rb').style.display='block';
+    btn.disabled=false;
+  }catch(e){alert('خطأ: '+e.message);btn.disabled=false;document.getElementById('pw').style.display='none';}
+}
+</script>
+</body>
+</html>
