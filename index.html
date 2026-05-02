@@ -372,6 +372,19 @@
   .pro-note { text-align:center; font-size:12px; color:var(--muted); margin-top:12px; }
 
   /* ── FAQ ── */
+  /* Articles Section */
+  .articles-section { max-width:1160px; margin:48px auto 0; padding:0 24px; }
+  .articles-section h2 { font-size:22px; font-weight:800; margin-bottom:20px; display:flex; align-items:center; gap:12px; }
+  .articles-section h2 span { color:var(--primary); }
+  .articles-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .article-card { background:var(--card); border:1px solid var(--border); border-radius:18px; padding:22px 20px; text-decoration:none; color:var(--text); transition:all 0.2s; position:relative; overflow:hidden; }
+  .article-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--primary),var(--primary2)); transform:scaleX(0); transition:transform 0.3s; }
+  .article-card:hover { border-color:var(--primary); transform:translateY(-3px); box-shadow:0 8px 30px rgba(230,57,70,0.15); }
+  .article-card:hover::before { transform:scaleX(1); }
+  .article-tag { display:inline-block; background:rgba(230,57,70,0.1); color:var(--primary); font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; margin-bottom:10px; border:1px solid rgba(230,57,70,0.2); }
+  .article-title { font-size:16px; font-weight:800; margin-bottom:8px; line-height:1.4; }
+  .article-desc { font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:14px; }
+  .article-read { font-size:12px; color:var(--primary); font-weight:700; }
   .faq-section { max-width:800px; margin:40px auto; padding:0 20px; }
   .faq-section h2 { font-size:22px; font-weight:800; text-align:center; margin-bottom:24px; color:var(--text); }
   .faq-section h2 span { color:var(--primary); }
@@ -471,6 +484,8 @@
     .section-header { margin:24px 0 12px; }
     .faq-section { padding:32px 12px 20px; }
     .pro-banner h3 { font-size:14px; }
+    .articles-section { padding:0 12px; margin-top:32px; }
+    .articles-grid { grid-template-columns:1fr; gap:12px; }
   }
   @media(max-width:400px) {
     .tools-grid { grid-template-columns:repeat(2,1fr); gap:6px; }
@@ -624,10 +639,9 @@
       <span class="tool-icon">📸</span><div class="tool-name">صور إلى PDF</div>
       <div class="tool-desc">حوّل JPG/PNG إلى PDF</div><span class="tool-tag">IMG→PDF</span>
     </div>
-    <div class="tool-card" style="--accent:#ffd60a" onclick="openPro()">
-      <div class="pro-tag">PRO</div>
+    <div class="tool-card" style="--accent:#3a86ff" onclick="location.href='word-to-pdf.html'">
       <span class="tool-icon">📝</span><div class="tool-name">Word إلى PDF</div>
-      <div class="tool-desc">تحويل مستندات Word إلى PDF</div><span class="tool-tag">WORD→PDF</span>
+      <div class="tool-desc">تحويل مستندات DOCX إلى PDF مجاناً</div><span class="tool-tag">WORD→PDF</span>
     </div>
     <div class="tool-card" style="--accent:#ffd60a" onclick="openPro()">
       <div class="pro-tag">PRO</div>
@@ -756,6 +770,31 @@
     <div class="pro-unlocked-badge" id="pro-unlocked-badge">✅ Pro مفعّل — استمتع بجميع الأدوات!</div>
   </div>
 </div>
+
+<!-- Articles Section -->
+<section class="articles-section" aria-label="مقالات ودروس">
+  <h2>📚 مقالات و<span>دروس</span></h2>
+  <div class="articles-grid">
+    <a class="article-card" href="how-to-compress-pdf.html">
+      <div class="article-tag">دليل</div>
+      <div class="article-title">كيف تضغط ملف PDF وتقلل حجمه؟</div>
+      <div class="article-desc">دليل شامل لتصغير حجم PDF للإرسال عبر الإيميل أو WhatsApp بدون فقدان الجودة</div>
+      <div class="article-read">اقرأ الدليل ←</div>
+    </a>
+    <a class="article-card" href="merge-pdf-online.html">
+      <div class="article-tag">دليل</div>
+      <div class="article-title">كيف تدمج ملفين PDF في ملف واحد؟</div>
+      <div class="article-desc">خطوات دمج PDF اون لاين بدون برامج أو اشتراك — مع خاصية إعادة الترتيب بالسحب</div>
+      <div class="article-read">اقرأ الدليل ←</div>
+    </a>
+    <a class="article-card" href="pdf-to-image-converter.html">
+      <div class="article-tag">دليل</div>
+      <div class="article-title">كيف تحوّل PDF إلى صورة PNG أو JPG؟</div>
+      <div class="article-desc">دليل تحويل صفحات PDF إلى صور عالية الجودة — مقارنة دقة 72/144/216 DPI</div>
+      <div class="article-read">اقرأ الدليل ←</div>
+    </a>
+  </div>
+</section>
 
 <!-- FAQ Section -->
 <section class="faq-section" aria-label="الأسئلة الشائعة">
