@@ -198,8 +198,7 @@
 <!-- Favicon -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e63946'/><text y='.9em' font-size='60' x='10' fill='white'>E</text></svg>">
 
-<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-<script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+<!-- المكتبات تُحمَّل عند الحاجة فقط (Lazy Load) لتسريع الصفحة -->
 
 <style>
   :root {
@@ -372,6 +371,21 @@
   .pro-note { text-align:center; font-size:12px; color:var(--muted); margin-top:12px; }
 
   /* ── FAQ ── */
+  /* History Section */
+  .history-section { max-width:1160px; margin:40px auto 0; padding:0 24px; display:none; }
+  .history-section.visible { display:block; }
+  .history-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .history-header h2 { font-size:18px; font-weight:800; }
+  .history-header h2 span { color:var(--primary); }
+  .history-clear { background:none; border:1px solid var(--border); color:var(--muted); padding:5px 14px; border-radius:8px; font-size:12px; cursor:pointer; font-family:inherit; transition:all 0.2s; }
+  .history-clear:hover { border-color:var(--primary); color:var(--primary); }
+  .history-list { display:flex; flex-direction:column; gap:8px; }
+  .history-item { display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 16px; font-size:13px; }
+  .history-icon { font-size:22px; flex-shrink:0; }
+  .history-info { flex:1; min-width:0; }
+  .history-name { font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .history-meta { font-size:11px; color:var(--muted); margin-top:2px; }
+  .history-op { background:rgba(230,57,70,0.1); color:var(--primary); font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap; }
   /* Articles Section */
   .articles-section { max-width:1160px; margin:48px auto 0; padding:0 24px; }
   .articles-section h2 { font-size:22px; font-weight:800; margin-bottom:20px; display:flex; align-items:center; gap:12px; }
@@ -486,6 +500,8 @@
     .pro-banner h3 { font-size:14px; }
     .articles-section { padding:0 12px; margin-top:32px; }
     .articles-grid { grid-template-columns:1fr; gap:12px; }
+    .history-section { padding:0 12px; margin-top:24px; }
+    .history-op { display:none; }
   }
   @media(max-width:400px) {
     .tools-grid { grid-template-columns:repeat(2,1fr); gap:6px; }
@@ -776,6 +792,15 @@
   </div>
 </div>
 
+<!-- History Section -->
+<section class="history-section" id="history-section" aria-label="سجل العمليات">
+  <div class="history-header">
+    <h2>🕐 آخر <span>عملياتك</span></h2>
+    <button class="history-clear" onclick="clearHistory()">مسح السجل</button>
+  </div>
+  <div class="history-list" id="history-list"></div>
+</section>
+
 <!-- Articles Section -->
 <section class="articles-section" aria-label="مقالات ودروس">
   <h2>📚 مقالات و<span>دروس</span></h2>
@@ -892,7 +917,32 @@
 </footer>
 
 <script>
-const { PDFDocument, degrees, rgb, StandardFonts } = PDFLib;
+// ── Lazy Load للمكتبات ────────────────────────────────────
+let _libsLoaded = false;
+let _libsPromise = null;
+function loadLibs() {
+  if (_libsLoaded) return Promise.resolve();
+  if (_libsPromise) return _libsPromise;
+  _libsPromise = new Promise((resolve, reject) => {
+    const s1 = document.createElement('script');
+    s1.src = 'https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+    s1.onload = () => {
+      const s2 = document.createElement('script');
+      s2.src = 'https://unpkg.com/downloadjs@1.4.7/download.min.js';
+      s2.onload = () => { _libsLoaded = true; resolve(); };
+      s2.onerror = reject;
+      document.head.appendChild(s2);
+    };
+    s1.onerror = reject;
+    document.head.appendChild(s1);
+  });
+  return _libsPromise;
+}
+function getPDF() { return window.PDFLib; }
+function getDegrees() { return window.PDFLib.degrees; }
+function getRgb() { return window.PDFLib.rgb; }
+function getStandardFonts() { return window.PDFLib.StandardFonts; }
+let PDFDocument, degrees, rgb, StandardFonts;
 
 // ── FAQ ────────────────────────────────────────────────
 function toggleFaq(el) {
@@ -1070,8 +1120,19 @@ const TOOLS = {
 
 let activeFiles={};
 function triggerFile(id){document.getElementById('fi-'+id)?.click();}
-function openTool(name){
+async function openTool(name){
   const t=TOOLS[name]; if(!t) return;
+  // Lazy load المكتبات عند أول استخدام
+  if(!_libsLoaded){
+    const btn = document.querySelector(`[onclick="openTool('${name}')"]`);
+    const origText = btn ? btn.innerHTML : '';
+    if(btn) btn.innerHTML = '⏳ تحميل...';
+    try {
+      await loadLibs();
+      ({ PDFDocument, degrees, rgb, StandardFonts } = PDFLib);
+    } catch(e) { alert('تعذّر تحميل المكتبة. تأكد من اتصالك بالإنترنت.'); if(btn) btn.innerHTML=origText; return; }
+    if(btn) btn.innerHTML = origText;
+  }
   const id=name+'_'+Date.now(); activeFiles[id]=[];
   document.getElementById('modal-content').innerHTML=`<div class="modal-icon">${t.icon}</div><h2>${t.title}</h2><p class="modal-sub">${t.sub}</p>${t.render(id)}`;
   document.getElementById('overlay').classList.add('active');
@@ -1079,6 +1140,50 @@ function openTool(name){
   if(name==='sign') setTimeout(()=>setupSignatureCanvas(id),80);
 }
 function closeModal(){document.getElementById('overlay').classList.remove('active');activeFiles={};}
+
+// ── سجل العمليات (localStorage) ──────────────────────────
+const HISTORY_KEY = 'easypdf_history';
+const OP_ICONS = {merge:'🔗',split:'✂️',rotate:'🔄',compress:'🗜️',watermark:'💧',pagenums:'🔢',pdf2img:'🖼️',pdf2txt:'📄',img2pdf:'📸',deletepages:'🗑️',protect:'🔒',pdf2word:'📝',sign:'✍️',unlock:'🔓',reorder:'🔁'};
+const OP_NAMES = {merge:'دمج PDF',split:'تقسيم PDF',rotate:'تدوير',compress:'ضغط PDF',watermark:'علامة مائية',pagenums:'ترقيم',pdf2img:'PDF إلى صور',pdf2txt:'PDF إلى نص',img2pdf:'صور إلى PDF',deletepages:'حذف صفحات',protect:'حماية PDF',pdf2word:'PDF إلى Word',sign:'توقيع',unlock:'فك تشفير',reorder:'إعادة ترتيب'};
+
+function addToHistory(toolName, fileName, fileSize) {
+  const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+  history.unshift({ tool: toolName, name: fileName, size: fileSize, time: Date.now() });
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0,5)));
+  renderHistory();
+}
+
+function renderHistory() {
+  const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+  const section = document.getElementById('history-section');
+  const list = document.getElementById('history-list');
+  if (!history.length) { section.classList.remove('visible'); return; }
+  section.classList.add('visible');
+  const timeAgo = t => {
+    const d = (Date.now()-t)/1000;
+    if(d<60) return 'الآن';
+    if(d<3600) return Math.floor(d/60)+' دقيقة';
+    if(d<86400) return Math.floor(d/3600)+' ساعة';
+    return Math.floor(d/86400)+' يوم';
+  };
+  list.innerHTML = history.map(h => `
+    <div class="history-item">
+      <span class="history-icon">${OP_ICONS[h.tool]||'📄'}</span>
+      <div class="history-info">
+        <div class="history-name">${h.name}</div>
+        <div class="history-meta">${timeAgo(h.time)} · ${h.size||''}</div>
+      </div>
+      <span class="history-op">${OP_NAMES[h.tool]||h.tool}</span>
+    </div>`).join('');
+}
+
+function clearHistory() {
+  localStorage.removeItem(HISTORY_KEY);
+  renderHistory();
+}
+
+// عرض السجل عند تحميل الصفحة
+renderHistory();
 function closeIfOutside(e){if(e.target.id==='overlay')closeModal();}
 function setupDrop(id,name){
   const multi=['merge','img2pdf'].includes(name);
@@ -1102,28 +1207,38 @@ function renderFL(id){
 const getFiles=id=>activeFiles[id]||[];
 const readFile=f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(new Uint8Array(e.target.result));r.onerror=rej;r.readAsArrayBuffer(f);});
 function showProg(id,pct,msg){document.getElementById('pw-'+id).style.display='block';document.getElementById('pf-'+id).style.width=pct+'%';document.getElementById('pt-'+id).textContent=msg;}
-function showDone(id){document.getElementById('rb-'+id).style.display='block';document.getElementById('pw-'+id).style.display='none';document.getElementById('btn-'+id).disabled=false;}
+function showDone(id, toolName){
+  document.getElementById('rb-'+id).style.display='block';
+  document.getElementById('pw-'+id).style.display='none';
+  document.getElementById('btn-'+id).disabled=false;
+  // سجّل العملية
+  const files = activeFiles[id];
+  if(toolName && files && files.length) {
+    const f = files[0];
+    addToHistory(toolName, f.name, f.size >= 1048576 ? (f.size/1048576).toFixed(1)+' MB' : Math.round(f.size/1024)+' KB');
+  }
+}
 function setBtn(id,d){const b=document.getElementById('btn-'+id);if(b)b.disabled=d;}
 
 async function doMerge(id){
   const files=getFiles(id);if(files.length<2)return alert('اختر ملفين على الأقل');setBtn(id,true);
-  try{const out=await PDFDocument.create();for(let i=0;i<files.length;i++){showProg(id,(i/files.length)*88,`دمج: ${files[i].name}`);const doc=await PDFDocument.load(await readFile(files[i]),{ignoreEncryption:true});const pp=await out.copyPages(doc,doc.getPageIndices());pp.forEach(p=>out.addPage(p));}showProg(id,95,'حفظ...');download(await out.save(),'merged.pdf','application/pdf');showDone(id);}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+  try{const out=await PDFDocument.create();for(let i=0;i<files.length;i++){showProg(id,(i/files.length)*88,`دمج: ${files[i].name}`);const doc=await PDFDocument.load(await readFile(files[i]),{ignoreEncryption:true});const pp=await out.copyPages(doc,doc.getPageIndices());pp.forEach(p=>out.addPage(p));}showProg(id,95,'حفظ...');download(await out.save(),'merged.pdf','application/pdf');showDone(id,"merge");}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
 }
 async function doSplit(id){
   const files=getFiles(id);if(!files.length)return alert('اختر ملفاً');setBtn(id,true);
-  try{showProg(id,20,'قراءة الملف...');const src=await PDFDocument.load(await readFile(files[0]),{ignoreEncryption:true});const pages=parsePages(document.getElementById('pages-'+id).value,src.getPageCount());if(!pages.length)return alert('تحقق من الأرقام');showProg(id,60,'استخراج...');const out=await PDFDocument.create();const pp=await out.copyPages(src,pages.map(p=>p-1));pp.forEach(p=>out.addPage(p));download(await out.save(),'split.pdf','application/pdf');showDone(id);}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+  try{showProg(id,20,'قراءة الملف...');const src=await PDFDocument.load(await readFile(files[0]),{ignoreEncryption:true});const pages=parsePages(document.getElementById('pages-'+id).value,src.getPageCount());if(!pages.length)return alert('تحقق من الأرقام');showProg(id,60,'استخراج...');const out=await PDFDocument.create();const pp=await out.copyPages(src,pages.map(p=>p-1));pp.forEach(p=>out.addPage(p));download(await out.save(),'split.pdf','application/pdf');showDone(id,"split");}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
 }
 async function doRotate(id){
   const files=getFiles(id);if(!files.length)return alert('اختر ملفاً');setBtn(id,true);
-  try{showProg(id,30,'تدوير...');const angle=parseInt(document.getElementById('rot-'+id).value);const doc=await PDFDocument.load(await readFile(files[0]),{ignoreEncryption:true});doc.getPages().forEach(p=>p.setRotation(degrees((p.getRotation().angle+angle+360)%360)));download(await doc.save(),'rotated.pdf','application/pdf');showDone(id);}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+  try{showProg(id,30,'تدوير...');const angle=parseInt(document.getElementById('rot-'+id).value);const doc=await PDFDocument.load(await readFile(files[0]),{ignoreEncryption:true});doc.getPages().forEach(p=>p.setRotation(degrees((p.getRotation().angle+angle+360)%360)));download(await doc.save(),'rotated.pdf','application/pdf');showDone(id,"rotate");}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
 }
 async function doCompress(id){
   const files=getFiles(id);if(!files.length)return alert('اختر ملفاً');setBtn(id,true);
-  try{showProg(id,40,'ضغط...');const bytes=await readFile(files[0]);const doc=await PDFDocument.load(bytes,{ignoreEncryption:true});const out=await doc.save({useObjectStreams:true});const saved=Math.max(0,Math.round((1-out.length/bytes.length)*100));document.getElementById('compress-result-'+id).textContent=`تم! ${(bytes.length/1024).toFixed(0)}KB → ${(out.length/1024).toFixed(0)}KB (وفّرنا ${saved}%)`;download(out,'compressed.pdf','application/pdf');showDone(id);}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+  try{showProg(id,40,'ضغط...');const bytes=await readFile(files[0]);const doc=await PDFDocument.load(bytes,{ignoreEncryption:true});const out=await doc.save({useObjectStreams:true});const saved=Math.max(0,Math.round((1-out.length/bytes.length)*100));document.getElementById('compress-result-'+id).textContent=`تم! ${(bytes.length/1024).toFixed(0)}KB → ${(out.length/1024).toFixed(0)}KB (وفّرنا ${saved}%)`;download(out,'compressed.pdf','application/pdf');showDone(id,"compress");}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
 }
 async function doWatermark(id){
   const files=getFiles(id);if(!files.length)return alert('اختر ملفاً');const text=document.getElementById('wm-text-'+id).value||'DRAFT';const size=parseFloat(document.getElementById('wm-size-'+id).value)||60;const opacity=parseFloat(document.getElementById('wm-opacity-'+id).value)||0.15;setBtn(id,true);
-  try{const doc=await PDFDocument.load(await readFile(files[0]),{ignoreEncryption:true});const font=await doc.embedFont(StandardFonts.HelveticaBold);const pages=doc.getPages();for(let i=0;i<pages.length;i++){showProg(id,10+(i/pages.length)*80,`صفحة ${i+1}...`);const p=pages[i];const{width,height}=p.getSize();const tw=font.widthOfTextAtSize(text,size);p.drawText(text,{x:(width-tw)/2,y:(height-size)/2,size,font,opacity,color:rgb(0.7,0.1,0.1),rotate:degrees(45)});}download(await doc.save(),'watermarked.pdf','application/pdf');showDone(id);}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+  try{const doc=await PDFDocument.load(await readFile(files[0]),{ignoreEncryption:true});const font=await doc.embedFont(StandardFonts.HelveticaBold);const pages=doc.getPages();for(let i=0;i<pages.length;i++){showProg(id,10+(i/pages.length)*80,`صفحة ${i+1}...`);const p=pages[i];const{width,height}=p.getSize();const tw=font.widthOfTextAtSize(text,size);p.drawText(text,{x:(width-tw)/2,y:(height-size)/2,size,font,opacity,color:rgb(0.7,0.1,0.1),rotate:degrees(45)});}download(await doc.save(),'watermarked.pdf','application/pdf');showDone(id,"watermark");}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
 }
 async function doPageNumbers(id){
   const files=getFiles(id);if(!files.length)return alert('اختر ملفاً');const start=parseInt(document.getElementById('pn-start-'+id).value)||1;const pos=document.getElementById('pn-pos-'+id).value;setBtn(id,true);
@@ -1131,15 +1246,15 @@ async function doPageNumbers(id){
 }
 async function doPdf2Img(id){
   const files=getFiles(id);if(!files.length)return alert('اختر ملفاً');const scale=parseFloat(document.getElementById('dpi-'+id).value)||2;setBtn(id,true);
-  try{showProg(id,10,'تحميل...');if(!window.pdfjsLib){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}const pdf=await pdfjsLib.getDocument(await files[0].arrayBuffer()).promise;document.getElementById('img-result-'+id).textContent=`تم تحويل ${pdf.numPages} صفحة!`;for(let i=1;i<=pdf.numPages;i++){showProg(id,15+(i/pdf.numPages)*80,`صفحة ${i}/${pdf.numPages}...`);const page=await pdf.getPage(i);const vp=page.getViewport({scale});const canvas=document.createElement('canvas');canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;await new Promise(r=>canvas.toBlob(b=>{download(b,`page_${i}.png`,'image/png');setTimeout(r,200)},'image/png'));}showDone(id);}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+  try{showProg(id,10,'تحميل...');if(!window.pdfjsLib){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}const pdf=await pdfjsLib.getDocument(await files[0].arrayBuffer()).promise;document.getElementById('img-result-'+id).textContent=`تم تحويل ${pdf.numPages} صفحة!`;for(let i=1;i<=pdf.numPages;i++){showProg(id,15+(i/pdf.numPages)*80,`صفحة ${i}/${pdf.numPages}...`);const page=await pdf.getPage(i);const vp=page.getViewport({scale});const canvas=document.createElement('canvas');canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;await new Promise(r=>canvas.toBlob(b=>{download(b,`page_${i}.png`,'image/png');setTimeout(r,200)},'image/png'));}showDone(id,"pdf2img");}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
 }
 async function doPdf2Txt(id){
   const files=getFiles(id);if(!files.length)return alert('اختر ملفاً');setBtn(id,true);
-  try{showProg(id,10,'تحميل...');if(!window.pdfjsLib){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}const pdf=await pdfjsLib.getDocument(await files[0].arrayBuffer()).promise;let txt='';for(let i=1;i<=pdf.numPages;i++){showProg(id,15+(i/pdf.numPages)*80,`صفحة ${i}...`);const page=await pdf.getPage(i);const tc=await page.getTextContent();txt+=`\n\n--- صفحة ${i} ---\n`+tc.items.map(x=>x.str).join(' ');}download(new Blob([txt],{type:'text/plain;charset=utf-8'}),'text.txt','text/plain');showDone(id);}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+  try{showProg(id,10,'تحميل...');if(!window.pdfjsLib){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}const pdf=await pdfjsLib.getDocument(await files[0].arrayBuffer()).promise;let txt='';for(let i=1;i<=pdf.numPages;i++){showProg(id,15+(i/pdf.numPages)*80,`صفحة ${i}...`);const page=await pdf.getPage(i);const tc=await page.getTextContent();txt+=`\n\n--- صفحة ${i} ---\n`+tc.items.map(x=>x.str).join(' ');}download(new Blob([txt],{type:'text/plain;charset=utf-8'}),'text.txt','text/plain');showDone(id,"pdf2txt");}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
 }
 async function doImg2Pdf(id){
   const files=getFiles(id);if(!files.length)return alert('اختر صورة');setBtn(id,true);
-  try{const doc=await PDFDocument.create();for(let i=0;i<files.length;i++){showProg(id,(i/files.length)*90,`صورة ${i+1}/${files.length}...`);const bytes=await readFile(files[i]);const ext=files[i].name.split('.').pop().toLowerCase();const img=ext==='png'?await doc.embedPng(bytes):await doc.embedJpg(bytes);const page=doc.addPage([img.width,img.height]);page.drawImage(img,{x:0,y:0,width:img.width,height:img.height});}download(await doc.save(),'images.pdf','application/pdf');showDone(id);}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
+  try{const doc=await PDFDocument.create();for(let i=0;i<files.length;i++){showProg(id,(i/files.length)*90,`صورة ${i+1}/${files.length}...`);const bytes=await readFile(files[i]);const ext=files[i].name.split('.').pop().toLowerCase();const img=ext==='png'?await doc.embedPng(bytes):await doc.embedJpg(bytes);const page=doc.addPage([img.width,img.height]);page.drawImage(img,{x:0,y:0,width:img.width,height:img.height});}download(await doc.save(),'images.pdf','application/pdf');showDone(id,"img2pdf");}catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
 }
 // ── حذف صفحات ────────────────────────────────────────────
 async function doDeletePages(id){
@@ -1164,7 +1279,7 @@ async function doDeletePages(id){
     download(out,'deleted_pages.pdf','application/pdf');
     document.getElementById('dp-res-'+id).textContent=
       `✅ تم حذف ${toDelete.size} صفحة — تبقّى ${total-toDelete.size} صفحة`;
-    showDone(id);
+    showDone(id,"deletepages");
   }catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
 }
 
@@ -1198,7 +1313,7 @@ async function doProtect(id){
     // تحديث رسالة النجاح لتكون صادقة
     const rb=document.getElementById('rb-'+id);
     if(rb) rb.querySelector('p').textContent='تمت إضافة علامة الحماية في البيانات الوصفية.';
-    showDone(id);
+    showDone(id,"protect");
   }catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
 }
 
@@ -1308,7 +1423,7 @@ async function doUnlock(id){
     const doc=await PDFDocument.load(await readFile(files[0]),{password:pwd,ignoreEncryption:false});
     showProg(id,80,'حفظ...');
     download(await doc.save(),'unlocked.pdf','application/pdf');
-    showDone(id);
+    showDone(id,"unlock");
   }catch(e){alert('خطأ: '+e.message+'\nتأكد من كلمة المرور');setBtn(id,false);}
 }
 
@@ -1349,7 +1464,7 @@ async function doSign(id){
     page.drawImage(img,{x:width/2-w/2,y:30,width:w,height:h});
     showProg(id,90,'حفظ...');
     download(await doc.save(),'signed.pdf','application/pdf');
-    showDone(id);
+    showDone(id,"sign");
   }catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
 }
 
@@ -1453,7 +1568,7 @@ async function doReorder(id){
     pp.forEach(p=>out.addPage(p));
     showProg(id,90,'حفظ...');
     download(await out.save(),'reordered.pdf','application/pdf');
-    showDone(id);
+    showDone(id,"reorder");
   }catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
 }
 
