@@ -67,14 +67,28 @@ header{background:rgba(13,13,26,0.96);border-bottom:1px solid var(--border);padd
 .progress-bar{background:var(--border);border-radius:20px;height:8px;overflow:hidden;margin-bottom:8px;}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),#ff6b6b);border-radius:20px;transition:width 0.4s ease;width:0%;}
 .progress-text{font-size:12px;color:var(--muted);text-align:center;}
-.result-box{display:none;background:rgba(6,214,160,0.08);border:1px solid rgba(6,214,160,0.3);border-radius:12px;padding:18px;text-align:center;margin-bottom:16px;}
-.result-box .res-main{font-size:18px;font-weight:800;color:var(--success);margin-bottom:4px;}
-.result-box .res-sub{font-size:13px;color:var(--muted);}
-.res-bars{display:flex;gap:8px;align-items:center;justify-content:center;margin:12px 0 4px;}
-.res-bar-wrap{flex:1;text-align:center;}
-.res-bar-label{font-size:11px;color:var(--muted);margin-bottom:4px;}
-.res-bar-val{font-size:15px;font-weight:700;}
-.res-arrow{font-size:20px;color:var(--success);}
+/* Progress Steps */
+.p-steps{display:flex;margin-bottom:14px;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+.p-step{flex:1;text-align:center;padding:10px 4px;font-size:11px;color:var(--muted);background:var(--card2);border-left:1px solid var(--border);transition:all 0.3s;}
+.p-step:last-child{border-left:none;}
+.p-step.active{color:var(--primary);background:rgba(230,57,70,0.08);}
+.p-step.done{color:var(--success);background:rgba(6,214,160,0.06);}
+.p-step-icon{font-size:16px;display:block;margin-bottom:3px;}
+.pct-num{font-size:22px;font-weight:900;color:var(--primary);text-align:center;margin-bottom:6px;}
+/* Result Box */
+.result-box{display:none;background:rgba(6,214,160,0.06);border:1px solid rgba(6,214,160,0.25);border-radius:14px;padding:20px 18px;margin-bottom:16px;}
+.savings-badge{font-size:42px;font-weight:900;color:var(--success);text-align:center;line-height:1;margin-bottom:4px;}
+.savings-label{font-size:13px;color:var(--muted);text-align:center;margin-bottom:16px;}
+.ba-wrap{margin:0 0 14px;}
+.ba-row{margin-bottom:10px;}
+.ba-meta{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;}
+.ba-meta span:first-child{color:var(--muted);}
+.ba-meta span:last-child{font-weight:700;}
+.ba-bg{height:10px;background:var(--border);border-radius:20px;overflow:hidden;}
+.ba-fill{height:100%;border-radius:20px;width:0;transition:width 0.9s ease;}
+.ba-fill.before{background:var(--muted);}
+.ba-fill.after{background:linear-gradient(90deg,var(--success),#00cec9);}
+.res-sub{font-size:12px;color:var(--muted);text-align:center;}
 .btn-again{width:100%;padding:11px;background:var(--card2);color:var(--muted);border:1px solid var(--border);border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px;}
 .btn-again:hover{color:var(--text);border-color:var(--muted);}
 .guide{max-width:800px;margin:0 auto;padding:0 24px 60px;}
@@ -151,17 +165,28 @@ footer{text-align:center;padding:36px 20px;color:var(--muted);font-size:13px;bor
     <div id="est-sub" style="font-size:11px;color:var(--muted);margin-top:2px;"></div>
   </div>
   <div class="progress-wrap" id="pw">
+    <div class="p-steps">
+      <div class="p-step" id="ps1"><span class="p-step-icon">📂</span>قراءة</div>
+      <div class="p-step" id="ps2"><span class="p-step-icon">🗜️</span>ضغط</div>
+      <div class="p-step" id="ps3"><span class="p-step-icon">💾</span>حفظ</div>
+    </div>
+    <div class="pct-num" id="pct-num">0%</div>
     <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
-    <div class="progress-text" id="pt">جاري الضغط...</div>
+    <div class="progress-text" id="pt">جاري القراءة...</div>
   </div>
   <div class="result-box" id="rb">
-    <div class="res-main" id="cres-pct"></div>
-    <div class="res-bars">
-      <div class="res-bar-wrap"><div class="res-bar-label">الحجم الأصلي</div><div class="res-bar-val" id="cres-orig"></div></div>
-      <div class="res-arrow">→</div>
-      <div class="res-bar-wrap"><div class="res-bar-label">بعد الضغط</div><div class="res-bar-val" id="cres-new" style="color:var(--success)"></div></div>
+    <div class="savings-badge" id="cres-pct">0%</div>
+    <div class="savings-label" id="cres-sub">تم الضغط</div>
+    <div class="ba-wrap">
+      <div class="ba-row">
+        <div class="ba-meta"><span>📄 الحجم الأصلي</span><span id="cres-orig"></span></div>
+        <div class="ba-bg"><div class="ba-fill before" id="ba-before"></div></div>
+      </div>
+      <div class="ba-row">
+        <div class="ba-meta"><span>✅ بعد الضغط</span><span id="cres-new" style="color:var(--success)"></span></div>
+        <div class="ba-bg"><div class="ba-fill after" id="ba-after"></div></div>
+      </div>
     </div>
-    <div class="res-sub" id="cres-sub"></div>
     <button class="btn-again" onclick="resetTool()">🔄 ضغط ملف آخر</button>
   </div>
   <button class="btn" id="cbtn" onclick="doCompress()">🗜️ ضغط الملف الآن</button>
@@ -294,9 +319,16 @@ function updateEstimate() {
   box.style.display = 'block';
 }
 
-function setProgress(pct, msg) {
+function setProgress(pct, msg, step) {
   document.getElementById('pf').style.width = pct + '%';
   document.getElementById('pt').textContent = msg;
+  document.getElementById('pct-num').textContent = pct + '%';
+  if(step) {
+    ['ps1','ps2','ps3'].forEach((id,i) => {
+      const el = document.getElementById(id);
+      el.className = 'p-step' + (i+1 < step ? ' done' : i+1 === step ? ' active' : '');
+    });
+  }
 }
 
 function formatSize(bytes) {
@@ -333,7 +365,9 @@ function resetTool() {
   document.getElementById('pw').style.display = 'none';
   document.getElementById('est-box').style.display = 'none';
   document.getElementById('cbtn').disabled = false;
-  setProgress(0, '');
+  setProgress(0, '', 1);
+  document.getElementById('ba-before').style.width = '0';
+  document.getElementById('ba-after').style.width = '0';
 }
 
 // ── الضغط الحقيقي باستخدام pdf.js + pdf-lib ─────────────
@@ -343,7 +377,7 @@ async function doCompress() {
   btn.disabled = true;
   document.getElementById('rb').style.display = 'none';
   document.getElementById('pw').style.display = 'block';
-  setProgress(5, 'جاري قراءة الملف...');
+  setProgress(5, 'جاري قراءة الملف...', 1);
 
   const originalSize = file.size;
   const cfg = QUALITY_SETTINGS[quality];
@@ -352,7 +386,7 @@ async function doCompress() {
     const arrayBuffer = await file.arrayBuffer();
     const uint8 = new Uint8Array(arrayBuffer);
 
-    setProgress(10, 'جاري تحليل الصفحات...');
+    setProgress(10, 'جاري تحليل الصفحات...', 1);
 
     // تحميل PDF بـ pdf.js للرسم
     const pdfDoc = await pdfjsLib.getDocument({ data: uint8 }).promise;
@@ -363,7 +397,7 @@ async function doCompress() {
 
     for (let i = 1; i <= totalPages; i++) {
       const pct = 10 + Math.round((i / totalPages) * 75);
-      setProgress(pct, `ضغط صفحة ${i} من ${totalPages}...`);
+      setProgress(pct, `ضغط صفحة ${i} من ${totalPages}...`, 2);
 
       const page = await pdfDoc.getPage(i);
       const viewport = page.getViewport({ scale: cfg.scale });
@@ -390,20 +424,29 @@ async function doCompress() {
       });
     }
 
-    setProgress(90, 'جاري حفظ الملف...');
+    setProgress(90, 'جاري حفظ الملف...', 3);
     const compressed = await newPdf.save({ useObjectStreams: true });
-    setProgress(100, 'اكتمل!');
+    setProgress(100, 'اكتمل! ✅', 3);
 
     const newSize = compressed.length;
     const savedPct = Math.round((1 - newSize / originalSize) * 100);
 
-    // عرض النتيجة
+    // عرض النتيجة — Before/After بصري
     document.getElementById('cres-pct').textContent =
-      savedPct > 0 ? `✅ وفّرنا ${savedPct}% من الحجم!` : '✅ تم تحسين الملف';
+      savedPct > 0 ? `${savedPct}%` : '✅';
+    document.getElementById('cres-sub').textContent =
+      savedPct > 0
+        ? `وفّرنا ${savedPct}% · ${QUALITY_SETTINGS[quality].label} · ${totalPages} صفحة`
+        : `تم التحسين · ${QUALITY_SETTINGS[quality].label} · ${totalPages} صفحة`;
     document.getElementById('cres-orig').textContent = formatSize(originalSize);
     document.getElementById('cres-new').textContent  = formatSize(newSize);
-    document.getElementById('cres-sub').textContent  =
-      `مستوى الضغط: ${QUALITY_SETTINGS[quality].label} · ${totalPages} صفحة`;
+
+    // الأشرطة البصرية
+    const maxSize = Math.max(originalSize, newSize);
+    setTimeout(() => {
+      document.getElementById('ba-before').style.width = (originalSize / maxSize * 100) + '%';
+      document.getElementById('ba-after').style.width  = (newSize / maxSize * 100) + '%';
+    }, 200);
 
     setTimeout(() => {
       document.getElementById('pw').style.display = 'none';
