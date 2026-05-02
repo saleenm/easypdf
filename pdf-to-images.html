@@ -56,6 +56,14 @@ header{background:rgba(13,13,26,0.96);border-bottom:1px solid var(--border);padd
 .progress-text{font-size:12px;color:var(--muted);text-align:center;}
 .result-box{display:none;background:rgba(6,214,160,0.08);border:1px solid rgba(6,214,160,0.3);border-radius:12px;padding:18px;text-align:center;margin-bottom:16px;}
 .result-box p{font-size:14px;color:var(--success);font-weight:600;}
+/* Progress Steps */
+.p-steps{display:flex;margin-bottom:14px;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+.p-step{flex:1;text-align:center;padding:10px 4px;font-size:11px;color:var(--muted);background:var(--card2);border-left:1px solid var(--border);transition:all 0.3s;}
+.p-step:last-child{border-left:none;}
+.p-step.active{color:var(--primary);background:rgba(230,57,70,0.08);}
+.p-step.done{color:var(--success);background:rgba(6,214,160,0.06);}
+.p-step-icon{font-size:16px;display:block;margin-bottom:3px;}
+.pct-num{font-size:20px;font-weight:900;color:var(--primary);text-align:center;margin-bottom:6px;}
 .guide{max-width:800px;margin:0 auto;padding:0 24px 60px;}
 .guide h2{font-size:24px;font-weight:800;margin-bottom:16px;}
 .guide h2 span{color:var(--primary);}
@@ -116,11 +124,18 @@ footer{text-align:center;padding:36px 20px;color:var(--muted);font-size:13px;bor
     </select>
   </div>
   <div class="progress-wrap" id="pw">
+    <div class="p-steps">
+      <div class="p-step active" id="ps1"><span class="p-step-icon">📂</span>قراءة</div>
+      <div class="p-step" id="ps2"><span class="p-step-icon">🖼️</span>تحويل</div>
+      <div class="p-step" id="ps3"><span class="p-step-icon">⬇️</span>تحميل</div>
+    </div>
+    <div class="pct-num" id="pct-num">0%</div>
     <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
-    <div class="progress-text" id="pt">جاري التحويل...</div>
+    <div class="progress-text" id="pt">جاري القراءة...</div>
   </div>
   <div class="result-box" id="rb">
-    <p id="rres">تم التحويل!</p>
+    <div style="font-size:36px;text-align:center;margin-bottom:6px;">✅</div>
+    <p id="rres" style="font-size:15px;font-weight:800;color:var(--success);">تم التحويل!</p>
     <button class="btn-again" onclick="resetConvert()">🖼️ تحويل ملف آخر</button>
   </div>
   <button class="btn" id="cbtn" onclick="doConvert()">🖼️ تحويل إلى صور PNG</button>
@@ -226,23 +241,31 @@ function resetConvert(){
   document.getElementById('pw').style.display='none';
   document.getElementById('cbtn').disabled=false;
 }
+function setProgress(pct,msg,step){
+  document.getElementById('pf').style.width=pct+'%';
+  document.getElementById('pt').textContent=msg;
+  document.getElementById('pct-num').textContent=pct+'%';
+  if(step){['ps1','ps2','ps3'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    el.className='p-step'+(i+1<step?' done':i+1===step?' active':'');
+  });}
+}
+
 async function doConvert(){
   if(!file)return alert('اختر ملفاً أولاً');
   const btn=document.getElementById('cbtn'); btn.disabled=true;
   const scale=parseFloat(document.getElementById('dpi').value)||2;
   document.getElementById('pw').style.display='block';
-  document.getElementById('pf').style.width='10%';
-  document.getElementById('pt').textContent='تحميل المحرك...';
+  setProgress(10,'تحميل المحرك...',1);
   try{
     if(!window.pdfjsLib){
       await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
       pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     }
     const pdf=await pdfjsLib.getDocument(await file.arrayBuffer()).promise;
-    document.getElementById('rres').textContent=`تم تحويل ${pdf.numPages} صفحة!`;
+    setProgress(20,'جاري تحليل الصفحات...',1);
     for(let i=1;i<=pdf.numPages;i++){
-      document.getElementById('pf').style.width=(15+(i/pdf.numPages)*80)+'%';
-      document.getElementById('pt').textContent=`صفحة ${i}/${pdf.numPages}...`;
+      setProgress(Math.round(20+(i/pdf.numPages)*70),`تحويل صفحة ${i}/${pdf.numPages}...`,2);
       const page=await pdf.getPage(i);
       const vp=page.getViewport({scale});
       const canvas=document.createElement('canvas');
@@ -256,6 +279,8 @@ async function doConvert(){
         setTimeout(r,300);
       },'image/png'));
     }
+    setProgress(100,'اكتمل! ✅',3);
+    document.getElementById('rres').textContent=`تم تحويل ${pdf.numPages} صفحة بنجاح!`;
     document.getElementById('pw').style.display='none';
     document.getElementById('rb').style.display='block';
     btn.disabled=false;
