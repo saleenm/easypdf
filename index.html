@@ -447,16 +447,38 @@
   .lang-btn:hover:not(.active) { color:var(--text); }
 
   @media(max-width:768px) {
-    header { padding:0 16px; }
-    .hero { padding:44px 16px 32px; }
-    .hero h1 { font-size:32px; }
-    .tools-section { padding:24px 16px 48px; }
-    .tools-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
-    .features-bar { gap:20px; padding:14px 16px; }
-    .pro-banner { margin:0 16px; }
-    .modal { padding:26px 18px; }
+    header { padding:0 12px; height:56px; }
+    .logo-text { font-size:18px; }
+    .badge-free { display:none; }
+    .hero { padding:36px 16px 28px; }
+    .hero h1 { font-size:28px; }
+    .hero p { font-size:15px; }
+    .hero-stats { gap:24px; }
+    .stat-num { font-size:22px; }
+    .tools-section { padding:20px 12px 48px; }
+    .tools-grid { grid-template-columns:repeat(2,1fr); gap:8px; }
+    .tool-card { padding:16px 12px; }
+    .tool-icon { font-size:28px; }
+    .tool-name { font-size:13px; }
+    .tool-desc { font-size:11px; }
+    .features-bar { gap:16px; padding:12px 14px; flex-wrap:wrap; justify-content:center; }
+    .feature { min-width:140px; }
+    .pro-banner { margin:0 12px; padding:14px 16px; }
+    .modal { padding:22px 14px; max-height:92vh; }
     .row-2 { grid-template-columns:1fr; }
-    .ad-banner { padding:10px 16px; }
+    .ad-banner { padding:8px 12px; }
+    .drop-zone { padding:24px 14px; }
+    .section-header { margin:24px 0 12px; }
+    .faq-section { padding:32px 12px 20px; }
+    .pro-banner h3 { font-size:14px; }
+  }
+  @media(max-width:400px) {
+    .tools-grid { grid-template-columns:repeat(2,1fr); gap:6px; }
+    .tool-card { padding:12px 8px; }
+    .tool-icon { font-size:24px; margin-bottom:6px; }
+    .tool-name { font-size:12px; }
+    .tool-tag { display:none; }
+    .hero h1 { font-size:24px; }
   }
 </style>
 </head>
@@ -542,9 +564,9 @@
       <span class="tool-icon">🔄</span><div class="tool-name">تدوير الصفحات</div>
       <div class="tool-desc">دوّر صفحات الملف 90° أو 180°</div><span class="tool-tag">ROTATE</span>
     </div>
-    <div class="tool-card" style="--accent:#e63946" onclick="openTool('deletepages')">
+    <div class="tool-card" style="--accent:#e63946" onclick="location.href='delete-pages.html'">
       <span class="tool-icon">🗑️</span><div class="tool-name">حذف صفحات</div>
-      <div class="tool-desc">احذف صفحات معينة من الملف</div><span class="tool-tag">DELETE</span>
+      <div class="tool-desc">احذف صفحات معينة مع معاينة بصرية</div><span class="tool-tag">DELETE</span>
     </div>
     <div class="tool-card" style="--accent:#06d6a0" onclick="location.href='compress-pdf.html'">
       <span class="tool-icon">🗜️</span><div class="tool-name">ضغط PDF</div>
@@ -576,7 +598,7 @@
       <span class="tool-icon">🔢</span><div class="tool-name">ترقيم الصفحات</div>
       <div class="tool-desc">أضف أرقام في أسفل كل صفحة</div><span class="tool-tag">NUMBERS</span>
     </div>
-    <div class="tool-card" style="--accent:#e63946" onclick="openTool('protect')">
+    <div class="tool-card" style="--accent:#e63946" onclick="location.href='protect-pdf.html'">
       <span class="tool-icon">🔐</span><div class="tool-name">حماية PDF</div>
       <div class="tool-desc">أضف كلمة مرور لحماية الملف</div><span class="tool-tag">PROTECT</span>
     </div>
@@ -1152,6 +1174,63 @@ function parsePageRange(str,total){
 function parsePages(str,total){const s=new Set();str.split(',').forEach(p=>{const m=p.trim().match(/^(\d+)(?:-(\d+))?$/);if(!m)return;const a=+m[1],b=m[2]?+m[2]:a;for(let i=a;i<=Math.min(b,total);i++)s.add(i);});return[...s].sort((a,b)=>a-b);}
 function loadScript(src){return new Promise((res,rej)=>{if(document.querySelector(`script[src="${src}"]`))return res();const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s);});}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closePro();}});
+
+// ── Global Drag & Drop — سحب ملف على الصفحة مباشرة ───────
+(function(){
+  let dragCount=0;
+  const overlay=document.createElement('div');
+  overlay.id='global-drop-overlay';
+  overlay.innerHTML='<div class="gdo-inner"><div class="gdo-icon">📂</div><div class="gdo-text">أفلت الملف لفتح الأداة المناسبة</div></div>';
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(13,13,26,0.88);backdrop-filter:blur(6px);z-index:9999;display:none;align-items:center;justify-content:center;pointer-events:none;';
+  overlay.querySelector('.gdo-inner').style.cssText='text-align:center;border:2.5px dashed var(--primary);border-radius:24px;padding:48px 64px;';
+  overlay.querySelector('.gdo-icon').style.cssText='font-size:64px;margin-bottom:12px;';
+  overlay.querySelector('.gdo-text').style.cssText='font-size:22px;font-weight:700;color:var(--text);';
+  document.body.appendChild(overlay);
+  // استدعاء CSS var على عنصر خارج الـ cascade
+  overlay.style.setProperty('--primary','#e63946');
+
+  document.addEventListener('dragenter',e=>{
+    if(!e.dataTransfer.types.includes('Files'))return;
+    dragCount++;
+    if(dragCount===1){overlay.style.display='flex';}
+  });
+  document.addEventListener('dragleave',e=>{
+    dragCount=Math.max(0,dragCount-1);
+    if(dragCount===0){overlay.style.display='none';}
+  });
+  document.addEventListener('dragover',e=>{
+    if(e.dataTransfer.types.includes('Files'))e.preventDefault();
+  });
+  document.addEventListener('drop',e=>{
+    e.preventDefault();
+    dragCount=0; overlay.style.display='none';
+    const f=e.dataTransfer.files[0];
+    if(!f)return;
+    const ext=f.name.split('.').pop().toLowerCase();
+    if(ext==='pdf'){
+      // افتح أداة دمج لأن PDF يمكن استخدامه مع معظم الأدوات — نفتح modal ونضيف الملف
+      openTool('merge');
+      // انتظر حتى يُبنى المودال ثم أضف الملف
+      setTimeout(()=>{
+        const id=document.querySelector('#modal-content .file-input')?.closest('[id]')?.id?.replace('btn-','');
+        // أسهل: نبحث عن fi بـ id
+        const fi=document.querySelector('#modal-content input[type=file]');
+        if(fi){
+          const modalId=fi.id.replace('fi-','');
+          addFiles(modalId,[f],false);
+        }
+      },120);
+    } else if(['jpg','jpeg','png','webp'].includes(ext)){
+      openTool('img2pdf');
+      setTimeout(()=>{
+        const fi=document.querySelector('#modal-content input[type=file]');
+        if(fi){const modalId=fi.id.replace('fi-','');addFiles(modalId,[f],true);}
+      },120);
+    } else {
+      alert('اسحب ملف PDF أو صورة JPG/PNG');
+    }
+  });
+})();
 
 // ── Pro Unlock System ────────────────────────────────────
 function isProUnlocked(){return localStorage.getItem('epro')==='yes';}

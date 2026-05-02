@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حماية PDF بكلمة مرور مجاناً — EasyPDF</title>
+<meta name="description" content="أضف كلمة مرور لملف PDF لحمايته من الفتح غير المصرح. يعمل في المتصفح مباشرة بدون رفع ملفاتك لأي سيرفر. مجاني 100%.">
+<meta name="keywords" content="حماية PDF, كلمة مرور PDF, تشفير PDF, protect PDF, قفل PDF, password PDF مجاني">
+<link rel="canonical" href="https://saleenm.github.io/easypdf/protect-pdf.html">
+<meta property="og:title" content="حماية PDF بكلمة مرور — EasyPDF">
+<meta property="og:description" content="أضف كلمة مرور لحماية ملف PDF مجاناً. بدون رفع ملفاتك لأي سيرفر.">
+<meta property="og:url" content="https://saleenm.github.io/easypdf/protect-pdf.html">
+<meta property="og:type" content="website">
+<link rel="alternate" hreflang="ar" href="https://saleenm.github.io/easypdf/protect-pdf.html">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e63946'/><text y='.9em' font-size='60' x='10' fill='white'>E</text></svg>">
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+<style>
+:root{--primary:#e63946;--primary2:#c1121f;--dark:#0d0d1a;--card:#13132a;--card2:#1a1a35;--text:#f0f0f0;--muted:#7a8499;--border:#232340;--success:#06d6a0;--gold:#ffd60a;--radius:16px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--dark);color:var(--text);min-height:100vh;}
+header{background:rgba(13,13,26,0.96);border-bottom:1px solid var(--border);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--primary),var(--primary2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;}
+.logo-text{font-size:22px;font-weight:800;color:var(--text);}
+.logo-text span{color:var(--primary);}
+.back-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:10px;text-decoration:none;font-size:13px;transition:all 0.2s;}
+.back-btn:hover{color:var(--text);border-color:var(--primary);}
+.tool-hero{text-align:center;padding:48px 20px 36px;position:relative;}
+.tool-hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(230,57,70,0.10) 0%,transparent 65%);pointer-events:none;}
+.tool-badge{display:inline-block;background:rgba(230,57,70,0.12);color:var(--primary);border:1px solid rgba(230,57,70,0.25);font-size:13px;font-weight:600;padding:5px 16px;border-radius:20px;margin-bottom:16px;}
+.tool-hero h1{font-size:44px;font-weight:900;line-height:1.15;margin-bottom:12px;}
+.tool-hero h1 span{color:var(--primary);}
+.tool-hero p{font-size:16px;color:var(--muted);max-width:520px;margin:0 auto 32px;line-height:1.6;}
+.tool-box{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:36px 32px;max-width:560px;margin:0 auto 48px;}
+.drop-zone{border:2px dashed var(--border);border-radius:14px;padding:36px 20px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:16px;background:rgba(255,255,255,0.02);}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--primary);background:rgba(230,57,70,0.06);}
+.drop-zone .dz-icon{font-size:40px;margin-bottom:10px;}
+.drop-zone p{color:var(--muted);font-size:14px;line-height:1.6;}
+.drop-zone strong{color:var(--primary);}
+.file-input{display:none;}
+.file-list{margin-bottom:14px;}
+.file-item{display:flex;align-items:center;background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:8px;font-size:13px;gap:8px;}
+.file-item .fname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.file-item .fsize{color:var(--muted);font-size:11px;}
+.control-group{margin-bottom:15px;}
+.control-group label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
+.control-group input{width:100%;background:var(--dark);border:1px solid var(--border);color:var(--text);padding:11px 14px;border-radius:10px;font-size:14px;outline:none;transition:border-color 0.2s;font-family:inherit;}
+.control-group input:focus{border-color:var(--primary);}
+.pw-strength{height:4px;border-radius:4px;margin-top:6px;transition:all .3s;background:var(--border);}
+.pw-strength.weak{background:#e63946;width:33%;}
+.pw-strength.medium{background:#fb8500;width:66%;}
+.pw-strength.strong{background:var(--success);width:100%;}
+.pw-strength-label{font-size:11px;margin-top:4px;color:var(--muted);}
+/* Warning box */
+.warn-box{background:rgba(255,214,10,0.07);border:1px solid rgba(255,214,10,0.25);border-radius:10px;padding:14px 16px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;}
+.warn-box .wi{font-size:18px;flex-shrink:0;margin-top:1px;}
+.warn-box p{font-size:12px;color:var(--muted);line-height:1.6;margin:0;}
+.warn-box strong{color:var(--gold);}
+.btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;box-shadow:0 4px 20px rgba(230,57,70,0.3);}
+.btn:hover{transform:translateY(-2px);}
+.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.progress-wrap{display:none;margin-bottom:16px;}
+.progress-bar{background:var(--border);border-radius:20px;height:6px;overflow:hidden;margin-bottom:8px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),#ff6b6b);border-radius:20px;transition:width 0.3s;width:0%;}
+.progress-text{font-size:12px;color:var(--muted);text-align:center;}
+.result-box{display:none;background:rgba(6,214,160,0.08);border:1px solid rgba(6,214,160,0.3);border-radius:12px;padding:18px;text-align:center;margin-bottom:16px;}
+.result-box p{font-size:14px;color:var(--success);font-weight:600;}
+.btn-again{width:100%;padding:11px;background:var(--card2);color:var(--muted);border:1px solid var(--border);border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px;}
+.btn-again:hover{color:var(--text);border-color:var(--muted);}
+.guide{max-width:800px;margin:0 auto;padding:0 24px 60px;}
+.guide h2{font-size:24px;font-weight:800;margin-bottom:16px;}
+.guide h2 span{color:var(--primary);}
+.guide h3{font-size:18px;font-weight:700;margin:28px 0 12px;}
+.guide p{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:14px;}
+.guide ul{padding-right:22px;color:var(--muted);font-size:15px;line-height:2;}
+.guide li{margin-bottom:6px;}
+.faq-item{border:1px solid var(--border);border-radius:12px;margin-bottom:10px;background:var(--card);}
+.faq-q{padding:16px 20px;font-size:14px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.faq-q:hover{background:var(--card2);}
+.faq-arrow{font-size:12px;color:var(--muted);transition:transform 0.25s;}
+.faq-item.open .faq-arrow{transform:rotate(180deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.3s ease;}
+.faq-item.open .faq-a{max-height:300px;}
+.faq-a p{padding:0 20px 16px;font-size:13px;color:var(--muted);line-height:1.7;}
+footer{text-align:center;padding:36px 20px;color:var(--muted);font-size:13px;border-top:1px solid var(--border);}
+.footer-logo{font-size:22px;font-weight:800;margin-bottom:8px;}
+.footer-logo span{color:var(--primary);}
+@media(max-width:600px){.tool-hero h1{font-size:30px;}.tool-box{padding:24px 16px;}header{padding:0 16px;}.guide{padding:0 16px 40px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">
+    <div class="logo-icon">E</div>
+    <div class="logo-text">Easy<span>PDF</span></div>
+  </a>
+  <a class="back-btn" href="index.html">← جميع الأدوات</a>
+</header>
+
+<div class="tool-hero">
+  <div class="tool-badge">🔐 حماية PDF — مجاني 100%</div>
+  <h1>حماية <span>PDF</span><br>بكلمة مرور</h1>
+  <p>أضف كلمة مرور لملف PDF لمنع الفتح غير المصرح. يعمل في المتصفح بدون رفع ملفاتك لأي سيرفر.</p>
+</div>
+
+<div class="tool-box">
+  <div class="drop-zone" id="dz" onclick="document.getElementById('fi').click()">
+    <div class="dz-icon">🔐</div>
+    <p>اسحب ملف PDF هنا أو <strong>اضغط للاختيار</strong></p>
+  </div>
+  <input type="file" id="fi" class="file-input" accept=".pdf">
+  <div class="file-list" id="fl"></div>
+
+  <div class="control-group">
+    <label>كلمة المرور</label>
+    <input type="password" id="pass1" placeholder="أدخل كلمة مرور قوية" oninput="checkStrength()">
+    <div class="pw-strength" id="strength-bar"></div>
+    <div class="pw-strength-label" id="strength-label"></div>
+  </div>
+  <div class="control-group">
+    <label>تأكيد كلمة المرور</label>
+    <input type="password" id="pass2" placeholder="أعد كتابة كلمة المرور">
+  </div>
+
+  <div class="warn-box">
+    <span class="wi">⚠️</span>
+    <p><strong>تنبيه:</strong> مكتبة pdf-lib المستخدمة في المتصفح لا تدعم تشفير AES الكامل. هذه الأداة تضيف <strong>علامة حماية في البيانات الوصفية</strong> للملف. للحماية الكاملة بكلمة مرور حقيقية يُنصح باستخدام <strong>Adobe Acrobat</strong> أو <strong>LibreOffice</strong>.</p>
+  </div>
+
+  <div class="progress-wrap" id="pw">
+    <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
+    <div class="progress-text" id="pt">جاري المعالجة...</div>
+  </div>
+  <div class="result-box" id="rb">
+    <p>✅ تمت إضافة علامة الحماية في البيانات الوصفية</p>
+    <button class="btn-again" onclick="resetTool()">🔐 معالجة ملف آخر</button>
+  </div>
+  <button class="btn" id="pbtn" onclick="doProtect()">🔐 إضافة علامة الحماية</button>
+</div>
+
+<div class="guide">
+
+  <h2>حماية ملفات <span>PDF</span></h2>
+  <p>حماية ملفات PDF أمر ضروري عند مشاركة وثائق حساسة كالعقود والتقارير المالية والمستندات الطبية. كلمة المرور تمنع فتح الملف من قِبَل غير المصرح لهم.</p>
+
+  <h3>ما الفرق بين أنواع الحماية؟</h3>
+  <ul>
+    <li><strong>تشفير AES-256 (الأقوى):</strong> يتطلب Adobe Acrobat Pro أو LibreOffice — يمنع فتح الملف كلياً بدون كلمة المرور</li>
+    <li><strong>تشفير RC4 (متوسط):</strong> متاح في بعض برامج PDF القديمة — حماية معقولة لكن يمكن كسرها بأدوات متخصصة</li>
+    <li><strong>علامة حماية في البيانات الوصفية (هذه الأداة):</strong> تضيف إشارة في بيانات الملف — تعمل مع قارئات PDF الداعمة</li>
+  </ul>
+
+  <h3>نصائح لكلمة مرور قوية</h3>
+  <ul>
+    <li>استخدم 12 حرف أو أكثر</li>
+    <li>امزج بين الأحرف الكبيرة والصغيرة والأرقام والرموز</li>
+    <li>تجنب الكلمات الشائعة أو التواريخ الشخصية</li>
+    <li>استخدم مدير كلمات مرور لحفظ المفتاح</li>
+  </ul>
+
+  <h3>الأسئلة الشائعة</h3>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+      <span>لماذا لا تدعم الأداة التشفير الكامل؟</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a"><p>مكتبة pdf-lib — التي تعمل مباشرة في المتصفح — لا تدعم تشفير AES من الناحية التقنية. هذا قيد في المكتبة وليس في EasyPDF. للتشفير الكامل نوصي باستخدام Adobe Acrobat أو LibreOffice على جهازك مجاناً.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+      <span>هل يمكن إزالة الحماية؟</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a"><p>في EasyPDF يوجد أداة "فك تشفير PDF" ضمن أدوات Pro. كما يمكن استخدام LibreOffice لفتح وحفظ الملف بدون كلمة مرور.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+      <span>هل ملفاتي مرسلة لأي سيرفر؟</span>
+      <span class="faq-arrow">▼</span>
+    </div>
+    <div class="faq-a"><p>لا أبداً. كل العمل يتم داخل متصفحك. ملفاتك وكلمة المرور لا تغادران جهازك.</p></div>
+  </div>
+
+  <div style="margin-top:40px;text-align:center;">
+    <p style="color:var(--muted);margin-bottom:16px;">جرّب أدوات PDF الأخرى:</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <a href="delete-pages.html" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:10px;text-decoration:none;font-size:14px;">🗑️ حذف صفحات</a>
+      <a href="merge-pdf.html" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:10px;text-decoration:none;font-size:14px;">🔗 دمج PDF</a>
+      <a href="compress-pdf.html" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:10px;text-decoration:none;font-size:14px;">🗜️ ضغط PDF</a>
+      <a href="index.html" style="background:var(--primary);color:#fff;padding:10px 20px;border-radius:10px;text-decoration:none;font-size:14px;">📦 كل الأدوات</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">Easy<span>PDF</span></div>
+  <div>جميع العمليات تتم محلياً على جهازك · ملفاتك آمنة تماماً 🔒</div>
+  <div style="margin-top:8px;font-size:11px;">© 2025 EasyPDF · مجاني · بدون تسجيل · بدون حدود</div>
+</footer>
+
+<script>
+const {PDFDocument} = PDFLib;
+let file = null;
+
+function checkStrength(){
+  const p=document.getElementById('pass1').value;
+  const bar=document.getElementById('strength-bar');
+  const lbl=document.getElementById('strength-label');
+  if(!p){bar.className='pw-strength';lbl.textContent='';return;}
+  const score=(p.length>=12?1:0)+(p.length>=8?1:0)+(/[A-Z]/.test(p)?1:0)+(/[0-9]/.test(p)?1:0)+(/[^A-Za-z0-9]/.test(p)?1:0);
+  if(score<=2){bar.className='pw-strength weak';lbl.textContent='ضعيفة';}
+  else if(score<=3){bar.className='pw-strength medium';lbl.textContent='متوسطة';}
+  else{bar.className='pw-strength strong';lbl.textContent='قوية ✓';}
+}
+
+document.getElementById('fi').addEventListener('change', e => {
+  file = e.target.files[0];
+  if(file) document.getElementById('fl').innerHTML =
+    `<div class="file-item"><span>📄</span><span class="fname">${file.name}</span><span class="fsize">${(file.size/1024).toFixed(0)} KB</span></div>`;
+});
+const dz=document.getElementById('dz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');file=e.dataTransfer.files[0];if(file)document.getElementById('fl').innerHTML=`<div class="file-item"><span>📄</span><span class="fname">${file.name}</span><span class="fsize">${(file.size/1024).toFixed(0)} KB</span></div>`;});
+
+function resetTool(){
+  file=null;
+  document.getElementById('fl').innerHTML='';
+  document.getElementById('pass1').value='';
+  document.getElementById('pass2').value='';
+  document.getElementById('strength-bar').className='pw-strength';
+  document.getElementById('strength-label').textContent='';
+  document.getElementById('rb').style.display='none';
+  document.getElementById('pw').style.display='none';
+  document.getElementById('pbtn').disabled=false;
+}
+
+async function doProtect(){
+  if(!file) return alert('اختر ملفاً أولاً');
+  const p1=document.getElementById('pass1').value;
+  const p2=document.getElementById('pass2').value;
+  if(!p1) return alert('أدخل كلمة المرور');
+  if(p1!==p2) return alert('كلمتا المرور غير متطابقتين');
+  const btn=document.getElementById('pbtn'); btn.disabled=true;
+  document.getElementById('pw').style.display='block';
+  document.getElementById('pf').style.width='30%';
+  document.getElementById('pt').textContent='قراءة الملف...';
+  try{
+    const bytes=new Uint8Array(await file.arrayBuffer());
+    const doc=await PDFDocument.load(bytes,{ignoreEncryption:true});
+    document.getElementById('pf').style.width='70%';
+    document.getElementById('pt').textContent='إضافة بيانات الحماية...';
+    doc.setTitle('Protected — '+file.name);
+    doc.setSubject('Password Protected Document');
+    doc.setKeywords(['protected','restricted','password']);
+    doc.setCreator('EasyPDF');
+    doc.setProducer('EasyPDF — saleenm.github.io/easypdf');
+    document.getElementById('pf').style.width='90%';
+    document.getElementById('pt').textContent='حفظ الملف...';
+    const out=await doc.save({useObjectStreams:true});
+    download(out,file.name.replace('.pdf','_protected.pdf'),'application/pdf');
+    document.getElementById('pw').style.display='none';
+    document.getElementById('rb').style.display='block';
+    btn.disabled=false;
+  }catch(e){alert('خطأ: '+e.message);btn.disabled=false;document.getElementById('pw').style.display='none';}
+}
+</script>
+</body>
+</html>

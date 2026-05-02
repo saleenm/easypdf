@@ -141,6 +141,12 @@ footer{text-align:center;padding:36px 20px;color:var(--muted);font-size:13px;bor
   </div>
   <input type="file" id="fi" class="file-input" accept=".pdf">
   <div class="file-list" id="fl"></div>
+  <!-- تقدير الضغط -->
+  <div id="est-box" style="display:none;background:rgba(6,214,160,0.06);border:1px solid rgba(6,214,160,0.2);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:13px;">
+    <div style="color:var(--muted);margin-bottom:4px;">التوفير المتوقع بهذا المستوى:</div>
+    <div id="est-val" style="font-size:18px;font-weight:800;color:var(--success);"></div>
+    <div id="est-sub" style="font-size:11px;color:var(--muted);margin-top:2px;"></div>
+  </div>
   <div class="progress-wrap" id="pw">
     <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
     <div class="progress-text" id="pt">جاري الضغط...</div>
@@ -259,10 +265,30 @@ const QUALITY_SETTINGS = {
   high: { scale: 0.75,jpegQ: 0.45, label: 'أقصى ضغط'     }
 };
 
+// نطاقات التوفير المتوقعة لكل مستوى (تقريبية)
+const EST = {
+  low:  { min:15, max:40, label:'جودة عالية — للأرشفة والطباعة' },
+  mid:  { min:40, max:65, label:'موصى به — للمشاركة والإيميل' },
+  high: { min:60, max:80, label:'أقصى ضغط — للواتساب والسوشيال' }
+};
+
 function setQ(q) {
   quality = q;
   document.querySelectorAll('.q-btn').forEach(b =>
     b.classList.toggle('active', b.dataset.q === q));
+  updateEstimate();
+}
+
+function updateEstimate() {
+  const box = document.getElementById('est-box');
+  if (!file) return;
+  const e = EST[quality];
+  const minSave = Math.round(file.size * e.min / 100);
+  const maxSave = Math.round(file.size * e.max / 100);
+  document.getElementById('est-val').textContent =
+    `~${e.min}–${e.max}% (${formatSize(minSave)} – ${formatSize(maxSave)})`;
+  document.getElementById('est-sub').textContent = e.label;
+  box.style.display = 'block';
 }
 
 function setProgress(pct, msg) {
@@ -283,6 +309,7 @@ function handleFile(f) {
     `<div class="file-item"><span>📄</span><span class="fname">${f.name}</span><span class="fsize">${formatSize(f.size)}</span></div>`;
   document.getElementById('rb').style.display = 'none';
   document.getElementById('cbtn').disabled = false;
+  updateEstimate();
 }
 
 document.getElementById('fi').addEventListener('change', e => handleFile(e.target.files[0]));
@@ -301,6 +328,7 @@ function resetTool() {
   document.getElementById('fl').innerHTML = '';
   document.getElementById('rb').style.display = 'none';
   document.getElementById('pw').style.display = 'none';
+  document.getElementById('est-box').style.display = 'none';
   document.getElementById('cbtn').disabled = false;
   setProgress(0, '');
 }
