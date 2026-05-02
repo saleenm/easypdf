@@ -1086,7 +1086,9 @@ async function doDeletePages(id){
     const bytes=await readFile(files[0]);
     const doc=await PDFDocument.load(bytes,{ignoreEncryption:true});
     const total=doc.getPageCount();
-    const toDelete=new Set(parsePageRange(input,total).map(n=>n-1));
+    const parsed=parsePageRange(input,total);
+    if(!parsed.length)return alert('لم يتم التعرف على أي رقم صفحة صالح. مثال: 2,4,6-8');
+    const toDelete=new Set(parsed.map(n=>n-1));
     if(toDelete.size>=total)return alert('لا يمكن حذف كل الصفحات');
     showProg(id,60,'جاري حذف الصفحات...');
     // احذف من الأكبر للأصغر لتجنب تغيير الإندكس
@@ -1108,18 +1110,28 @@ async function doProtect(id){
   const pass2=document.getElementById('pw-pass2-'+id).value;
   if(!pass)return alert('أدخل كلمة المرور');
   if(pass!==pass2)return alert('كلمتا المرور غير متطابقتين');
-  setBtn(id,true);showProg(id,30,'جاري تشفير الملف...');
+  // تنبيه صريح: pdf-lib لا يدعم تشفير AES — هذا قيد تقني لا حل له في المتصفح
+  const confirmed=confirm(
+    '⚠️ تنبيه مهم:\n\n'+
+    'هذه الأداة تضيف علامة حماية في بيانات الملف فقط.\n'+
+    'لا تدعم مكتبة pdf-lib تشفير AES الكامل في المتصفح.\n\n'+
+    'للحماية الكاملة بكلمة مرور حقيقية، استخدم Adobe Acrobat أو LibreOffice.\n\n'+
+    'هل تريد المتابعة بإضافة علامة الحماية فقط؟'
+  );
+  if(!confirmed)return;
+  setBtn(id,true);showProg(id,40,'جاري معالجة الملف...');
   try{
     const bytes=await readFile(files[0]);
     const doc=await PDFDocument.load(bytes,{ignoreEncryption:true});
-    showProg(id,70,'جاري تطبيق الحماية...');
-    // pdf-lib لا يدعم تشفير AES مباشرة، نضيف metadata كحل بديل آمن
-    // للتشفير الفعلي نستخدم طريقة user password
-    doc.setTitle('Protected by EasyPDF');
+    showProg(id,75,'جاري الحفظ...');
+    doc.setTitle('Protected — '+files[0].name);
+    doc.setSubject('Restricted Document');
+    doc.setKeywords(['protected','restricted']);
     const out=await doc.save({useObjectStreams:true});
-    // نضيف header يشير للحماية
-    const header=new TextEncoder().encode(`%PDF-PROTECTED-${btoa(pass).slice(0,8)}\n`);
-    download(out,files[0].name.replace('.pdf','_protected.pdf'),'application/pdf');
+    download(out,files[0].name.replace('.pdf','_marked.pdf'),'application/pdf');
+    // تحديث رسالة النجاح لتكون صادقة
+    const rb=document.getElementById('rb-'+id);
+    if(rb) rb.querySelector('p').textContent='تمت إضافة علامة الحماية في البيانات الوصفية.';
     showDone(id);
   }catch(e){alert('خطأ: '+e.message);setBtn(id,false);}
 }
@@ -1131,6 +1143,7 @@ function parsePageRange(str,total){
     const m=p.trim().match(/^(\d+)(?:-(\d+))?$/);
     if(!m)return;
     const a=+m[1],b=m[2]?+m[2]:a;
+    if(a<1||b<1)return; // تجاهل صفحة 0 أو سالبة
     for(let i=a;i<=Math.min(b,total);i++)s.add(i);
   });
   return[...s].sort((a,b)=>a-b);

@@ -76,6 +76,8 @@ header{background:rgba(13,13,26,0.96);border-bottom:1px solid var(--border);padd
 .faq-a{max-height:0;overflow:hidden;transition:max-height 0.3s ease;}
 .faq-item.open .faq-a{max-height:200px;}
 .faq-a p{padding:0 20px 16px;font-size:13px;color:var(--muted);line-height:1.7;}
+.btn-again{width:100%;padding:11px;background:var(--card2);color:var(--muted);border:1px solid var(--border);border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px;}
+.btn-again:hover{color:var(--text);border-color:var(--muted);}
 footer{text-align:center;padding:36px 20px;color:var(--muted);font-size:13px;border-top:1px solid var(--border);}
 .footer-logo{font-size:22px;font-weight:800;margin-bottom:8px;}
 .footer-logo span{color:var(--primary);}
@@ -114,7 +116,10 @@ footer{text-align:center;padding:36px 20px;color:var(--muted);font-size:13px;bor
     <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
     <div class="progress-text" id="pt">جاري التقسيم...</div>
   </div>
-  <div class="result-box" id="rb"><p>✅ تم استخراج الصفحات!</p></div>
+  <div class="result-box" id="rb">
+    <p>✅ تم استخراج الصفحات!</p>
+    <button class="btn-again" onclick="resetSplit()">✂️ تقسيم ملف آخر</button>
+  </div>
   <button class="btn" id="sbtn" onclick="doSplit()">✂️ استخراج الصفحات</button>
 </div>
 
@@ -201,6 +206,14 @@ dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over
 
 function parsePages(str,total){const s=new Set();str.split(',').forEach(p=>{const m=p.trim().match(/^(\d+)(?:-(\d+))?$/);if(!m)return;const a=+m[1],b=m[2]?+m[2]:a;for(let i=a;i<=Math.min(b,total);i++)s.add(i);});return[...s].sort((a,b)=>a-b);}
 
+function resetSplit(){
+  file=null;
+  document.getElementById('fl').innerHTML='';
+  document.getElementById('rb').style.display='none';
+  document.getElementById('pw').style.display='none';
+  document.getElementById('pages').value='1';
+  document.getElementById('sbtn').disabled=false;
+}
 async function doSplit(){
   if(!file)return alert('اختر ملفاً أولاً');
   const btn=document.getElementById('sbtn'); btn.disabled=true;
@@ -219,6 +232,7 @@ async function doSplit(){
     download(await out.save(),'split.pdf','application/pdf');
     document.getElementById('pw').style.display='none';
     document.getElementById('rb').style.display='block';
+    btn.disabled=false;
   }catch(e){alert('خطأ: '+e.message);btn.disabled=false;document.getElementById('pw').style.display='none';}
 }
 </script>
