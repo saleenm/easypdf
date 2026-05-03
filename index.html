@@ -396,6 +396,11 @@
   .pro-note { text-align:center; font-size:12px; color:var(--muted); margin-top:12px; }
 
   /* ── FAQ ── */
+  /* File Preview Tooltip */
+  .preview-tooltip{position:fixed;z-index:9999;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 8px 32px rgba(0,0,0,0.4);pointer-events:none;display:none;max-width:200px;}
+  .preview-tooltip canvas{width:160px;height:auto;border-radius:6px;display:block;}
+  .preview-tooltip .pt-name{font-size:11px;color:var(--muted);margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .preview-tooltip .pt-info{font-size:12px;font-weight:700;color:var(--text);margin-top:2px;}
   /* History Section */
   .history-section { max-width:1160px; margin:40px auto 0; padding:0 24px; display:none; }
   .history-section.visible { display:block; }
@@ -766,6 +771,13 @@
     </div>
   </div>
 
+</div>
+
+<!-- File Preview Tooltip -->
+<div id="preview-tooltip" class="preview-tooltip">
+  <canvas id="pt-canvas"></canvas>
+  <div class="pt-name" id="pt-name"></div>
+  <div class="pt-info" id="pt-info"></div>
 </div>
 
 <!-- Modal Tools -->
@@ -1247,7 +1259,71 @@ function addFiles(id,files,multi){
 function removeFile(id,i){activeFiles[id].splice(i,1);renderFL(id);}
 function renderFL(id){
   const el=document.getElementById('fl-'+id); if(!el) return;
-  el.innerHTML=(activeFiles[id]||[]).map((f,i)=>`<div class="file-item"><span>📄</span><span class="fname">${f.name}</span><span class="fsize">${(f.size/1024).toFixed(0)} KB</span><button class="fdel" onclick="removeFile('${id}',${i})">🗑</button></div>`).join('');
+  el.innerHTML=(activeFiles[id]||[]).map((f,i)=>`
+    <div class="file-item"
+         onmouseenter="showPreview(event,'${id}',${i})"
+         onmouseleave="hidePreview()"
+         onmousemove="movePreview(event)">
+      <span>📄</span>
+      <span class="fname">${f.name}</span>
+      <span class="fsize">${f.size>=1048576?(f.size/1048576).toFixed(1)+' MB':Math.round(f.size/1024)+' KB'}</span>
+      <button class="fdel" onclick="removeFile('${id}',${i})">🗑</button>
+    </div>`).join('');
+}
+
+// ── معاينة الملف عند hover ────────────────────────────────
+let _previewCache = {};
+let _previewTimer = null;
+
+function showPreview(e, id, idx){
+  const file = (activeFiles[id]||[])[idx];
+  if(!file || file.type !== 'application/pdf') return;
+  _previewTimer = setTimeout(async()=>{
+    const tip = document.getElementById('preview-tooltip');
+    const canvas = document.getElementById('pt-canvas');
+    document.getElementById('pt-name').textContent = file.name;
+    document.getElementById('pt-info').textContent = file.size>=1048576?(file.size/1048576).toFixed(1)+' MB':Math.round(file.size/1024)+' KB';
+    tip.style.display = 'block';
+    movePreview(e);
+    // رسم الصفحة الأولى
+    const key = file.name + file.size;
+    if(_previewCache[key]){
+      const ctx = canvas.getContext('2d');
+      canvas.width = _previewCache[key].width;
+      canvas.height = _previewCache[key].height;
+      ctx.putImageData(_previewCache[key], 0, 0);
+      return;
+    }
+    try {
+      if(!window.pdfjsLib){
+        const s=document.createElement('script');
+        s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+        await new Promise(r=>{s.onload=r;document.head.appendChild(s);});
+        pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      }
+      const ab = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument(ab).promise;
+      const page = await pdf.getPage(1);
+      const vp = page.getViewport({scale:0.4});
+      canvas.width = vp.width; canvas.height = vp.height;
+      await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;
+      _previewCache[key] = canvas.getContext('2d').getImageData(0,0,canvas.width,canvas.height);
+      document.getElementById('pt-info').textContent = `${file.size>=1048576?(file.size/1048576).toFixed(1)+' MB':Math.round(file.size/1024)+' KB'} · ${pdf.numPages} صفحة`;
+    } catch(err){}
+  }, 400);
+}
+
+function movePreview(e){
+  const tip = document.getElementById('preview-tooltip');
+  if(tip.style.display === 'none') return;
+  const x = e.clientX + 16, y = e.clientY - 20;
+  tip.style.left = Math.min(x, window.innerWidth - 210) + 'px';
+  tip.style.top  = Math.max(y, 10) + 'px';
+}
+
+function hidePreview(){
+  clearTimeout(_previewTimer);
+  document.getElementById('preview-tooltip').style.display = 'none';
 }
 const getFiles=id=>activeFiles[id]||[];
 const readFile=f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(new Uint8Array(e.target.result));r.onerror=rej;r.readAsArrayBuffer(f);});
