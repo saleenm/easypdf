@@ -118,6 +118,14 @@ header{background:rgba(13,13,26,0.96);border-bottom:1px solid var(--border);padd
   .tool-box{padding:24px 16px;}
   .steps-row{grid-template-columns:1fr;}
 }
+
+  /* Light Mode */
+  body.light{--dark:#f5f5f7;--card:#ffffff;--card2:#f0f0f5;--text:#0d0d1a;--muted:#5a6478;--border:#dde1ea;}
+  body.light header{background:rgba(245,245,247,0.96);}
+  body.light .drop-zone{background:rgba(0,0,0,0.02);}
+  body.light .tool-box{box-shadow:0 2px 16px rgba(0,0,0,0.06);}
+  .theme-btn{background:var(--card2);border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:all 0.2s;flex-shrink:0;}
+  .theme-btn:hover{border-color:var(--primary);color:var(--text);}
 </style>
 </head>
 <body>
@@ -349,6 +357,13 @@ function resetTool(){
   document.getElementById('print-container').innerHTML = '';
   document.getElementById('fi').value = '';
 }
+</script>
+
+<script>
+(function(){const s=localStorage.getItem('easypdf_theme');if(s==='light')document.body.classList.add('light');})();
+function toggleTheme(){const l=document.body.classList.toggle('light');localStorage.setItem('easypdf_theme',l?'light':'dark');updateThemeBtn();}
+function updateThemeBtn(){const b=document.getElementById('theme-btn');if(!b)return;const l=document.body.classList.contains('light');b.textContent=l?'🌙':'☀️';b.title=l?'الوضع الداكن':'الوضع الفاتح';}
+document.addEventListener('DOMContentLoaded',updateThemeBtn);
 </script>
 </body>
 </html>

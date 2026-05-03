@@ -213,7 +213,32 @@
     --success: #06d6a0;
     --gold: #ffd60a;
     --radius: 16px;
+    --shadow: rgba(0,0,0,0.3);
   }
+  /* Light Mode */
+  body.light {
+    --dark: #f5f5f7;
+    --card: #ffffff;
+    --card2: #f0f0f5;
+    --text: #0d0d1a;
+    --muted: #5a6478;
+    --border: #dde1ea;
+    --shadow: rgba(0,0,0,0.08);
+  }
+  body.light header { background:rgba(245,245,247,0.96); }
+  body.light .tool-card { box-shadow:0 2px 12px var(--shadow); }
+  body.light .modal { background:var(--card); }
+  body.light .hero { background:linear-gradient(180deg,#fff 0%,#f5f5f7 100%); }
+  body.light .ad-banner { background:var(--card2); }
+  body.light .drop-zone { background:rgba(0,0,0,0.02); }
+  /* Dark Mode Toggle Button */
+  .theme-btn {
+    background:var(--card2); border:1px solid var(--border);
+    color:var(--muted); width:34px; height:34px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:16px; transition:all 0.2s; flex-shrink:0;
+  }
+  .theme-btn:hover { border-color:var(--primary); color:var(--text); }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Segoe UI',Tahoma,Arial,sans-serif; background:var(--dark); color:var(--text); min-height:100vh; }
 
@@ -528,6 +553,7 @@
       <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
     </div>
     <span class="badge-free">✓ مجاني</span>
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="تبديل الوضع"></button>
     <a href="pro.html" class="btn-pro-header" style="text-decoration:none;">⭐ Pro</a>
   </div>
 </header>
@@ -917,6 +943,25 @@
 </footer>
 
 <script>
+// ── Dark Mode ─────────────────────────────────────────────
+(function(){
+  const saved = localStorage.getItem('easypdf_theme');
+  if(saved === 'light') document.body.classList.add('light');
+})();
+function toggleTheme(){
+  const isLight = document.body.classList.toggle('light');
+  localStorage.setItem('easypdf_theme', isLight ? 'light' : 'dark');
+  updateThemeBtn();
+}
+function updateThemeBtn(){
+  const btn = document.getElementById('theme-btn');
+  if(!btn) return;
+  const isLight = document.body.classList.contains('light');
+  btn.textContent = isLight ? '🌙' : '☀️';
+  btn.title = isLight ? 'الوضع الداكن' : 'الوضع الفاتح';
+}
+document.addEventListener('DOMContentLoaded', updateThemeBtn);
+
 // ── Lazy Load للمكتبات ────────────────────────────────────
 let _libsLoaded = false;
 let _libsPromise = null;
