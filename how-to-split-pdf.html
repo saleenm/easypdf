@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>كيف تقسم ملف PDF وتستخرج صفحات محددة — دليل شامل | EasyPDF</title>
+<meta name="description" content="دليل شامل لتقسيم ملف PDF واستخراج صفحات محددة مجاناً بدون برامج. تعلم كيف تقسم PDF اون لاين في 3 خطوات بسيطة.">
+<meta name="keywords" content="تقسيم PDF, كيف أقسم PDF, استخراج صفحة من PDF, split PDF, تقسيم PDF اون لاين, قص صفحات PDF, استخراج PDF">
+<link rel="canonical" href="https://saleenm.github.io/easypdf/how-to-split-pdf.html">
+<meta property="og:title" content="كيف تقسم PDF — دليل شامل | EasyPDF">
+<meta property="og:description" content="تقسيم PDF واستخراج صفحات محددة مجاناً بدون برامج في 3 خطوات.">
+<meta property="og:url" content="https://saleenm.github.io/easypdf/how-to-split-pdf.html">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e63946'/><text y='.9em' font-size='60' x='10' fill='white'>E</text></svg>">
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4272698055490735" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {"@type":"Article","headline":"كيف تقسم ملف PDF وتستخرج صفحات محددة","description":"دليل شامل لتقسيم PDF مجاناً بدون برامج","author":{"@type":"Organization","name":"EasyPDF"},"publisher":{"@type":"Organization","name":"EasyPDF"},"datePublished":"2026-05-03"},
+    {"@type":"HowTo","name":"كيفية تقسيم PDF","step":[
+      {"@type":"HowToStep","name":"ارفع الملف","text":"اسحب ملف PDF أو اضغط للاختيار"},
+      {"@type":"HowToStep","name":"حدد الصفحات","text":"اكتب أرقام الصفحات مثل 1-3,5,7"},
+      {"@type":"HowToStep","name":"استخرج وحمّل","text":"اضغط استخراج وسيتم تحميل الملف فوراً"}
+    ]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"كيف أقسم PDF مجاناً؟","acceptedAnswer":{"@type":"Answer","text":"ارفع الملف في الأداة أدناه، حدد أرقام الصفحات، واضغط استخراج. مجاني 100% بدون تسجيل."}},
+      {"@type":"Question","name":"هل يمكن استخراج صفحة واحدة فقط؟","acceptedAnswer":{"@type":"Answer","text":"نعم، اكتب رقم الصفحة مثل \"5\" واضغط استخراج."}},
+      {"@type":"Question","name":"هل الملف يُرفع لسيرفر؟","acceptedAnswer":{"@type":"Answer","text":"لا، كل المعالجة تتم في متصفحك مباشرة."}}
+    ]}
+  ]
+}
+</script>
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+<style>
+:root{--primary:#e63946;--primary2:#c1121f;--dark:#0d0d1a;--card:#13132a;--card2:#1a1a35;--text:#f0f0f0;--muted:#7a8499;--border:#232340;--success:#06d6a0;--radius:16px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--dark);color:var(--text);min-height:100vh;}
+body.light{--dark:#f5f5f7;--card:#ffffff;--card2:#f0f0f5;--text:#0d0d1a;--muted:#5a6478;--border:#dde1ea;}
+body.light header{background:rgba(245,245,247,0.96);}
+header{background:rgba(13,13,26,0.96);border-bottom:1px solid var(--border);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--primary),var(--primary2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;}
+.logo-text{font-size:22px;font-weight:800;color:var(--text);}
+.logo-text span{color:var(--primary);}
+.header-nav{display:flex;align-items:center;gap:10px;}
+.back-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:10px;text-decoration:none;font-size:13px;transition:all 0.2s;}
+.back-btn:hover{color:var(--text);border-color:var(--primary);}
+.theme-btn{background:var(--card2);border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:all 0.2s;}
+.theme-btn:hover{border-color:var(--primary);}
+.article-hero{text-align:center;padding:48px 20px 36px;}
+.article-badge{display:inline-block;background:rgba(230,57,70,0.12);color:var(--primary);border:1px solid rgba(230,57,70,0.25);font-size:13px;font-weight:600;padding:5px 16px;border-radius:20px;margin-bottom:16px;}
+.article-hero h1{font-size:40px;font-weight:900;line-height:1.2;margin-bottom:12px;}
+.article-hero h1 span{color:var(--primary);}
+.article-hero p{font-size:16px;color:var(--muted);max-width:600px;margin:0 auto;line-height:1.7;}
+.article-body{max-width:820px;margin:0 auto;padding:0 24px 60px;}
+.article-body h2{font-size:24px;font-weight:800;margin:36px 0 14px;}
+.article-body h2 span{color:var(--primary);}
+.article-body h3{font-size:18px;font-weight:700;margin:24px 0 10px;color:var(--text);}
+.article-body p{color:var(--muted);line-height:1.8;margin-bottom:14px;font-size:15px;}
+.article-body ul,.article-body ol{padding-right:22px;color:var(--muted);font-size:15px;line-height:2;}
+.steps-visual{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0 30px;}
+.step-v{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 14px;text-align:center;}
+.step-v .sv-num{font-size:28px;font-weight:900;color:var(--primary);margin-bottom:8px;}
+.step-v .sv-icon{font-size:32px;margin-bottom:8px;}
+.step-v h4{font-size:14px;font-weight:700;margin-bottom:6px;}
+.step-v p{font-size:12px;color:var(--muted);margin:0;}
+.info-box{background:rgba(6,214,160,0.07);border:1px solid rgba(6,214,160,0.2);border-radius:12px;padding:16px 20px;margin:20px 0;font-size:14px;color:var(--text);line-height:1.7;}
+.info-box strong{color:var(--success);}
+/* Tool embed */
+.tool-embed{background:var(--card);border:2px solid var(--primary);border-radius:22px;padding:32px;max-width:580px;margin:0 auto 40px;}
+.tool-embed h3{text-align:center;font-size:20px;font-weight:800;margin-bottom:20px;}
+.drop-zone{border:2px dashed var(--border);border-radius:14px;padding:30px 20px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:14px;background:rgba(255,255,255,0.02);}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--primary);background:rgba(230,57,70,0.06);}
+.dz-icon{font-size:36px;margin-bottom:8px;}
+.drop-zone p{color:var(--muted);font-size:14px;}
+.drop-zone strong{color:var(--primary);}
+.file-input{display:none;}
+.file-item{display:flex;align-items:center;background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;gap:8px;}
+.file-item .fname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.file-item .fsize{color:var(--muted);font-size:11px;}
+.control-group{margin-bottom:14px;}
+.control-group label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;}
+.control-group input{width:100%;background:var(--dark);border:1px solid var(--border);color:var(--text);padding:11px 14px;border-radius:10px;font-size:14px;outline:none;font-family:inherit;transition:border-color 0.2s;}
+.control-group input:focus{border-color:var(--primary);}
+.p-steps{display:flex;margin-bottom:12px;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+.p-step{flex:1;text-align:center;padding:9px 4px;font-size:11px;color:var(--muted);background:var(--card2);border-left:1px solid var(--border);transition:all 0.3s;}
+.p-step:last-child{border-left:none;}
+.p-step.active{color:var(--primary);background:rgba(230,57,70,0.08);}
+.p-step.done{color:var(--success);background:rgba(6,214,160,0.06);}
+.p-step-icon{font-size:14px;display:block;margin-bottom:2px;}
+.pct-num{font-size:18px;font-weight:900;color:var(--primary);text-align:center;margin-bottom:6px;}
+.progress-wrap{display:none;margin-bottom:14px;}
+.progress-bar{background:var(--border);border-radius:20px;height:6px;overflow:hidden;margin-bottom:6px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),#ff6b6b);border-radius:20px;transition:width 0.3s;width:0%;}
+.progress-text{font-size:12px;color:var(--muted);text-align:center;}
+.result-box{display:none;background:rgba(6,214,160,0.08);border:1px solid rgba(6,214,160,0.3);border-radius:12px;padding:16px;text-align:center;margin-bottom:12px;}
+.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:inherit;}
+.btn:hover{transform:translateY(-2px);}
+.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.btn-again{width:100%;padding:10px;background:var(--card2);color:var(--muted);border:1px solid var(--border);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px;}
+.faq-box{margin-bottom:10px;}
+.faq-box summary{cursor:pointer;font-weight:700;padding:14px 16px;background:var(--card2);border-radius:10px;list-style:none;font-size:14px;}
+.faq-box summary::-webkit-details-marker{display:none;}
+.faq-box[open] summary{border-radius:10px 10px 0 0;}
+.faq-box p{padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:0 0 10px 10px;color:var(--muted);font-size:13px;line-height:1.7;margin:0;}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:16px;}
+.rel-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:16px 12px;text-align:center;text-decoration:none;color:var(--text);transition:all 0.2s;}
+.rel-card:hover{border-color:var(--primary);transform:translateY(-2px);}
+.rel-card .ri{font-size:26px;margin-bottom:6px;}
+.rel-card span{font-size:12px;font-weight:700;}
+footer{text-align:center;padding:32px 20px;color:var(--muted);font-size:13px;border-top:1px solid var(--border);}
+.footer-logo{font-size:20px;font-weight:800;margin-bottom:6px;}
+.footer-logo span{color:var(--primary);}
+@media(max-width:600px){header{padding:0 16px;}.article-hero h1{font-size:28px;}.article-body{padding:0 16px 40px;}.steps-visual{grid-template-columns:1fr;}.tool-embed{padding:20px 14px;}}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="index.html"><div class="logo-icon">E</div><div class="logo-text">Easy<span>PDF</span></div></a>
+  <div class="header-nav">
+    <a class="back-btn" href="index.html">← جميع الأدوات</a>
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()"></button>
+  </div>
+</header>
+
+<div class="article-hero">
+  <div class="article-badge">✂️ دليل التقسيم</div>
+  <h1>كيف تقسم ملف <span>PDF</span><br>وتستخرج صفحات محددة؟</h1>
+  <p>دليل شامل لتقسيم PDF واستخراج أي صفحة أو مجموعة صفحات — مجاناً بدون برامج أو تسجيل</p>
+</div>
+
+<div class="article-body">
+
+  <h2>لماذا تحتاج لتقسيم <span>PDF</span>؟</h2>
+  <p>كثيراً ما نصطدم بملف PDF كبير نحتاج فقط لجزء منه — فصل واحد من كتاب، صفحة من عقد، أو مجموعة شرائح من عرض تقديمي. بدلاً من إرسال الملف كاملاً، يمكنك استخراج الصفحات التي تريدها في ثوانٍ.</p>
+
+  <div class="info-box">
+    <strong>💡 هل تعلم؟</strong> يمكن لـ EasyPDF استخراج أي تركيبة من الصفحات — صفحة واحدة، نطاق متصل مثل 1-5، أو صفحات متفرقة مثل 1,3,7,10. كل شيء في خطوة واحدة.
+  </div>
+
+  <h2>خطوات <span>تقسيم PDF</span> — 3 خطوات فقط</h2>
+  <div class="steps-visual">
+    <div class="step-v"><div class="sv-num">1</div><div class="sv-icon">📂</div><h4>ارفع الملف</h4><p>اسحب PDF أو اضغط للاختيار</p></div>
+    <div class="step-v"><div class="sv-num">2</div><div class="sv-icon">🔢</div><h4>حدد الصفحات</h4><p>اكتب الأرقام أو اضغط على المعاينة</p></div>
+    <div class="step-v"><div class="sv-num">3</div><div class="sv-icon">⬇️</div><h4>حمّل النتيجة</h4><p>ملف PDF جديد يحتوي فقط على ما اخترته</p></div>
+  </div>
+
+  <h2>أداة <span>تقسيم PDF</span> — جرّبها الآن</h2>
+  <p>استخدم الأداة مباشرة هنا — ملفك لا يغادر جهازك:</p>
+
+  <div class="tool-embed">
+    <h3>✂️ استخراج صفحات PDF</h3>
+    <div class="drop-zone" id="dz" onclick="document.getElementById('fi').click()">
+      <div class="dz-icon">📄</div>
+      <p>اسحب ملف PDF هنا أو <strong>اضغط للاختيار</strong></p>
+    </div>
+    <input type="file" id="fi" class="file-input" accept=".pdf" onchange="handleFile(this.files[0])">
+    <div id="file-item-wrap"></div>
+    <div class="control-group" id="pages-group" style="display:none">
+      <label>الصفحات (مثال: 1-3,5,8)</label>
+      <input type="text" id="pages-input" placeholder="1-3,5,8" value="1">
+    </div>
+    <div class="progress-wrap" id="pw">
+      <div class="p-steps">
+        <div class="p-step active" id="ps1"><span class="p-step-icon">📂</span>قراءة</div>
+        <div class="p-step" id="ps2"><span class="p-step-icon">✂️</span>تقسيم</div>
+        <div class="p-step" id="ps3"><span class="p-step-icon">💾</span>حفظ</div>
+      </div>
+      <div class="pct-num" id="pct-num">0%</div>
+      <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
+      <div class="progress-text" id="pt">جاري المعالجة...</div>
+    </div>
+    <div class="result-box" id="rb">
+      <div style="font-size:32px;margin-bottom:6px;">✅</div>
+      <div style="font-size:14px;font-weight:800;color:var(--success);" id="rb-info">تم استخراج الصفحات!</div>
+      <button class="btn-again" onclick="resetTool()">✂️ تقسيم ملف آخر</button>
+    </div>
+    <button class="btn" id="btn" onclick="doSplit()" disabled>✂️ استخراج الصفحات</button>
+  </div>
+
+  <h3>صيغ تحديد الصفحات</h3>
+  <ul>
+    <li><strong>صفحة واحدة:</strong> اكتب <code style="background:var(--card2);padding:2px 8px;border-radius:4px;">5</code></li>
+    <li><strong>نطاق متصل:</strong> اكتب <code style="background:var(--card2);padding:2px 8px;border-radius:4px;">1-5</code> لاستخراج الصفحات من 1 إلى 5</li>
+    <li><strong>صفحات متفرقة:</strong> اكتب <code style="background:var(--card2);padding:2px 8px;border-radius:4px;">1,3,7,10</code></li>
+    <li><strong>مزيج:</strong> اكتب <code style="background:var(--card2);padding:2px 8px;border-radius:4px;">1-3,5,8-10</code></li>
+  </ul>
+
+  <h3>متى تستخدم تقسيم PDF؟</h3>
+  <ul>
+    <li>استخراج فصل واحد من كتاب إلكتروني</li>
+    <li>مشاركة صفحة من عقد دون الكشف عن باقي البنود</li>
+    <li>استخراج جزء من تقرير لإرساله بالإيميل</li>
+    <li>إنشاء نسخة مختصرة من ملف كبير</li>
+    <li>استخراج الصور أو الرسوم البيانية من عرض تقديمي</li>
+  </ul>
+
+  <h3>الأسئلة الشائعة</h3>
+  <details class="faq-box">
+    <summary>هل يمكن استخراج الصفحة الأخيرة دون معرفة رقمها؟</summary>
+    <p>إذا لم تعرف رقم آخر صفحة، افتح الملف أولاً في أي قارئ PDF للاطلاع على عدد الصفحات. ثم استخدم رقمها.</p>
+  </details>
+  <details class="faq-box">
+    <summary>هل الترتيب مهم عند كتابة الأرقام؟</summary>
+    <p>نعم، الصفحات تُستخرج بالترتيب الذي تكتبه. إذا كتبت 5,1,3 ستحصل على صفحة 5 ثم 1 ثم 3 في الملف الناتج.</p>
+  </details>
+  <details class="faq-box">
+    <summary>ماذا لو احتجت تقسيم الملف إلى عدة أجزاء؟</summary>
+    <p>كرر العملية لكل جزء تريده. مثلاً للحصول على 3 أجزاء، نفّذ الأداة 3 مرات بأرقام صفحات مختلفة.</p>
+  </details>
+  <details class="faq-box">
+    <summary>هل يعمل مع ملفات PDF محمية؟</summary>
+    <p>إذا كان الملف محمياً، استخدم أداة "فك تشفير PDF" أولاً ثم قسّمه.</p>
+  </details>
+
+  <h3>أدوات مشابهة</h3>
+  <div class="related-grid">
+    <a class="rel-card" href="merge-pdf.html"><div class="ri">🔗</div><span>دمج PDF</span></a>
+    <a class="rel-card" href="compress-pdf.html"><div class="ri">🗜️</div><span>ضغط PDF</span></a>
+    <a class="rel-card" href="delete-pages.html"><div class="ri">🗑️</div><span>حذف صفحات</span></a>
+    <a class="rel-card" href="pdf-to-images.html"><div class="ri">🖼️</div><span>PDF إلى صور</span></a>
+    <a class="rel-card" href="index.html"><div class="ri">📦</div><span>كل الأدوات</span></a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">Easy<span>PDF</span></div>
+  <div>جميع العمليات تتم محلياً · ملفاتك آمنة 🔒</div>
+  <div style="margin-top:6px;font-size:11px;">© 2025 EasyPDF · مجاني · بدون تسجيل</div>
+</footer>
+
+<script>
+(function(){const s=localStorage.getItem('easypdf_theme');if(s==='light')document.body.classList.add('light');})();
+function toggleTheme(){const l=document.body.classList.toggle('light');localStorage.setItem('easypdf_theme',l?'light':'dark');const b=document.getElementById('theme-btn');b.textContent=l?'🌙':'☀️';}
+document.addEventListener('DOMContentLoaded',()=>{const b=document.getElementById('theme-btn');const l=document.body.classList.contains('light');b.textContent=l?'🌙':'☀️';});
+
+const { PDFDocument } = PDFLib;
+let file = null;
+
+function handleFile(f){
+  if(!f||f.type!=='application/pdf')return alert('اختر ملف PDF صحيح');
+  file=f;
+  document.getElementById('file-item-wrap').innerHTML=`<div class="file-item"><span>📄</span><span class="fname">${f.name}</span><span class="fsize">${f.size>=1048576?(f.size/1048576).toFixed(1)+' MB':Math.round(f.size/1024)+' KB'}</span></div>`;
+  document.getElementById('pages-group').style.display='block';
+  document.getElementById('btn').disabled=false;
+  document.getElementById('rb').style.display='none';
+}
+const dz=document.getElementById('dz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');handleFile(e.dataTransfer.files[0]);});
+
+function parsePages(str,total){
+  const out=new Set();
+  str.split(',').forEach(p=>{
+    const t=p.trim();
+    const m=t.match(/^(\d+)-(\d+)$/);
+    if(m){for(let i=+m[1];i<=Math.min(+m[2],total);i++)if(i>=1)out.add(i);}
+    else if(/^\d+$/.test(t)&&+t>=1&&+t<=total)out.add(+t);
+  });
+  return [...out].sort((a,b)=>a-b);
+}
+
+function setProgress(pct,msg,step){
+  document.getElementById('pf').style.width=pct+'%';
+  document.getElementById('pt').textContent=msg;
+  document.getElementById('pct-num').textContent=pct+'%';
+  if(step){['ps1','ps2','ps3'].forEach((id,i)=>{const el=document.getElementById(id);el.className='p-step'+(i+1<step?' done':i+1===step?' active':'');});}
+}
+
+async function doSplit(){
+  if(!file)return;
+  const btn=document.getElementById('btn');btn.disabled=true;
+  document.getElementById('pw').style.display='block';
+  document.getElementById('rb').style.display='none';
+  setProgress(20,'قراءة الملف...',1);
+  try{
+    const src=await PDFDocument.load(new Uint8Array(await file.arrayBuffer()),{ignoreEncryption:true});
+    const pages=parsePages(document.getElementById('pages-input').value,src.getPageCount());
+    if(!pages.length)return alert('تحقق من أرقام الصفحات');
+    setProgress(55,`استخراج ${pages.length} صفحة...`,2);
+    const out=await PDFDocument.create();
+    const pp=await out.copyPages(src,pages.map(p=>p-1));
+    pp.forEach(p=>out.addPage(p));
+    setProgress(90,'جاري الحفظ...',3);
+    const saved=await out.save();
+    setProgress(100,'اكتمل! ✅',3);
+    download(saved,'split.pdf','application/pdf');
+    document.getElementById('rb-info').textContent=`تم استخراج ${pages.length} صفحة بنجاح!`;
+    document.getElementById('pw').style.display='none';
+    document.getElementById('rb').style.display='block';
+    btn.disabled=false;
+  }catch(e){alert('خطأ: '+e.message);btn.disabled=false;document.getElementById('pw').style.display='none';}
+}
+
+function resetTool(){
+  file=null;
+  document.getElementById('file-item-wrap').innerHTML='';
+  document.getElementById('pages-group').style.display='none';
+  document.getElementById('rb').style.display='none';
+  document.getElementById('pw').style.display='none';
+  document.getElementById('btn').disabled=true;
+  document.getElementById('fi').value='';
+}
+</script>
+</body>
+</html>
