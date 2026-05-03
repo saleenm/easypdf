@@ -15,6 +15,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
 
 <!-- Open Graph -->
 <meta property="og:title" content="EasyPDF — أدوات PDF المجانية | دمج وضغط وتحويل">
@@ -1883,6 +1884,13 @@ function setLang(code) {
   const saved = localStorage.getItem('lang') || 'ar';
   if (saved !== 'ar') setLang(saved);
 })();
+</script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/easypdf/sw.js').catch(() => {});
+  });
+}
 </script>
 </body>
 </html>

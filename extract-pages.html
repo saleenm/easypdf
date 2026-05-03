@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>استخراج صفحات PDF | Extract PDF Pages مجاناً</title>
+<meta name="description" content="استخرج صفحات محددة من ملف PDF مجاناً وبدون برامج. أداة سريعة تعمل في المتصفح لاستخراج صفحة أو نطاق صفحات من PDF.">
+<meta name="keywords" content="استخراج صفحات PDF, extract pages PDF, استخراج صفحة من PDF, نسخ صفحة PDF">
+<link rel="canonical" href="https://saleenm.github.io/easypdf/extract-pages.html">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4272698055490735" crossorigin="anonymous"></script>
+<style>
+  :root {
+    --dark:#0d0d1a; --card:#1a1a2e; --card2:#16213e;
+    --accent:#e63946; --text:#e8e8f0; --muted:#8888aa;
+    --border:#2a2a4a; --green:#2ec4b6; --radius:14px;
+  }
+  body.light { --dark:#f5f5f7; --card:#ffffff; --card2:#f0f0f5; --text:#0d0d1a; --muted:#5a6478; --border:#dde1ea; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--dark);color:var(--text);font-family:'Segoe UI',Tahoma,Arial,sans-serif;min-height:100vh;}
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  header{background:var(--card);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.3rem;font-weight:700;color:var(--accent);}
+  .logo span{color:var(--text);}
+  .hdr-right{display:flex;gap:10px;align-items:center;}
+  .back-btn{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:7px 16px;border-radius:8px;cursor:pointer;font-size:.9rem;font-family:inherit;}
+  .back-btn:hover{background:var(--border);}
+  .theme-btn{background:var(--card2);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;}
+
+  .hero{text-align:center;padding:52px 24px 44px;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);border-bottom:1px solid var(--border);}
+  .hero-icon{font-size:3.2rem;margin-bottom:14px;}
+  .hero h1{font-size:2rem;font-weight:800;margin-bottom:10px;}
+  .hero h1 span{color:var(--accent);}
+  .hero p{color:var(--muted);font-size:1rem;max-width:560px;margin:0 auto;}
+  .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px;}
+  .badge{background:var(--dark);border:1px solid var(--border);padding:5px 14px;border-radius:20px;font-size:.83rem;color:var(--muted);}
+
+  .main{max-width:720px;margin:0 auto;padding:36px 20px;}
+
+  /* Tool card */
+  .tool-card{background:var(--card);border:2px solid var(--accent);border-radius:var(--radius);padding:28px;}
+
+  /* Upload */
+  .drop-zone{border:2px dashed var(--border);border-radius:10px;padding:36px 20px;text-align:center;cursor:pointer;transition:border-color .2s;}
+  .drop-zone:hover{border-color:var(--accent);}
+  .drop-zone input{display:none;}
+  .dz-icon{font-size:2.4rem;margin-bottom:10px;}
+  .dz-text{color:var(--muted);font-size:.95rem;}
+
+  /* Progress */
+  .p-steps{display:flex;margin:18px 0 8px;}
+  .p-step{flex:1;text-align:center;padding:8px 4px;font-size:.8rem;color:var(--muted);border-bottom:3px solid var(--border);transition:all .3s;}
+  .p-step.active{color:var(--accent);border-color:var(--accent);font-weight:600;}
+  .p-step.done{color:var(--green);border-color:var(--green);}
+  .p-step-icon{display:block;font-size:1.2rem;margin-bottom:3px;}
+  .pbar-wrap{background:var(--card2);border-radius:8px;height:8px;overflow:hidden;margin:6px 0;}
+  .pbar{height:100%;background:var(--accent);width:0;transition:width .4s;border-radius:8px;}
+  .pct-num{text-align:center;font-size:.83rem;color:var(--muted);margin-bottom:8px;}
+  .pstatus{font-size:.9rem;color:var(--muted);text-align:center;min-height:20px;}
+
+  /* File info */
+  .file-item{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;font-size:.9rem;margin:12px 0;}
+  .file-item .fname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+  /* Range inputs */
+  .range-section{margin-top:16px;}
+  .range-label{font-size:.9rem;color:var(--muted);margin-bottom:6px;display:block;}
+  .range-row{display:flex;gap:10px;align-items:center;margin-bottom:8px;}
+  .range-inp{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:.95rem;font-family:inherit;direction:ltr;text-align:left;}
+  .range-inp:focus{outline:none;border-color:var(--accent);}
+  .range-hint{font-size:.82rem;color:var(--muted);}
+
+  /* Mode tabs */
+  .mode-tabs{display:flex;gap:8px;margin-bottom:16px;}
+  .mode-tab{flex:1;padding:9px;background:var(--card2);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;text-align:center;font-family:inherit;color:var(--muted);transition:all .2s;}
+  .mode-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+
+  /* Buttons */
+  .btn{display:block;width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:14px;transition:opacity .2s;}
+  .btn:hover{opacity:.88;}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+
+  /* Result */
+  .result-box{background:var(--card2);border:1px solid var(--green);border-radius:10px;padding:20px;margin-top:16px;display:none;text-align:center;}
+  .result-box .r-icon{font-size:2rem;}
+  .result-box .r-info{font-size:.9rem;color:var(--muted);margin:8px 0;}
+  .dl-btn{display:inline-block;background:var(--green);color:#fff;padding:10px 30px;border-radius:8px;font-weight:700;margin-top:10px;cursor:pointer;border:none;font-family:inherit;font-size:.95rem;}
+
+  /* Info grid */
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:28px;}
+  .info-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-align:center;}
+  .info-card .ic-icon{font-size:1.7rem;margin-bottom:8px;}
+  .info-card h3{font-size:.92rem;margin-bottom:5px;}
+  .info-card p{font-size:.83rem;color:var(--muted);margin:0;}
+
+  footer{text-align:center;padding:28px 24px;color:var(--muted);font-size:.86rem;border-top:1px solid var(--border);margin-top:40px;}
+  footer a{color:var(--accent);}
+
+  @media(max-width:560px){.hero h1{font-size:1.5rem;} .range-row{flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Easy<span>PDF</span></div>
+  <div class="hdr-right">
+    <button class="back-btn" onclick="location.href='index.html'">→ الرئيسية</button>
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">🌙</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-icon">📑</div>
+  <h1>استخراج <span>صفحات PDF</span></h1>
+  <p>استخرج صفحة أو نطاق صفحات من ملف PDF في ثوانٍ — بدون رفع الملف، مجاناً وبخصوصية تامة</p>
+  <div class="badges">
+    <span class="badge">🔒 خصوصية تامة</span>
+    <span class="badge">⚡ في ثوانٍ</span>
+    <span class="badge">🆓 مجاني</span>
+    <span class="badge">📱 جوال وسطح مكتب</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="tool-card">
+    <div class="p-steps">
+      <div class="p-step active" id="ps1"><span class="p-step-icon">📂</span>قراءة</div>
+      <div class="p-step" id="ps2"><span class="p-step-icon">📑</span>استخراج</div>
+      <div class="p-step" id="ps3"><span class="p-step-icon">💾</span>حفظ</div>
+    </div>
+    <div class="pbar-wrap"><div class="pbar" id="pf"></div></div>
+    <div class="pct-num" id="pct-num">0%</div>
+    <div class="pstatus" id="pt">اختر ملف PDF للبدء</div>
+
+    <!-- Upload -->
+    <div class="drop-zone" id="drop-zone" onclick="document.getElementById('fpick').click()">
+      <input type="file" id="fpick" accept=".pdf" onchange="onFile(this.files[0])">
+      <div class="dz-icon">📄</div>
+      <div class="dz-text">اضغط لاختيار ملف PDF أو اسحبه هنا</div>
+    </div>
+
+    <div id="file-info"></div>
+
+    <!-- Mode + Pages input -->
+    <div id="extract-opts" style="display:none">
+      <div class="range-section">
+        <label class="range-label">طريقة الاستخراج:</label>
+        <div class="mode-tabs">
+          <button class="mode-tab active" id="tab-range" onclick="setMode('range')">📐 نطاق (من - إلى)</button>
+          <button class="mode-tab" id="tab-custom" onclick="setMode('custom')">🔢 صفحات محددة</button>
+        </div>
+
+        <div id="mode-range">
+          <div class="range-row">
+            <div style="flex:1">
+              <label class="range-label">من صفحة:</label>
+              <input type="number" class="range-inp" id="pg-from" min="1" value="1" placeholder="1">
+            </div>
+            <div style="flex:1">
+              <label class="range-label">إلى صفحة:</label>
+              <input type="number" class="range-inp" id="pg-to" min="1" value="1" placeholder="5">
+            </div>
+          </div>
+          <div class="range-hint">مثال: من 2 إلى 6 → يستخرج الصفحات 2،3،4،5،6</div>
+        </div>
+
+        <div id="mode-custom" style="display:none">
+          <input type="text" class="range-inp" id="pg-custom" placeholder="مثال: 1,3,5,7 أو 2-4,8,10-12" style="margin-bottom:6px">
+          <div class="range-hint">يمكن الجمع بين الأرقام والنطاقات: 1,3-6,9,11-13</div>
+        </div>
+      </div>
+
+      <button class="btn" id="ext-btn" onclick="doExtract()">📑 استخراج الصفحات</button>
+    </div>
+
+    <div class="result-box" id="result-box">
+      <div class="r-icon">✅</div>
+      <div class="r-info" id="r-info">تم الاستخراج بنجاح</div>
+      <button class="dl-btn" id="dl-btn">⬇️ تحميل الملف</button>
+      <div style="margin-top:10px">
+        <button class="back-btn" onclick="resetTool()">↩ استخراج آخر</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="ic-icon">🖥️</div>
+      <h3>معالجة محلية</h3>
+      <p>كل شيء يتم داخل متصفحك فقط — لا رفع، لا خوادم</p>
+    </div>
+    <div class="info-card">
+      <div class="ic-icon">📐</div>
+      <h3>نطاقات مرنة</h3>
+      <p>استخرج نطاق متواصل أو صفحات متفرقة بحرية تامة</p>
+    </div>
+    <div class="info-card">
+      <div class="ic-icon">⚡</div>
+      <h3>سريع وخفيف</h3>
+      <p>المعالجة فورية حتى للملفات الكبيرة</p>
+    </div>
+    <div class="info-card">
+      <div class="ic-icon">📁</div>
+      <h3>ملف واحد ناتج</h3>
+      <p>الصفحات المستخرجة تُجمَّع في ملف PDF واحد</p>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:28px;color:var(--muted);font-size:.9rem">
+    <p>أدوات مشابهة: <a href="split-pdf.html">تقسيم PDF</a> · <a href="how-to-delete-pdf-pages.html">حذف صفحات</a> · <a href="index.html#merge">دمج PDF</a></p>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 <a href="index.html">EasyPDF</a> — أدوات PDF مجانية تعمل في المتصفح</p>
+</footer>
+
+<script>
+// Theme
+(function(){
+  const s = localStorage.getItem('easypdf_theme');
+  if(s === 'light') document.body.classList.add('light');
+  updateThemeBtn();
+})();
+function updateThemeBtn(){
+  const b = document.getElementById('theme-btn');
+  if(b) b.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+}
+function toggleTheme(){
+  const l = document.body.classList.toggle('light');
+  localStorage.setItem('easypdf_theme', l ? 'light' : 'dark');
+  updateThemeBtn();
+}
+
+// Drag & drop
+const dz = document.getElementById('drop-zone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.style.borderColor = 'var(--accent)'; });
+dz.addEventListener('dragleave', () => { dz.style.borderColor = 'var(--border)'; });
+dz.addEventListener('drop', e => { e.preventDefault(); dz.style.borderColor = 'var(--border)'; if(e.dataTransfer.files[0]) onFile(e.dataTransfer.files[0]); });
+
+// Mode
+let currentMode = 'range';
+function setMode(m){
+  currentMode = m;
+  document.getElementById('mode-range').style.display = m === 'range' ? 'block' : 'none';
+  document.getElementById('mode-custom').style.display = m === 'custom' ? 'block' : 'none';
+  document.getElementById('tab-range').className = 'mode-tab' + (m === 'range' ? ' active' : '');
+  document.getElementById('tab-custom').className = 'mode-tab' + (m === 'custom' ? ' active' : '');
+}
+
+// Lib loading
+let _libsLoaded = false, _libsPromise = null;
+function loadLibs(){
+  if(_libsLoaded) return Promise.resolve();
+  if(_libsPromise) return _libsPromise;
+  _libsPromise = new Promise((res, rej) => {
+    const s1 = document.createElement('script');
+    s1.src = 'https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+    s1.onerror = rej;
+    s1.onload = () => {
+      const s2 = document.createElement('script');
+      s2.src = 'https://unpkg.com/downloadjs@1.4.7/download.min.js';
+      s2.onerror = rej;
+      s2.onload = () => { _libsLoaded = true; res(); };
+      document.head.appendChild(s2);
+    };
+    document.head.appendChild(s1);
+  });
+  return _libsPromise;
+}
+
+let currentFile = null, currentBytes = null, totalPages = 0;
+
+function setProgress(pct, msg, step){
+  document.getElementById('pf').style.width = pct + '%';
+  document.getElementById('pt').textContent = msg;
+  document.getElementById('pct-num').textContent = pct + '%';
+  if(step){
+    ['ps1','ps2','ps3'].forEach((id,i) => {
+      const el = document.getElementById(id);
+      el.className = 'p-step' + (i+1 < step ? ' done' : i+1 === step ? ' active' : '');
+    });
+  }
+}
+
+async function onFile(file){
+  if(!file || !file.name.toLowerCase().endsWith('.pdf')) return;
+  currentFile = file;
+  setProgress(10, 'تحميل المكتبات...', 1);
+  await loadLibs();
+  setProgress(35, 'قراءة الملف...', 1);
+  const ab = await file.arrayBuffer();
+  currentBytes = new Uint8Array(ab);
+  const doc = await PDFLib.PDFDocument.load(currentBytes);
+  totalPages = doc.getPageCount();
+  setProgress(0, `الملف جاهز — ${totalPages} صفحة`, 1);
+
+  document.getElementById('file-info').innerHTML = `
+    <div class="file-item">📄 <span class="fname">${file.name}</span>
+    <span style="color:var(--muted);font-size:.85rem">${totalPages} صفحة · ${(file.size/1024).toFixed(1)} KB</span></div>`;
+
+  document.getElementById('pg-to').value = totalPages;
+  document.getElementById('pg-to').max = totalPages;
+  document.getElementById('pg-from').max = totalPages;
+  document.getElementById('extract-opts').style.display = 'block';
+  document.getElementById('result-box').style.display = 'none';
+}
+
+function parsePageList(input, total){
+  const pages = [];
+  const seen = new Set();
+  const parts = input.split(',');
+  for(const p of parts){
+    const t = p.trim();
+    if(!t) continue;
+    if(t.includes('-')){
+      const [a,b] = t.split('-').map(n => parseInt(n.trim()));
+      for(let i=Math.max(1,a); i<=Math.min(total,b||a); i++){
+        if(!seen.has(i)){ seen.add(i); pages.push(i); }
+      }
+    } else {
+      const n = parseInt(t);
+      if(n >= 1 && n <= total && !seen.has(n)){ seen.add(n); pages.push(n); }
+    }
+  }
+  return pages.sort((a,b) => a-b);
+}
+
+async function doExtract(){
+  if(!currentBytes) return;
+  let pageList;
+  if(currentMode === 'range'){
+    const from = parseInt(document.getElementById('pg-from').value) || 1;
+    const to = parseInt(document.getElementById('pg-to').value) || totalPages;
+    if(from > to){ alert('صفحة البداية يجب أن تكون أصغر من صفحة النهاية'); return; }
+    pageList = parsePageList(`${from}-${to}`, totalPages);
+  } else {
+    const val = document.getElementById('pg-custom').value.trim();
+    if(!val){ alert('أدخل أرقام الصفحات أولاً'); return; }
+    pageList = parsePageList(val, totalPages);
+  }
+  if(!pageList.length){ alert('لم يُعثر على صفحات صالحة'); return; }
+
+  document.getElementById('ext-btn').disabled = true;
+  setProgress(20, 'تجهيز الملف...', 2);
+
+  try {
+    const { PDFDocument } = PDFLib;
+    const srcDoc = await PDFDocument.load(currentBytes);
+    const newDoc = await PDFDocument.create();
+    setProgress(55, 'استخراج الصفحات...', 2);
+    const indices = pageList.map(n => n - 1);
+    const copied = await newDoc.copyPages(srcDoc, indices);
+    copied.forEach(p => newDoc.addPage(p));
+    setProgress(82, 'حفظ الملف...', 3);
+    const bytes = await newDoc.save();
+    const url = URL.createObjectURL(new Blob([bytes], {type:'application/pdf'}));
+    const outName = currentFile.name.replace('.pdf', `_pages_${pageList[0]}-${pageList[pageList.length-1]}.pdf`);
+    setProgress(100, 'تم الاستخراج!', 3);
+    const rb = document.getElementById('result-box');
+    rb.style.display = 'block';
+    document.getElementById('r-info').textContent = `تم استخراج ${pageList.length} صفحة · الحجم: ${(bytes.byteLength/1024).toFixed(1)} KB`;
+    document.getElementById('dl-btn').onclick = () => {
+      const a = document.createElement('a'); a.href = url; a.download = outName; a.click();
+    };
+  } catch(err){
+    setProgress(0, 'خطأ: ' + err.message, 1);
+    document.getElementById('ext-btn').disabled = false;
+  }
+}
+
+function resetTool(){
+  currentFile = null; currentBytes = null; totalPages = 0;
+  document.getElementById('file-info').innerHTML = '';
+  document.getElementById('extract-opts').style.display = 'none';
+  document.getElementById('result-box').style.display = 'none';
+  document.getElementById('ext-btn').disabled = false;
+  setProgress(0, 'اختر ملف PDF للبدء', 1);
+}
+</script>
+</body>
+</html>
